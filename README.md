@@ -1,6 +1,6 @@
 Write this commands to start project:
 
-To install all necessaries dependencies 
+To install all necessary dependencies 
 ```
 pip install -r requirements.txt
 ```
