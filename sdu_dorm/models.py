@@ -23,12 +23,12 @@ class AuthUserManager(BaseUserManager):
 
     def _create_user(self, student_id, password, **extra_fields):
         """
-        Creates and saves a User with the given email and password.
+        Creates and saves a User with the given student_id and password.
         """
         if not student_id:
             raise ValueError('The given email must be set')
-        email = self.normalize_email(student_id)
-        user = self.model(email=email, **extra_fields)
+        student_id = self.normalize_email(student_id)
+        user = self.model(student_id=student_id, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -49,8 +49,8 @@ class AuthUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    student_id = models.CharField(_('Student id'), unique=True, max_length=50)
-    email = models.EmailField(_('Email address'), unique=True, blank=True)
+    student_id = models.CharField(_('student_id'), unique=True, max_length=10)
+    email = models.EmailField(_('Email address'), blank=True)
     first_name = models.CharField(_('First name'), max_length=30, blank=True)
     last_name = models.CharField(_('Last name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('Date joined'), auto_now_add=True)
@@ -69,7 +69,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = AuthUserManager()
 
     USERNAME_FIELD = 'student_id'
-    # REQUIRED_FIELDS = ['student_id']
 
     class Meta:
         verbose_name = _('user')

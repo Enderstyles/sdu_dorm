@@ -99,7 +99,7 @@ class StudentsViewListApi(ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = CustomUser.objects.filter(username=request.user.username)
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class AboutPiecesViewApi(ListAPIView):
@@ -109,4 +109,4 @@ class AboutPiecesViewApi(ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = AboutPiece.objects.all()
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
