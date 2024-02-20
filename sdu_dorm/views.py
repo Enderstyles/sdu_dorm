@@ -97,7 +97,7 @@ class StudentsViewListApi(ListAPIView):
 
     @extend_schema(responses=UserInfoSerializer)
     def list(self, request, *args, **kwargs):
-        queryset = CustomUser.objects.filter(username=request.user.username)
+        queryset = CustomUser.objects.filter(student_id=request.user.student_id)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
