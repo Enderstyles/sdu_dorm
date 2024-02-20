@@ -1,6 +1,6 @@
 Write this commands to start project:
 
-To install all necessaries dependencies 
+To install all necessary dependencies 
 ```
 pip install -r requirements.txt
 ```
@@ -20,7 +20,8 @@ python manage.py runserver
 ```
 APIs
 ```
-localhost:8000/api/schema/docs  - SwaggerView
-localhost:8000/api/students     - Students API
-localhost:8000/api/about_pieces - About API
+localhost:8000/api/schema/docs   - SwaggerView
+localhost:8000/api/profile/      - Profile API
+localhost:8000/api/login/         - Login API
+localhost:8000/api/about_pieces/ - About API
 ```
