@@ -1,0 +1,37 @@
+//Медиа запросы
+$pc: 1670px; // ПК, ноутбуки, некоторые планшеты в горизонтальном положении
+$laptopLarge: 1440px;
+$laptop: 1366.98px;
+$laptopSm: 1200px;
+$desktop: 991.98px; // Ноутбуки, некоторые телефоны, планшеты в горизонтальном положении
+$tablet: 768px; // Планшеты
+$mobile: 479.98px; // Телефоны S
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+
+  @media screen and (max-width: $pc) {
+    max-width: 1340px;
+  }
+
+  @media screen and (max-width: $laptopLarge) {
+    max-width: 1320px;
+  }
+
+  @media screen and (max-width: $laptop) {
+    max-width: 1140px;
+  }
+
+  @media screen and (max-width: $laptopSm) {
+    max-width: 960px;
+  }
+
+  @media screen and (max-width: $tablet) {
+    max-width: 720px;
+  }
+
+  @media screen and (max-width: $mobile) {
+    max-width: 85%;
+  }
+}

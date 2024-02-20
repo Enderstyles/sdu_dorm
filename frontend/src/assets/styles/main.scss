@@ -1,0 +1,15 @@
+@import 'null.scss';
+@import 'font.scss';
+@import 'media.scss';
+
+$inter: "Inter", sans-serif;
+
+$white: #FFFFFF;
+$black: #000000;
+$sdublue: #212153;
+
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: $inter;
+}
