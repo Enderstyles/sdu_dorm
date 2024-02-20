@@ -24,7 +24,10 @@ SECRET_KEY = 'django-insecure-3@v^2-+b0a0&b^o%i_$k^l(f+t2pkzx70h950sz77%8u3p$6=-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'alazizaskhat.pythonanywhere.com',
+    'localhost',
+]
 
 AUTH_USER_MODEL = 'sdu_dorm.CustomUser'
 

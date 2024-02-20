@@ -21,35 +21,35 @@ from django.utils.translation import gettext_lazy as _
 class AuthUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, student_id, password, **extra_fields):
         """
         Creates and saves a User with the given email and password.
         """
-        if not email:
+        if not student_id:
             raise ValueError('The given email must be set')
-        email = self.normalize_email(email)
+        email = self.normalize_email(student_id)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, student_id, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(student_id, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, student_id, password, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
 
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(student_id, password, **extra_fields)
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    username = models.CharField(_('Username'), unique=True, max_length=50)
+    student_id = models.CharField(_('Student id'), unique=True, max_length=50)
     email = models.EmailField(_('Email address'), unique=True, blank=True)
     first_name = models.CharField(_('First name'), max_length=30, blank=True)
     last_name = models.CharField(_('Last name'), max_length=30, blank=True)
@@ -57,9 +57,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True, blank=True)
     is_staff = models.BooleanField(_('is_staff'), default=False, blank=True)
     age = models.IntegerField(default=18, blank=True)
-    gender = models.BooleanField(default=True, )
+    gender = models.BooleanField(default=True)
     grade = models.IntegerField(default=1,blank=True)
-    major = models.CharField(max_length=25, default='is',blank=True)
+    major = models.CharField(max_length=25, default='is', blank=True)
     status = models.BooleanField(default=True)
     additional_info = models.TextField(default='Test')
     reservation = models.CharField(max_length=3, default='123')
@@ -68,15 +68,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = AuthUserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'student_id'
+    # REQUIRED_FIELDS = ['student_id']
 
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('Users')
 
     def __str__(self):
-        return self.username
+        return self.student_id
 
 
 class AboutPiece(models.Model):
