@@ -10,6 +10,7 @@
           <li class="regular-txt">Apply</li>
           <li class="regular-txt" @click="$router.push('/about')">About</li>
           <li class="regular-txt" @click="$router.push('/login')">Login</li>
+          <li class="regular-txt" @click="$router.push('/personal-account')">Account</li>
         </ul>
       </div>
     </div>

@@ -79,7 +79,31 @@ export default {
   },
   methods: {
     loginForm() {
-
+      this.v$.$validate();
+      if (
+          !this.v$.$invalid
+      ) {
+        const data = {
+          student_id: this.id,
+          password: this.password,
+        };
+        this.$axios.post("login/", data)
+            .then(res => {
+              localStorage.setItem("access_token", res.data.token);
+              this.$toaster.success("Log in Successfully");
+              this.resetForm()
+              // setTimeout(() => {
+              //   this.requestUser();
+              //   this.$router.push('/personal');
+              // }, 200);
+            })
+            .catch(err => {
+              this.$toaster.error(err.response.data.message);
+            })
+      }
+      else {
+        this.$toaster.error("Full input");
+      }
     },
     resetForm() {
       this.id = "",

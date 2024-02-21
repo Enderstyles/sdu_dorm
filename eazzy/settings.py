@@ -78,6 +78,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8080",  # Add other allowed origins as needed
     "http://localhost:3000",  # If you're using Vue CLI development server
     "http://127.0.0.1:3000",  # Add other allowed origins as needed
+    "http://192.168.0.102:8080",
     "http://alazizaskhat.pythonanywhere.com",  # Add the PythonAnywhere domain
 ]
 
