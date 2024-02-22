@@ -9,8 +9,8 @@
           <li class="regular-txt">News</li>
           <li class="regular-txt">Apply</li>
           <li class="regular-txt" @click="$router.push('/about')">About</li>
-          <li class="regular-txt" @click="$router.push('/login')">Login</li>
-          <li class="regular-txt" @click="$router.push('/personal-account')">Account</li>
+          <li class="regular-txt" v-if="!isAuthenticated" @click="$router.push('/login')">Login</li>
+          <li class="regular-txt" v-if="isAuthenticated" @click="$router.push('/personal-account')">Account</li>
         </ul>
       </div>
     </div>
@@ -18,13 +18,21 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 export default {
   name: 'HeaderVue',
   data() {
     return {
     };
   },
-
+  methods: {
+  },
+  computed: {
+    ...mapGetters(["getUser", "getAuth"]),
+    isAuthenticated() {
+      return this.$store.getters.getAuth;
+    },
+  },
 }
 </script>
 

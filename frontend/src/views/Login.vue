@@ -46,7 +46,7 @@ import {
   minLength,
   helpers
 } from "@vuelidate/validators";
-// import {mapActions} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
   components: {
@@ -78,6 +78,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["requestUser"]),
     loginForm() {
       this.v$.$validate();
       if (
@@ -89,16 +90,16 @@ export default {
         };
         this.$axios.post("login/", data)
             .then(res => {
-              localStorage.setItem("access_token", res.data.token);
+              localStorage.setItem("access_token", res.data.access);
               this.$toaster.success("Log in Successfully");
               this.resetForm()
-              // setTimeout(() => {
-              //   this.requestUser();
-              //   this.$router.push('/personal');
-              // }, 200);
+              setTimeout(() => {
+                this.requestUser();
+                this.$router.push('/personal-account');
+              }, 200);
             })
             .catch(err => {
-              this.$toaster.error(err.response.data.message);
+              this.$toaster.error(err.response.data.detail);
             })
       }
       else {

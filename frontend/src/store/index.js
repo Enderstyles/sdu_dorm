@@ -28,6 +28,9 @@ export default createStore({
         SET_USER(state, user) {
             state.user = user;
         },
+        SET_USER_PROFILE(state, profileData) {
+            state.user = { ...state.user, ...profileData };
+        },
     },
     actions: {
         checkAuth({ commit }) {
@@ -38,22 +41,30 @@ export default createStore({
                 commit("SET_AUTH", false);
             }
         },
-        async requestUser({ commit, dispatch }) {
+        async requestUser({ commit }) {
             let token = localStorage.getItem("access_token");
             if (token) {
                 try {
-                    const response = await axios.get('students', {
+                    const response = await axios.get("profile/", {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                         },
                     });
-                    const user = response.data.user;
-                    const courses = response.data.courses;
-                    commit("SET_USER", user);
-                    commit("SET_USER_COURSES", courses);
+                    const userProfile  = response.data[0];
+                    const profileData = {
+                        name: `${userProfile.first_name} ${userProfile.last_name}`,
+                        id: userProfile.student_id,
+                        major: userProfile.major,
+                        gender: userProfile.gender ? 'Male' : 'Female',
+                        grade: userProfile.grade,
+                        status: userProfile.status ? 'Active' : 'Inactive',
+                        avatar: userProfile.profile_pic,
+                        reservation: userProfile.reservation
+                    };
+                    commit("SET_USER_PROFILE", profileData);
                     commit("SET_AUTH", true);
                 } catch (err) {
-                    dispatch('logoutUser');
+                    // dispatch('logoutUser');
                     commit("SET_USER", false);
                     commit("SET_AUTH", false);
                     localStorage.removeItem("access_token");
