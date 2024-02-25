@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from django.shortcuts import render
 from drf_spectacular.utils import extend_schema
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
@@ -90,6 +91,10 @@ from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer
 #     # def list(self, request, *args, **kwargs):
 #     #     serializer = self.get_serializer(self.queryset, many=True)
 #     #     return JsonResponse(serializer.data, safe=False)
+
+
+def index(request):
+    return render(request, 'index.html')
 
 
 class StudentsViewListApi(ListAPIView):

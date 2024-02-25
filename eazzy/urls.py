@@ -17,13 +17,11 @@ Including another URLconf
 from django.contrib import admin
 
 from django.urls import path, include
-from django.views.generic import TemplateView
 from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from sdu_dorm.views import StudentsViewListApi, AboutPiecesViewApi
+from sdu_dorm.views import StudentsViewListApi, AboutPiecesViewApi, index
 
 router = routers.DefaultRouter()
 # router.register(r'api/login', LoginViewListApi)
