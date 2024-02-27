@@ -2,37 +2,52 @@
   <div class="login">
     <div class="login__content container">
       <div class="login__content-form">
-        <div class="login__content-form-input">
-          <p class="regular-txt">Student ID</p>
-          <input
-              type="text"
-              v-model="v$.id.$model"
-              placeholder="Enter Student ID"
-              @keyup.enter="loginForm"
-          />
-          <template v-for="(error, index) of v$.id.$errors" :key="index">
-            <p class="errorValid">{{ error.$message }}</p>
-          </template>
+        <div class="login__content-form-logo">
+          <img src="@/assets/images/png/sdu-login-logo.png" alt="sdu-login-logo">
         </div>
-        <div class="login__content-form-input">
-          <p class="regular-txt">Password</p>
-          <input
-              type="password"
-              v-model="v$.password.$model"
-              placeholder="Enter Password"
-              @keyup="onlyLatin()"
-              @keyup.enter="loginForm"
-          />
-          <template v-if="v$.password.$error">
-            <p class="errorValid" v-if="v$.password.required.$invalid">Required field</p>
-            <p class="errorValid" v-if="v$.password.minLength.$invalid">Minimum character length: 8</p>
-            <p class="errorValid" v-if="v$.password.containsUpperCase.$invalid">Password must contain at least one uppercase letter</p>
-            <p class="errorValid" v-if="v$.password.containsNumber.$invalid">Password must contain at least one number</p>
-            <p class="errorValid" v-if="v$.password.noSpaces.$invalid">Password cannot contain spaces</p>
-          </template>
+        <div class="login__content-form-title">
+          <h1 class="semi-bold-txt">LOG IN TO STUDENT HOUSE PORTAL</h1>
+        </div>
+        <div class="login__content-form-enter">
+          <div class="login__content-form-enter-input">
+            <p class="regular-txt">Student ID</p>
+            <input
+                type="text"
+                v-model="v$.id.$model"
+                placeholder="Enter Student ID"
+                @keyup.enter="loginForm"
+            />
+            <template v-for="(error, index) of v$.id.$errors" :key="index">
+              <p class="errorValid">{{ error.$message }}</p>
+            </template>
+          </div>
+          <div class="login__content-form-enter-input">
+            <p class="regular-txt">Password</p>
+            <input
+                type="password"
+                v-model="v$.password.$model"
+                placeholder="Enter Password"
+                @keyup="onlyLatin()"
+                @keyup.enter="loginForm"
+            />
+            <template v-if="v$.password.$error">
+              <p class="errorValid" v-if="v$.password.required.$invalid">Required field</p>
+              <p class="errorValid" v-if="v$.password.minLength.$invalid">Minimum character length: 8</p>
+              <p class="errorValid" v-if="v$.password.containsUpperCase.$invalid">Password must contain at least one uppercase letter</p>
+              <p class="errorValid" v-if="v$.password.containsNumber.$invalid">Password must contain at least one number</p>
+              <p class="errorValid" v-if="v$.password.noSpaces.$invalid">Password cannot contain spaces</p>
+            </template>
+          </div>
+        </div>
+        <div class="login__content-form-forgot">
+          <p class="regular-txt">Forgot a password?</p>
         </div>
         <div class="login__content-form-login">
           <button class="login__content-form-login-btn" @click="loginForm">Log in</button>
+        </div>
+        <div class="login__content-form-return" @click="$router.push('/')">
+          <img src="@/assets/images/svg/arrow-return.svg" alt="arrow-return">
+          <p class="regular-txt">Return to main page</p>
         </div>
       </div>
     </div>
@@ -130,7 +145,7 @@ export default {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 90lvh;
+  height: 110lvh;
   &__content {
     display: flex;
     flex-direction: column;
@@ -141,35 +156,87 @@ export default {
       align-items: center;
       justify-content: center;
       width: 100%;
-      gap: 32px;
       color: $black;
-      &-input {
+      &-logo {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        img {
+          width: 206px;
+          height: 100%;
+          cursor: pointer;
+        }
+      }
+      &-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px 0 45px 0;
+        h1 {
+          font-size: 64px;
+        }
+      }
+      &-enter {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        width: 365px;
-        gap: 15px;
-        p {
-          font-size: 24px;
+        gap: 32px;
+        &-input {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          width: 365px;
+          gap: 17px;
+          p {
+            font-size: 24px;
+          }
+          input {
+            width: 100%;
+            height: 50px;
+            border: 1px solid $black;
+            background: #F0F0F0;
+            padding: 10px 15px;
+            border-radius: 25px;
+            color: $black;
+            outline: none;
+          }
         }
-        input {
-          width: 100%;
-          height: 50px;
-          border: 1px solid $black;
-          background: #F0F0F0;
-          padding: 10px 15px;
-          color: $black;
+      }
+      &-forgot {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 365px;
+        padding-top: 15px;
+        p {
+          font-size: 16px;
+          color: $grey;
+          text-decoration: underline;
+          cursor: pointer;
         }
       }
       &-login {
         display: flex;
         flex-direction: column;
         width: 365px;
-        margin-top: 43px;
+        padding-top: 43px;
         &-btn {
-          padding: 20px 146px;
-          background: #C7C7C7;
+          padding: 20px 100px;
+          background: $secondary;
+          border-radius: 25px;
           width: 100%;
+          font-size: 24px;
+        }
+      }
+      &-return {
+        display: flex;
+        align-items: center;
+        padding-top: 140px;
+        gap: 10px;
+        cursor: pointer;
+        p {
+          font-size: 16px;
+          color: $grey;
         }
       }
     }

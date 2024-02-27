@@ -77,7 +77,7 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin: 60px 0;
+  padding: 60px 0;
   &__content {
     display: flex;
     flex-direction: column;

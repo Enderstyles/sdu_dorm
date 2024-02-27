@@ -89,7 +89,7 @@ export default {
     &-main {
       display: flex;
       flex-direction: column;
-      height: 90lvh;
+      height: 100lvh;
       width: 100%;
       color: $black;
       background: #D9D9D9;

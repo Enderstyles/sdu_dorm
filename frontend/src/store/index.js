@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import axios from "axios";
 import router from "@/router";
 import {createToaster} from "@meforma/vue-toaster";
-import i18n from "@/i18n";
+// import i18n from "@/i18n";
 const toaster = createToaster({ position: "top-right", duration: 1900 });
 export default createStore({
     state: {
@@ -52,11 +52,11 @@ export default createStore({
                     });
                     const userProfile  = response.data[0];
                     const profileData = {
-                        name: `${userProfile.first_name} ${userProfile.last_name}`,
-                        id: userProfile.student_id,
-                        major: userProfile.major,
+                        name: userProfile.first_name && userProfile.last_name ? `${userProfile.first_name} ${userProfile.last_name}` : 'Not filled in',
+                        id: userProfile.student_id || 'Not filled in',
+                        major: userProfile.major || 'Not filled in',
                         gender: userProfile.gender ? 'Male' : 'Female',
-                        grade: userProfile.grade,
+                        grade: userProfile.grade || 'Not filled in',
                         status: userProfile.status ? 'Active' : 'Inactive',
                         avatar: userProfile.profile_pic,
                         reservation: userProfile.reservation

@@ -1,8 +1,8 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{'login': $route.path === '/login'}">
     <div class="header__content container">
       <div class="header__content-logo">
-        <h1 class="regular-txt" @click="$router.push('/')">Logo</h1>
+        <img src="@/assets/images/png/sdu-logo.png" alt="sdu-logo" @click="$router.push('/')">
       </div>
       <div class="header__content-nav">
         <ul class="header__content-nav-links">
@@ -40,21 +40,28 @@ export default {
 .header {
   display: flex;
   align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 140px;
-  background: $sdublue;
-  color: $white;
+  height: 193px;
+  background: #FAFBFF;
+  color: $primary;
+  border-radius: 0 0 50px 50px;
   &__content {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    padding: 0px 10px;
     &-logo {
       display: flex;
       align-items: center;
       height: 100%;
-      h1 {
-        font-size: 24px;
+      img {
+        width: 126px;
+        height: 100%;
         cursor: pointer;
       }
     }
@@ -71,5 +78,8 @@ export default {
       }
     }
   }
+}
+.login {
+  display: none;
 }
 </style>

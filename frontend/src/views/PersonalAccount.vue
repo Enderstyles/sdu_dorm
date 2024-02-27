@@ -9,7 +9,8 @@
                 getUser.avatar
                   ? getUser.avatar
                   : require('@/assets/images/svg/user-add.svg')
-              " alt="avatar"
+                "
+                alt="avatar"
             >
           </div>
           <div class="account__content-info-profile-user">
@@ -27,7 +28,7 @@
               <p class="light-txt">{{ getUser.major }}</p>
               <p class="light-txt">{{ getUser.gender }}</p>
               <p class="light-txt">{{ getUser.grade }}</p>
-              <p class="light-txt">{{ getUser.status }} <span></span></p>
+              <p class="light-txt">{{ getUser.status }}</p>
             </div>
           </div>
         </div>
@@ -72,7 +73,7 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin: 160px 0;
+  padding: 300px 0;
   &__content {
     display: flex;
     flex-direction: column;
@@ -113,6 +114,9 @@ export default {
             align-items: flex-start;
             justify-content: space-between;
             height: 289px;
+            p {
+              font-size: 24px;
+            }
           }
           &-student {
             display: flex;
@@ -120,6 +124,9 @@ export default {
             align-items: flex-start;
             justify-content: space-between;
             height: 289px;
+            p {
+              font-size: 24px;
+            }
           }
         }
       }
