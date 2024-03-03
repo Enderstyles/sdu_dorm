@@ -62,7 +62,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     major = models.CharField(max_length=25, default='is', blank=True)
     status = models.BooleanField(default=True)
     additional_info = models.TextField(default='Test')
-    reservation = models.CharField(max_length=3, default='123')
+    reservation = models.CharField(max_length=4, blank=True)
     profile_pic = models.ImageField(upload_to='media/profile_pics', default='media/profile_pics/default.jpg')
     isStudent = models.BooleanField(default=True)
 

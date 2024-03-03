@@ -25,3 +25,10 @@ localhost:8000/api/profile/      - Profile API
 localhost:8000/api/login/         - Login API
 localhost:8000/api/about_pieces/ - About API
 ```
+Default admin user
+```
+login:
+    200000000
+password:
+    Admin12345 - same password for all users
+```
