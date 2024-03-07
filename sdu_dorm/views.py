@@ -1,13 +1,13 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework.generics import ListAPIView
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from sdu_dorm.models import CustomUser, AboutPiece
+from sdu_dorm.models import CustomUser, AboutPiece, MainPageModel
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer
 
 
@@ -75,6 +75,19 @@ class MainPageApi(ListAPIView):
 
     @extend_schema(responses=MainPageSerializer)
     def list(self, request, *args, **kwargs):
-        queryset = AboutPiece.objects.all()
+        queryset = MainPageModel.objects.all()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class EditMainPage(APIView):
+    queryset = MainPageModel.objects.get(id=1)
+    serializer_class = MainPageSerializer
+
+    def put(self, request, *args, **kwargs):
+        instance = self.queryset
+        serializer = MainPageSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -4,18 +4,6 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
-# class CustomUser(AbstractUser):
-#     username = models.CharField(max_length=20, unique=True)
-#     password = models.CharField(max_length=128)
-#     age = models.IntegerField(default=18)
-#     gender = models.BooleanField(default=True)
-#     grade = models.IntegerField(default=1)
-#     major = models.CharField(max_length=25)
-#     status = models.BooleanField(default=True)
-#     additional_info = models.TextField(default='Test')
-#     reservation = models.CharField(max_length=3, default='123')
-#     profile_pic = models.ImageField(upload_to='media/profile_pics', default='media/profile_pics/default.jpg')
-#     isStudent = models.BooleanField(default=True)
 
 
 class AuthUserManager(BaseUserManager):
@@ -96,4 +84,8 @@ class MainPageModel(models.Model):
     responsibilities_description = models.TextField(default="Responsibilities description")
 
     image1 = models.ImageField(upload_to='main_page', blank=True)
+    image2 = models.ImageField(upload_to='main_page', blank=True)
+    image3 = models.ImageField(upload_to='main_page', blank=True)
+    image4 = models.ImageField(upload_to='main_page', blank=True)
+    image5 = models.ImageField(upload_to='main_page', blank=True)
 

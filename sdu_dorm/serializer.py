@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import CustomUser, AboutPiece, MainPageModel
 
+
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
