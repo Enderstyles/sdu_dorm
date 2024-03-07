@@ -24,6 +24,10 @@ localhost:8000/api/schema/docs   - SwaggerView
 localhost:8000/api/profile/      - Profile API
 localhost:8000/api/login/         - Login API
 localhost:8000/api/about_pieces/ - About API
+localhost:8000/api/forgot_password/
+localhost:8000/api/logout/
+localhost:8000/api/main_page/
+localhost:8000/api/edit_main_page/
 ```
 Default admin user
 ```
