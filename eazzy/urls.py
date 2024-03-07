@@ -1,3 +1,4 @@
+from django.conf.urls.static import static
 from django.contrib import admin
 
 from django.urls import path, include
@@ -5,7 +6,8 @@ from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from sdu_dorm.views import StudentsViewListApi, AboutPiecesViewApi
+from eazzy import settings
+from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, MainPageApi
 
 router = routers.DefaultRouter()
 # router.register(r'api/login', LoginViewListApi)
@@ -17,8 +19,13 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path("api/schema/docs/", SpectacularSwaggerView.as_view(url_name='schema')),
-    path('api/profile/', StudentsViewListApi.as_view(), name='profile'),
-    path('api/about_pieces/', AboutPiecesViewApi.as_view(), name='about'),
+    path('api/profile/', ProfileApi.as_view(), name='profile'),
+    path('api/about/', AboutPiecesViewApi.as_view(), name='about'),
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/forgot_password/', ForgotPasswordApi.as_view(), name='auth_change_password'),
+    path('api/logout/', LogoutView.as_view(), name='auth_logout'),
+    path('api/main_page', MainPageApi.as_view(), name='main_page')
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

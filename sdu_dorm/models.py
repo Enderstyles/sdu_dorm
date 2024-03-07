@@ -58,12 +58,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(_('is_staff'), default=False, blank=True)
     age = models.IntegerField(default=18, blank=True)
     gender = models.BooleanField(default=True)
-    grade = models.IntegerField(default=1,blank=True)
+    grade = models.IntegerField(default=1, blank=True)
     major = models.CharField(max_length=25, default='is', blank=True)
     status = models.BooleanField(default=True)
     additional_info = models.TextField(default='Test')
     reservation = models.CharField(max_length=4, blank=True)
-    profile_pic = models.ImageField(upload_to='media/profile_pics', default='media/profile_pics/default.jpg')
+    profile_pic = models.ImageField(upload_to='profile_pics', default='profile_pics/default.jpg')
     isStudent = models.BooleanField(default=True)
 
     objects = AuthUserManager()
@@ -79,11 +79,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class AboutPiece(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
     title = models.CharField(max_length=20)
     description = models.TextField()
-    image = models.FileField(upload_to=f'media/about')
+    image = models.FileField(upload_to=f'about')
 
     def __str__(self):
         return str(self.id)
+
+
+class MainPageModel(models.Model):
+    main_title = models.TextField(default="Mail title")
+    main_description = models.TextField(default="some text for test")
+    mission_title = models.TextField(default="Mission title")
+    mission_description = models.TextField(default="Mission description")
+    responsibilities_title = models.TextField(default="Responsibilities title")
+    responsibilities_description = models.TextField(default="Responsibilities description")
+
+    image1 = models.ImageField(upload_to='main_page', blank=True)
 
