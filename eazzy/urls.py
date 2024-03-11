@@ -7,7 +7,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from eazzy import settings
-from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, MainPageApi, EditMainPage
+from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, MainPageApi
 
 router = routers.DefaultRouter()
 # router.register(r'api/login/', LoginViewListApi)
@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/forgot_password/', ForgotPasswordApi.as_view(), name='auth_change_password'),
     path('api/logout/', LogoutView.as_view(), name='auth_logout'),
     path('api/main_page/', MainPageApi.as_view(), name='main_page'),
-    path('api/edit_main_page/', EditMainPage.as_view(), name='edit_main_page')
+    # path('api/edit_main_page/', EditMainPage.as_view(), name='edit_main_page')
     # path('api/new_student', NewStudentApi.as_view(), name='new_student')
 ]
 if settings.DEBUG:

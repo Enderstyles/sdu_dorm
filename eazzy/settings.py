@@ -30,7 +30,7 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+
 AUTH_USER_MODEL = 'sdu_dorm.CustomUser'
 
 # Application definition
@@ -54,37 +54,6 @@ INSTALLED_APPS = [
 
 ]
 
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",  # Add the address of your Vue.js app
-    "http://127.0.0.1:8000",  # Add other allowed origins as needed
-    "http://localhost:8080",  # Add the address of your Vue.js app
-    "http://127.0.0.1:8080",  # Add other allowed origins as needed
-    "http://localhost:3000",  # If you're using Vue CLI development server
-    "http://127.0.0.1:3000",  # Add other allowed origins as needed
-    "http://192.168.0.102:8080",
-    "http://alazizaskhat.pythonanywhere.com",  # Add the PythonAnywhere domain
-]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -93,8 +62,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'eazzy.urls'
@@ -180,5 +148,4 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
 }

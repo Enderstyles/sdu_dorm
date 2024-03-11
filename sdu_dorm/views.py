@@ -1,7 +1,7 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework.generics import ListAPIView
-from rest_framework import status, viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -32,6 +32,9 @@ class AboutPiecesViewApi(ListAPIView):
 
 
 class ForgotPasswordApi(APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
     @staticmethod
     def post(request, *args, **kwargs):
         serializer = ChangePasswordSerializer(data=request.data)
@@ -57,6 +60,9 @@ class ForgotPasswordApi(APIView):
 
 
 class LogoutView(APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
     @staticmethod
     def post(request, *args, **kwargs):
         try:
@@ -71,6 +77,8 @@ class LogoutView(APIView):
 
 
 class MainPageApi(ListAPIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
     serializer_class = MainPageSerializer
 
     @extend_schema(responses=MainPageSerializer)

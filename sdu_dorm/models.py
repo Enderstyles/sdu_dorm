@@ -76,6 +76,8 @@ class AboutPiece(models.Model):
 
 
 class MainPageModel(models.Model):
+    main_banner_img = models.ImageField(upload_to='main_page', default='profile_pics/default.jpg')
+
     main_title = models.TextField(default="Mail title")
     main_description = models.TextField(default="some text for test")
     mission_title = models.TextField(default="Mission title")
@@ -83,9 +85,14 @@ class MainPageModel(models.Model):
     responsibilities_title = models.TextField(default="Responsibilities title")
     responsibilities_description = models.TextField(default="Responsibilities description")
 
-    image1 = models.ImageField(upload_to='main_page', blank=True)
-    image2 = models.ImageField(upload_to='main_page', blank=True)
-    image3 = models.ImageField(upload_to='main_page', blank=True)
-    image4 = models.ImageField(upload_to='main_page', blank=True)
-    image5 = models.ImageField(upload_to='main_page', blank=True)
+    deadlines_title = models.TextField(default="Deadlines title")
+    deadlines_description = models.TextField(default="Deadlines")
+    docs_required_title = models.TextField(default="Docs title")
+    decs_required_description = models.TextField(default="Decs description")
+
+    dorm_image1 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
+    dorm_image2 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
+    dorm_image3 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
+    dorm_image4 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
+    dorm_image5 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
 
