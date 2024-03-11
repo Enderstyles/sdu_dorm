@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-3@v^2-+b0a0&b^o%i_$k^l(f+t2pkzx70h950sz77%8u3p$6=-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 ALLOWED_HOSTS = [
     'alazizaskhat.pythonanywhere.com',
@@ -54,6 +55,37 @@ INSTALLED_APPS = [
 
 ]
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",  # Add the address of your Vue.js app
+    "http://127.0.0.1:8000",  # Add other allowed origins as needed
+    "http://localhost:8080",  # Add the address of your Vue.js app
+    "http://127.0.0.1:8080",  # Add other allowed origins as needed
+    "http://localhost:3000",  # If you're using Vue CLI development server
+    "http://127.0.0.1:3000",  # Add other allowed origins as needed
+    "http://192.168.0.102:8080",
+    "http://alazizaskhat.pythonanywhere.com",  # Add the PythonAnywhere domain
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +95,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'eazzy.urls'
