@@ -2,7 +2,7 @@
   <div class="modal-wrapper" v-if="isOpen">
     <div class="modal-overlay" @click="closeModal"></div>
     <div class="modal">
-      <img class="close-modal" :src="require('@/assets/img/png/back.png')" @click="closeModal" alt="close-modal" />
+      <img class="close-modal" :src="require('@/assets/icons/x.svg')" @click="closeModal" alt="close-modal" />
       <div class="modal-content">
         <slot />
       </div>

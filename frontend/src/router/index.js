@@ -3,6 +3,9 @@ import HomePage from '@/views/Home.vue'
 import LoginPage from "@/views/Login.vue";
 import AboutPage from "@/views/About.vue";
 import PersonalAccount from "@/views/PersonalAccount.vue";
+import News from "@/views/News.vue";
+import NewsDetails from "@/views/NewsDetails.vue";
+import Apply from "@/views/Apply.vue";
 
 const routes = [
     {
@@ -24,6 +27,25 @@ const routes = [
         path: '/personal-account',
         name: 'personal-account',
         component: PersonalAccount
+    },
+    {
+        path: '/apply',
+        name: 'apply',
+        component: Apply
+    },
+    {
+        path: '/news',
+        name: 'news',
+        component: News,
+        props: (route) => ({ tab: route.query.tab || null }),
+    },
+    {
+        path: '/news/:slug',
+        name: 'news-detail',
+        component: NewsDetails,
+        props: (route) => ({
+            slug: route.params.slug,
+        }),
     },
 ]
 

@@ -16,7 +16,7 @@
       <div class="about__content-data">
         <div class="about__content-data-block">
           <div class="about__content-data-block-desc">
-            <h1 class="semi-bold-txt">Main info</h1>
+            <h1 class="semi-bold-txt">Main Info</h1>
             <p class="regular-txt">
               Boys’ dormitory takes two 3 and 4-floor buildings at SDU Student house. There are 20 rooms with 4 student places on each floor. Each floor has rooms for student assistants, ready to respond. Overall each floor takes 1000 square meters, including bathrooms and showers.
             </p>
@@ -63,11 +63,30 @@
 <script>
 export default {
   name: "AboutVue",
-  setup() {
-
-
-    return {}
-  }
+  data() {
+    return {
+      aboutData: []
+    };
+  },
+  methods: {
+    fetchAboutData() {
+      this.$axios
+          .get(`/about_pieces/`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((response) => {
+            this.aboutData = response.data[0];
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
+  },
+  created() {
+    this.fetchAboutData();
+  },
 }
 </script>
 
@@ -77,7 +96,7 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 60px 0;
+  padding: 160px 0;
   &__content {
     display: flex;
     flex-direction: column;

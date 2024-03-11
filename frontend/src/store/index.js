@@ -53,6 +53,7 @@ export default createStore({
                     const userProfile  = response.data[0];
                     const profileData = {
                         name: userProfile.first_name && userProfile.last_name ? `${userProfile.first_name} ${userProfile.last_name}` : 'Not filled in',
+                        headerName: userProfile.first_name && userProfile.last_name ? `${userProfile.first_name} ${userProfile.last_name.charAt(0)}.` : 'Unknown',
                         id: userProfile.student_id || 'Not filled in',
                         major: userProfile.major || 'Not filled in',
                         gender: userProfile.gender ? 'Male' : 'Female',

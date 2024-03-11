@@ -6,11 +6,43 @@
       </div>
       <div class="header__content-nav">
         <ul class="header__content-nav-links">
-          <li class="regular-txt">News</li>
-          <li class="regular-txt">Apply</li>
-          <li class="regular-txt" @click="$router.push('/about')">About</li>
-          <li class="regular-txt" v-if="!isAuthenticated" @click="$router.push('/login')">Login</li>
-          <li class="regular-txt" v-if="isAuthenticated" @click="$router.push('/personal-account')">Account</li>
+          <li
+              class="medium-txt"
+              @click="$router.push('/news')"
+              :class="{ 'active': $route.path === '/news' }"
+          >
+            News
+          </li>
+          <li
+              class="medium-txt"
+              @click="$router.push('/apply')"
+              :class="{ 'active': $route.path === '/apply' }"
+          >
+            Apply
+          </li>
+          <li
+              class="medium-txt"
+              @click="$router.push('/about')"
+              :class="{ 'active': $route.path === '/about' }"
+          >
+            About
+          </li>
+          <li
+              class="medium-txt"
+              v-if="!isAuthenticated"
+              @click="$router.push('/login')"
+              :class="{ 'active': $route.path === '/login' }"
+          >
+            Login
+          </li>
+          <li
+              class="medium-txt"
+              v-if="isAuthenticated"
+              @click="$router.push('/personal-account')"
+              :class="{ 'active': $route.path === '/personal-account' }"
+          >
+            {{ getUser.headerName || Account }}
+          </li>
         </ul>
       </div>
     </div>
@@ -18,7 +50,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 export default {
   name: 'HeaderVue',
   data() {
@@ -28,11 +60,15 @@ export default {
   methods: {
   },
   computed: {
+    ...mapActions(["requestUser"]),
     ...mapGetters(["getUser", "getAuth"]),
     isAuthenticated() {
       return this.$store.getters.getAuth;
     },
   },
+  created() {
+    this.requestUser;
+  }
 }
 </script>
 
@@ -45,10 +81,11 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 193px;
+  padding: 20px 0;
   background: #FAFBFF;
   color: $primary;
   border-radius: 0 0 50px 50px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   &__content {
     display: flex;
     align-items: center;
@@ -60,7 +97,7 @@ export default {
       align-items: center;
       height: 100%;
       img {
-        width: 126px;
+        width: 100px;
         height: 100%;
         cursor: pointer;
       }
@@ -74,10 +111,17 @@ export default {
         li {
           font-size: 24px;
           cursor: pointer;
+          &:hover {
+            border-bottom: 1px solid $secondary;
+          }
         }
       }
     }
   }
+}
+.active {
+  border-bottom: 1px solid $secondary;
+  font-weight: 700;
 }
 .login {
   display: none;
