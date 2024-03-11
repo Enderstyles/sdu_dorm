@@ -47,16 +47,7 @@ class ForgotPasswordApi(APIView):
             return Response({'message': 'Does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.update_password(serializer.validated_data)
-
-        try:
-
-            refresh_token = request.data["refresh_token"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-
-            return Response({'success': 'Password has been changed'}, status=status.HTTP_200_OK)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({'success': 'Password has been changed'}, status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView):
