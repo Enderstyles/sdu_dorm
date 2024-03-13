@@ -30,6 +30,7 @@ localhost:8000/api/main_page/           - GET main page API
 localhost:8000/api/edit_main_page/      - Edit main page API 
 localhost:8000/api/news/                - News feed API
 localhost:8000/api/news/<id>            - Get exact News post API
+localhost:8000/category/<id>            - Get Category API
 ```
 Default admin user
 ```
