@@ -20,14 +20,16 @@ python manage.py runserver
 ```
 APIs
 ```
-localhost:8000/api/schema/docs   - SwaggerView
-localhost:8000/api/profile/      - Profile API
-localhost:8000/api/login/         - Login API
-localhost:8000/api/about_pieces/ - About API
-localhost:8000/api/forgot_password/
-localhost:8000/api/logout/
-localhost:8000/api/main_page/
-localhost:8000/api/edit_main_page/
+localhost:8000/api/schema/docs          - SwaggerView
+localhost:8000/api/profile/             - Profile API
+localhost:8000/api/login/               - Login API
+localhost:8000/api/about_pieces/        - About API
+localhost:8000/api/forgot_password/     - Forgot api API
+localhost:8000/api/logout/              - Logout API
+localhost:8000/api/main_page/           - GET main page API
+localhost:8000/api/edit_main_page/      - Edit main page API 
+localhost:8000/api/news/                - News feed API
+localhost:8000/api/news/<id>            - Get exact News post API
 ```
 Default admin user
 ```

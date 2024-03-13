@@ -77,14 +77,14 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",  # Add the address of your Vue.js app
-    "http://127.0.0.1:8000",  # Add other allowed origins as needed
-    "http://localhost:8080",  # Add the address of your Vue.js app
-    "http://127.0.0.1:8080",  # Add other allowed origins as needed
-    "http://localhost:3000",  # If you're using Vue CLI development server
-    "http://127.0.0.1:3000",  # Add other allowed origins as needed
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "http://192.168.0.102:8080",
-    "http://alazizaskhat.pythonanywhere.com",  # Add the PythonAnywhere domain
+    "http://alazizaskhat.pythonanywhere.com",
 ]
 
 MIDDLEWARE = [
@@ -105,8 +105,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             BASE_DIR / 'templates',
-        ]
-        ,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

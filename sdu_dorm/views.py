@@ -1,14 +1,15 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from sdu_dorm.models import CustomUser, AboutPiece, MainPageModel
-from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer
+from sdu_dorm.models import CustomUser, AboutPiece, MainPageModel, NewsPost, NewsCategories
+from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
+    NewsSerializer, NewsCategoriesSerializer
 
 
 class ProfileApi(ListAPIView):
@@ -63,7 +64,7 @@ class LogoutView(APIView):
             token.blacklist()
 
             return Response(status=status.HTTP_205_RESET_CONTENT)
-        except:
+        finally:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -90,3 +91,44 @@ class EditMainPage(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class NewsFeedApi(ListAPIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
+    serializer_class = NewsSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = NewsPost.objects.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class NewsObjectApi(RetrieveAPIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
+    serializer_class = NewsSerializer
+    queryset = NewsPost.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        object_id = kwargs.get('pk')  # 'pk' is the default name for the primary key parameter
+        try:
+            queryset = self.get_queryset().get(id=object_id)
+            serializer = self.get_serializer(queryset)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NewsPost.DoesNotExist:
+            return Response({"detail": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class GetNewsCategoriesApi(ListAPIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
+    serializer_class = NewsCategoriesSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = NewsCategories.objects.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

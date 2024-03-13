@@ -46,10 +46,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(_('is_staff'), default=False, blank=True)
     age = models.IntegerField(default=18, blank=True)
     gender = models.BooleanField(default=True)
-    grade = models.IntegerField(default=1, blank=True)
+    grade = models.FloatField(default=1, blank=True)
     major = models.CharField(max_length=25, default='is', blank=True)
     status = models.BooleanField(default=True)
-    additional_info = models.TextField(default='Test')
     reservation = models.CharField(max_length=4, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', default='profile_pics/default.jpg')
     isStudent = models.BooleanField(default=True)
@@ -96,3 +95,24 @@ class MainPageModel(models.Model):
     dorm_image4 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
     dorm_image5 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
 
+
+def news_image_upload(instance, filename):
+    return 'news/{0}/{1}'.format(instance.id, filename)
+
+
+class NewsCategories(models.Model):
+    category_name = models.TextField(null=False, blank=False)
+
+
+class NewsPost(models.Model):
+    news_title = models.TextField(default="News title")
+    news_description = models.TextField(default="News description")
+    main_image = models.ImageField(upload_to=news_image_upload)
+    what_to_expect = models.TextField(blank=True)
+    registration = models.TextField(default="Registration", blank=True)
+    additional_info = models.TextField(blank=True)
+    date_posted = models.DateTimeField(auto_now_add=True)
+    date_of_the_event = models.DateField(blank=True)
+    time_of_the_event = models.TimeField(blank=True)
+    place_of_the_event = models.TextField(blank=True)
+    category_of_the_event = models.ForeignKey(NewsCategories, on_delete=models.CASCADE, blank=False)
