@@ -9,7 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from sdu_dorm.models import CustomUser, AboutPiece, MainPageModel, NewsPost, NewsCategories
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
-    NewsSerializer, NewsCategoriesSerializer
+    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer
 
 
 class ProfileApi(ListAPIView):
@@ -109,7 +109,7 @@ class NewsObjectApi(RetrieveAPIView):
     permission_classes = (AllowAny,)
     authentication_classes = []
 
-    serializer_class = NewsSerializer
+    serializer_class = NewsObjectSerializer
     queryset = NewsPost.objects.all()
 
     def retrieve(self, request, *args, **kwargs):

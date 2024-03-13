@@ -42,10 +42,20 @@ class MainPageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class NewsSerializer(serializers.ModelSerializer):
+class NewsObjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsPost
         fields = '__all__'
+
+
+class NewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsPost
+        fields = [
+                'main_image', 'news_title', 'news_description',
+                'date_of_the_event', 'time_of_the_event',
+                'category_of_the_event', 'place_of_the_event'
+        ]
 
 
 class NewsCategoriesSerializer(serializers.ModelSerializer):
