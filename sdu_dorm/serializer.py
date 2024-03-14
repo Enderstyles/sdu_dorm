@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser, AboutPiece, MainPageModel, NewsPost, NewsCategories
+from .models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
 class AboutSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AboutPiece
+        model = AboutPost
         fields = '__all__'
 
 
@@ -52,6 +52,7 @@ class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsPost
         fields = [
+                'id',
                 'main_image', 'news_title', 'news_description',
                 'date_of_the_event', 'time_of_the_event',
                 'category_of_the_event', 'place_of_the_event'

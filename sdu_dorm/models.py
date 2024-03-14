@@ -65,10 +65,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.student_id
 
 
-class AboutPiece(models.Model):
+class AboutPost(models.Model):
+
     title = models.CharField(max_length=20)
     description = models.TextField()
-    image = models.FileField(upload_to=f'about')
+
+    image1 = models.ImageField(upload_to=f'about')
+    image2 = models.ImageField(upload_to=f'about')
+    image3 = models.ImageField(upload_to=f'about')
+    image4 = models.ImageField(upload_to=f'about')
+    image5 = models.ImageField(upload_to=f'about')
 
     def __str__(self):
         return str(self.id)

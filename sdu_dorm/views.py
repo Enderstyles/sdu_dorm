@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from sdu_dorm.models import CustomUser, AboutPiece, MainPageModel, NewsPost, NewsCategories
+from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
     NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer
 
@@ -27,7 +27,7 @@ class AboutPiecesViewApi(ListAPIView):
 
     @extend_schema(responses=AboutSerializer)
     def list(self, request, *args, **kwargs):
-        queryset = AboutPiece.objects.all()
+        queryset = AboutPost.objects.all()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -89,7 +89,7 @@ class EditMainPage(APIView):
         serializer = MainPageSerializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
