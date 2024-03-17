@@ -67,14 +67,33 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class AboutPost(models.Model):
 
-    title = models.CharField(max_length=20)
-    description = models.TextField()
+    description = models.TextField(default="The description")
+    name_of_head_of_dormitory = models.CharField(max_length=30, blank=False, default="Name")
+    contacts_head_of_dormitory = models.TextField(default="email@mail.com +77079999999", blank=True)
+    contacts_reception = models.TextField(default="+77017777777", blank=True)
+    contacts_medical_care = models.TextField(default="+77050010101", blank=True)
+    contacts_security_service = models.TextField(default="+77778881122", blank=True)
 
-    image1 = models.ImageField(upload_to=f'about')
-    image2 = models.ImageField(upload_to=f'about')
-    image3 = models.ImageField(upload_to=f'about')
-    image4 = models.ImageField(upload_to=f'about')
-    image5 = models.ImageField(upload_to=f'about')
+    main_image1 = models.ImageField(upload_to=f'about/main', blank=True)
+    main_image2 = models.ImageField(upload_to=f'about/main', blank=True)
+    main_image3 = models.ImageField(upload_to=f'about/main', blank=True)
+    main_image4 = models.ImageField(upload_to=f'about/main', blank=True)
+    main_image5 = models.ImageField(upload_to=f'about/main', blank=True)
+
+    social_life_description = models.TextField(default="Social life description", blank=True)
+    social_life_image1 = models.ImageField(upload_to=f'about/social_life', blank=True)
+    social_life_image2 = models.ImageField(upload_to=f'about/social_life', blank=True)
+    social_life_image3 = models.ImageField(upload_to=f'about/social_life', blank=True)
+    social_life_image4 = models.ImageField(upload_to=f'about/social_life', blank=True)
+    social_life_image5 = models.ImageField(upload_to=f'about/social_life', blank=True)
+    social_life_image6 = models.ImageField(upload_to=f'about/social_life', blank=True)
+    social_life_image7 = models.ImageField(upload_to=f'about/social_life', blank=True)
+    social_life_image8 = models.ImageField(upload_to=f'about/social_life', blank=True)
+
+    safety_members = models.TextField(default="70 members")
+    safety_description = models.TextField(default="safety description", blank=True)
+    working_hours = models.TextField(default="Working hours", blank=True)
+    working_hours_description = models.TextField(default="are from 6:00 to 22:00", blank=True)
 
     def __str__(self):
         return str(self.id)

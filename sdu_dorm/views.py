@@ -23,6 +23,9 @@ class ProfileApi(ListAPIView):
 
 
 class AboutPiecesViewApi(ListAPIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
     serializer_class = AboutSerializer
 
     @extend_schema(responses=AboutSerializer)
@@ -73,24 +76,24 @@ class MainPageApi(ListAPIView):
     authentication_classes = []
     serializer_class = MainPageSerializer
 
-    @extend_schema(responses=MainPageSerializer)
-    def list(self, request, *args, **kwargs):
-        queryset = MainPageModel.objects.all()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # @extend_schema(responses=MainPageSerializer)
+    # def list(self, request, *args, **kwargs):
+    #     queryset = MainPageModel.objects.filter(id=1)
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class EditMainPage(APIView):
-    queryset = MainPageModel.objects.get(id=1)
-    serializer_class = MainPageSerializer
-
-    def put(self, request, *args, **kwargs):
-        instance = self.queryset
-        serializer = MainPageSerializer(instance, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class EditMainPage(APIView):
+#     queryset = MainPageModel.objects.get(id=1)
+#     serializer_class = MainPageSerializer
+#
+#     def put(self, request, *args, **kwargs):
+#         instance = self.queryset
+#         serializer = MainPageSerializer(instance, data=request.data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class NewsFeedApi(ListAPIView):
