@@ -18,7 +18,7 @@
               @click="$router.push('/apply')"
               :class="{ 'active': $route.path === '/apply' }"
           >
-            Apply
+            Booking
           </li>
           <li
               class="medium-txt"

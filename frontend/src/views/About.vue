@@ -1,59 +1,70 @@
 <template>
   <div class="about">
-    <div class="about__content container">
-      <div class="about__content-tabs">
-        <div class="about__content-tabs-button">
-          <p class="regular-txt">Boys’ dormitory</p>
+    <div class="about__content">
+      <div class="about__content_main">
+        <div class="about__content_main-tabs container">
+          <div
+              class="about__content_main-tabs-button"
+              v-for="about in aboutData"
+              :key="about.id"
+              @click="activeTab = about.id"
+              :class="{ 'active': activeTab === about.id }"
+          >
+            <p class="regular-txt">{{ about.type }}</p>
+          </div>
         </div>
-        <div class="about__content-tabs-button">
-          <p class="regular-txt">Girls’ dormitory</p>
-        </div>
-        <div class="about__content-tabs-button">
-          <p class="regular-txt">Guest House</p>
-        </div>
-      </div>
-
-      <div class="about__content-data">
-        <div class="about__content-data-block">
-          <div class="about__content-data-block-desc">
-            <h1 class="semi-bold-txt">Main Info</h1>
+        <div
+            v-if="activeAbout"
+            class="about__content_main-info container"
+            :key="activeAbout.id"
+        >
+          <div class="about__content_main-info-desc">
             <p class="regular-txt">
-              Boys’ dormitory takes two 3 and 4-floor buildings at SDU Student house. There are 20 rooms with 4 student places on each floor. Each floor has rooms for student assistants, ready to respond. Overall each floor takes 1000 square meters, including bathrooms and showers.
+              {{ activeAbout.description }}
             </p>
           </div>
-          <div class="about__content-data-block-pics">
-            <img src="@/assets/images/png/home-info-img.png" alt="home-info-img">
+          <div class="about__content_main-info-contacts">
+            <h3 class="regular-txt">{{ activeAbout.name_of_head_of_dormitory }}</h3>
+            <div class="about__content_main-info-contacts-services">
+              <div class="about__content_main-info-contacts-services-block">
+                <p class="bold-txt">Head of boys’ dormitory</p>
+                <p class="regular-txt">{{ activeAbout.contacts_head_of_dormitory }}</p>
+              </div>
+              <div class="about__content_main-info-contacts-services-block">
+                <p class="bold-txt">Reception/plumber services</p>
+                <p class="regular-txt">{{ activeAbout.contacts_reception }}</p>
+              </div>
+              <div class="about__content_main-info-contacts-services-block">
+                <p class="bold-txt">Medical care</p>
+                <p class="regular-txt">{{ activeAbout.contacts_medical_care }}</p>
+              </div>
+              <div class="about__content_main-info-contacts-services-block">
+                <p class="bold-txt">Security service</p>
+                <p class="regular-txt">{{ activeAbout.contacts_security_service }}</p>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="about__content-data-block">
-          <div class="about__content-data-block-pics">
-            <img src="@/assets/images/png/home-info-img.png" alt="home-info-img">
-          </div>
-          <div class="about__content-data-block-desc">
-            <h1 class="semi-bold-txt">Social life</h1>
-            <p class="regular-txt">
-              There are various events and competitions taking place through the year. Welcome party, Cinema parties, Dormitory cup on football, Student house party, mountain picnics, workshops and holidays are celebrated each year.
-            </p>
-          </div>
-        </div>
-
-        <div class="about__content-data-block">
-          <div class="about__content-data-block-desc">
-            <h1 class="semi-bold-txt">Safety</h1>
-            <p class="regular-txt">
-              SDU Student house hires about 70 staff members to provide medical, electricity, plumbing, painting, cleaning, washers, administrative and other services for students 24 hours. For students’ safety dormitory working hours are from 6.00 am to 22.00 pm with lights-off at 23.00.
-            </p>
-          </div>
-          <div class="about__content-data-block-pics">
-            <img src="@/assets/images/png/home-info-img.png" alt="home-info-img">
-          </div>
+        <div class="about__content_main-slider">
+          <Swiper
+              :options="swiperOptions"
+              :pagination="paginationOptions"
+              :slides-per-view="1"
+              :space-between="40"
+              ref="swiper"
+              class="swiper-info"
+          >
+            <Swiper-slide v-for="(img, index) in mainAboutImages" :key="index" class="swiper-info-slide">
+              <img v-if="img.mainAboutImg" :src="img.mainAboutImg" alt="info-img" />
+            </Swiper-slide>
+          </Swiper>
+          <div class="swiper-pagination"></div>
         </div>
       </div>
 
       <div class="about__content-apply">
         <button class="about__content-apply-btn">
-          <p class="regular-txt">Apply</p>
+          <p class="regular-txt">Go to Book</p>
         </button>
       </div>
     </div>
@@ -61,23 +72,60 @@
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import SwiperCore, { Pagination } from 'swiper'
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/swiper-bundle.css';
+SwiperCore.use([Pagination]);
 export default {
-  name: "AboutVue",
+  components: {Swiper, SwiperSlide},
   data() {
     return {
-      aboutData: []
+      aboutData: [],
+      mainAboutImages: [],
+      mainAboutImg: '',
+      activeTab: 1,
+      swiperOptions: {
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+      },
+      paginationOptions: {
+        el: '.swiper-pagination',
+        bulletClass: 'swiper-pagination-bullet',
+        clickable: true,
+        renderBullet: function (index, className) {
+          return '<span class="' + className + '"></span>';
+        },
+      },
     };
+  },
+  computed: {
+    activeAbout() {
+      return this.aboutData.find(item => item.id === this.activeTab);
+    }
   },
   methods: {
     fetchAboutData() {
       this.$axios
-          .get(`/about_pieces/`, {
+          .get(`/about/`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
           })
           .then((response) => {
-            this.aboutData = response.data[0];
+            this.aboutData = response.data;
+            this.activeAbout = response.data;
+            this.mainAboutImages = [];
+            for (let i = 1; i <= 5; i++) {
+              const imageUrl = response.data[`main_image${i}`];
+              if (imageUrl) {
+                this.mainAboutImages.push(imageUrl);
+              }
+            }
           })
           .catch((error) => {
             console.error(error);
@@ -86,6 +134,7 @@ export default {
   },
   created() {
     this.fetchAboutData();
+    console.log(this.mainAboutImages);
   },
 }
 </script>
@@ -96,25 +145,71 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 160px 0;
+  padding: 140px 0;
   &__content {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
-    gap: 160px;
-    &-tabs {
+    gap: 100px;
+    &_main {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      width: 100%;
-      gap: 18px;
-      &-button {
-        padding: 30px;
-        background: #D2D2D2;
-        cursor: pointer;
-        p {
-          font-size: 24px;
+      background: $primary;
+      padding: 85px 0 65px 0;
+      gap: 65px;
+      &-tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $white;
+        border-radius: 25px;
+        width: 100%;
+        gap: 35px;
+        &-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 390px;
+          height: 90px;
+          margin: 5px 20px;
+          cursor: pointer;
+          color: $black;
+          p {
+            font-size: 24px;
+          }
+          &:hover {
+            border-bottom: 6px solid $secondary;
+          }
+        }
+      }
+      &-info {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+        color: $white;
+        &-desc {
+          max-width: 370px;
+          height: auto;
+          p {
+            font-size: 26px;
+          }
+        }
+        &-contacts {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+          max-width: 735px;
+          height: auto;
+          gap: 50px;
+          &-services {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+          }
         }
       }
     }
@@ -171,5 +266,8 @@ export default {
       }
     }
   }
+}
+.active {
+  border-bottom: 6px solid $secondary;
 }
 </style>

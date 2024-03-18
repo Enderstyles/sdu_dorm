@@ -5,7 +5,7 @@ import AboutPage from "@/views/About.vue";
 import PersonalAccount from "@/views/PersonalAccount.vue";
 import News from "@/views/News.vue";
 import NewsDetails from "@/views/NewsDetails.vue";
-import Apply from "@/views/Apply.vue";
+import Booking from "@/views/Booking.vue";
 
 const routes = [
     {
@@ -29,23 +29,19 @@ const routes = [
         component: PersonalAccount
     },
     {
-        path: '/apply',
-        name: 'apply',
-        component: Apply
+        path: '/booking',
+        name: 'booking',
+        component: Booking
     },
     {
         path: '/news',
         name: 'news',
         component: News,
-        props: (route) => ({ tab: route.query.tab || null }),
     },
     {
-        path: '/news/:slug',
+        path: '/news/:newsID',
         name: 'news-detail',
         component: NewsDetails,
-        props: (route) => ({
-            slug: route.params.slug,
-        }),
     },
 ]
 

@@ -10,7 +10,7 @@
           <p class="regular-txt">
             {{ mainDesc }}
           </p>
-          <button class="main-button" @click="$router.push('/')">See details</button>
+          <button class="main-button" @click="$router.push('/about')">See details</button>
         </div>
       </div>
 
@@ -56,6 +56,7 @@
           <Swiper
               :options="swiperOptions"
               :pagination="paginationOptions"
+              :space-between="40"
               ref="swiper"
               @swiper="onSwiper"
               @slideChange="onSlideChange"
@@ -104,29 +105,35 @@
         <div class="home__content-upcoming-view container">
           <div class="home__content-upcoming-view-title">
             <h2 class="semi-bold-txt">Upcoming events</h2>
-            <button class="home__content-upcoming-view-title-btn">See All</button>
+            <button
+                class="home__content-upcoming-view-title-btn"
+                @click="$router.push('/news')"
+            >
+              See All
+            </button>
           </div>
           <div class="home__content-upcoming-view-events">
             <Swiper
+                v-if="upcomingData.length > 2"
                 :slides-per-view="3"
                 :space-between="40"
                 :navigation="{
                   nextEl: '.swiper-button-next',
                   prevEl: '.swiper-button-prev'
                 }"
-                :breakpoints="{
-                }"
                 class="swiper-container"
             >
               <SwiperSlide
+                  class="swiper-slide"
                   v-for="item in upcomingData"
                   :key="item.id"
               >
-                <UpcomingCard :item="item" />
+                  <UpcomingCard :item="item" :categories="categoryData" />
               </SwiperSlide>
             </Swiper>
-            <div class="swiper-button-prev"><img src="@/assets/images/svg/arrow-left.svg" alt="left"></div>
-            <div class="swiper-button-next"><img src="@/assets/images/svg/arrow-right.svg" alt="right"></div>
+            <div class="swiper-button-prev" v-if="upcomingData.length > 2"><img src="@/assets/images/svg/arrow-left.svg" alt="left"></div>
+            <div class="swiper-button-next" v-if="upcomingData.length > 2"><img src="@/assets/images/svg/arrow-right.svg" alt="right"></div>
+            <h3 class="semi-bold-txt" v-else>There are no upcoming events yet</h3>
           </div>
         </div>
       </div>
@@ -137,11 +144,12 @@
             <h3 class="semi-bold-txt">{{ deadlinesTitle }}</h3>
           </div>
           <div class="home__content-requirements-deadlines-info">
-            <ul class="home__content-requirements-deadlines-info-list">
-              <li class="regular-txt">Applications are accepted till August 25.</li>
-              <li class="regular-txt">Student house check-in – August 28</li>
-            </ul>
-            <p class="regular-txt">The number of places at the dormitory are limited. 1st year students are given priority when allocating the places. Students of 2, 3, 4 years can submit their applications after August 25.</p>
+<!--            <ul class="home__content-requirements-deadlines-info-list">-->
+<!--              <li class="regular-txt">Applications are accepted till August 25.</li>-->
+<!--              <li class="regular-txt">Student house check-in – August 28</li>-->
+<!--            </ul>-->
+<!--            <p class="regular-txt">The number of places at the dormitory are limited. 1st year students are given priority when allocating the places. Students of 2, 3, 4 years can submit their applications after August 25.</p>-->
+            <p class="regular-txt">{{ deadlinesDesc }}</p>
           </div>
         </div>
 
@@ -150,10 +158,11 @@
             <h3 class="semi-bold-txt">{{ docsTitle }}</h3>
           </div>
           <ul class="home__content-requirements-docs-list">
-            <li class="regular-txt">3х4cm sized 2 photos;</li>
-            <li class="regular-txt">Copy of Medical №075</li>
-            <li class="regular-txt">Copy of National ID;</li>
-            <li class="regular-txt">Copy of payment invoice.</li>
+<!--            <li class="regular-txt">3х4cm sized 2 photos;</li>-->
+<!--            <li class="regular-txt">Copy of Medical №075</li>-->
+<!--            <li class="regular-txt">Copy of National ID;</li>-->
+<!--            <li class="regular-txt">Copy of payment invoice.</li>-->
+            <p class="regular-txt">{{ docsDesc }}</p>
           </ul>
         </div>
       </div>
@@ -162,7 +171,7 @@
 </template>
 
 <script>
-import UpcomingCard from "@/components/UpcomingCard.vue";
+import UpcomingCard from "@/components/NewsCard.vue";
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper'
 import 'swiper/css';
@@ -197,36 +206,8 @@ export default {
         { icon: 'football.png', feature: 'Football court' },
         { icon: 'volleyball.png', feature: 'Volleyball court' },
       ],
-      upcomingData: [
-        {
-          image: 'upcoming-img1.png',
-          title: 'Club Fair',
-          desc: 'This event allows you to apply and gain any information about university clubs',
-          date: '8 February',
-          location: 'on campus'
-        },
-        {
-          image: 'upcoming-img2.png',
-          title: 'Workshop “Investments in  IT”',
-          desc: 'Here we are going to show how to attract investments on your project.',
-          date: '23 February',
-          location: 'online'
-        },
-        {
-          image: 'upcoming-img3.png',
-          title: 'Football',
-          desc: 'This event allows you to apply and gain any information about university clubs',
-          date: '8 February',
-          location: 'on campus'
-        },
-        {
-          image: 'upcoming-img3.png',
-          title: 'Football',
-          desc: 'This event allows you to apply and gain any information about university clubs',
-          date: '8 February',
-          location: 'on campus'
-        }
-      ],
+      categoryData: [],
+      upcomingData: [],
       swiperOptions: {
         loop: true,
         autoplay: {
@@ -294,15 +275,49 @@ export default {
               { dormImg: mainData.dorm_image3 },
               { dormImg: mainData.dorm_image4 },
               { dormImg: mainData.dorm_image5 },
-            ]
+            ].filter(img => img.dormImg !== null);
           })
           .catch((e) => {
             console.log(e);
           });
-    }
+    },
+    async fetchNewsUpcomingData() {
+      await this.$axios
+          .get('news/',
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            this.upcomingData = response.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
+    async fetchNewsCategoryData() {
+      await this.$axios
+          .get(`news_categories/`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            this.categoryData = response.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
   },
   async created() {
     await this.fetchMainPageData();
+    await this.fetchNewsUpcomingData();
+    await this.fetchNewsCategoryData();
   },
 }
 </script>
@@ -399,17 +414,20 @@ export default {
         .swiper-info {
           width: 100%;
           height: 100%;
+          display: flex;
+          align-items: center;
         }
         .swiper-info-slide {
           display: flex;
           align-items: flex-start;
-          justify-content: center;
+          justify-content: flex-start;
+          border-radius: 25px !important;
           width: auto;
-          max-height: 555px;
+          max-height: 555px !important;
           margin-bottom: 50px;
         }
         img {
-          width: auto;
+          width: 730px;
           max-height: 555px;
           object-fit: cover;
           margin-bottom: 70px;
@@ -499,6 +517,7 @@ export default {
         flex-direction: column;
         align-items: flex-start;
         position: relative;
+        width: 100%;
         gap: 60px;
         &-title {
           display: flex;
@@ -517,9 +536,25 @@ export default {
           width: 100%;
           height: 100%;
           .swiper-container {
-            width: 100%;
-            height: 510px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            max-width: 100%;
+            height: auto;
             margin-bottom: 100px;
+          }
+          .swiper-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            max-width: 100%;
+            height: 520px;
+            gap: 40px;
+            z-index: 1;
+          }
+          .swiper-slide {
+            width: 100%;
+            height: 520px;
           }
           .swiper-button-prev {
             position: absolute;
