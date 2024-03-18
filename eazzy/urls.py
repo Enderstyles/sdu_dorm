@@ -27,7 +27,7 @@ urlpatterns = [
     path('api/main_page/', MainPageApi.as_view(), name='main_page'),
     path('api/news/', NewsFeedApi.as_view(), name='news'),
     path('api/news/<int:pk>/', NewsObjectApi.as_view(), name='news_object_api'),
-    path('api/news_categories/<int:pk>', GetNewsCategoriesApi.as_view(), name='news_categories')
+    path('api/news_categories/', GetNewsCategoriesApi.as_view(), name='news_categories')
     # path('api/edit_main_page/', EditMainPage.as_view(), name='edit_main_page')
     # path('api/new_student', NewStudentApi.as_view(), name='new_student')
 ]

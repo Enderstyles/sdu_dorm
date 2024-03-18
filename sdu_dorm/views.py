@@ -125,18 +125,29 @@ class NewsObjectApi(RetrieveAPIView):
             return Response({"detail": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
-class GetNewsCategoriesApi(RetrieveAPIView):
+# class GetNewsCategoriesApi(RetrieveAPIView):
+    # permission_classes = (AllowAny,)
+    # authentication_classes = []
+    #
+    # serializer_class = NewsCategoriesSerializer
+    # queryset = NewsCategories.objects.all()
+    #
+    # def retrieve(self, request, *args, **kwargs):
+    #     object_id = kwargs.get('pk')  # 'pk' is the default name for the primary key parameter
+    #     try:
+    #         queryset = self.get_queryset().get(id=object_id)
+    #         serializer = self.get_serializer(queryset)
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     except NewsPost.DoesNotExist:
+    #         return Response({"detail": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class GetNewsCategoriesApi(ListAPIView):
     permission_classes = (AllowAny,)
     authentication_classes = []
-
     serializer_class = NewsCategoriesSerializer
-    queryset = NewsCategories.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
-        object_id = kwargs.get('pk')  # 'pk' is the default name for the primary key parameter
-        try:
-            queryset = self.get_queryset().get(id=object_id)
-            serializer = self.get_serializer(queryset)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except NewsPost.DoesNotExist:
-            return Response({"detail": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
+    @extend_schema(responses=MainPageSerializer)
+    def list(self, request, *args, **kwargs):
+        queryset = NewsCategories.objects.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
