@@ -66,7 +66,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class AboutPost(models.Model):
-
+    type = models.CharField(max_length=30, blank=True)
     description = models.TextField(default="The description")
     name_of_head_of_dormitory = models.CharField(max_length=30, blank=False, default="Name")
     contacts_head_of_dormitory = models.TextField(default="email@mail.com +77079999999", blank=True)
@@ -96,7 +96,7 @@ class AboutPost(models.Model):
     working_hours_description = models.TextField(default="are from 6:00 to 22:00", blank=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.type)
 
 
 class MainPageModel(models.Model):
@@ -128,6 +128,9 @@ def news_image_upload(instance, filename):
 class NewsCategories(models.Model):
     category_name = models.TextField(null=False, blank=False)
 
+    def __str__(self):
+        return self.category_name
+
 
 class NewsPost(models.Model):
     news_title = models.TextField(default="News title")
@@ -141,3 +144,6 @@ class NewsPost(models.Model):
     time_of_the_event = models.TimeField(blank=True)
     place_of_the_event = models.TextField(blank=True)
     category_of_the_event = models.ForeignKey(NewsCategories, on_delete=models.CASCADE, blank=False)
+
+    def __str__(self):
+        return str(self.news_title)
