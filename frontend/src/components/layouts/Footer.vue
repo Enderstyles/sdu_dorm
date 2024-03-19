@@ -28,8 +28,8 @@
 
       <div class="footer__content_nav">
         <ul class="footer__content_nav-links">
-          <li class="regular-txt" @click="$router.push('/')">NEWS</li>
-          <li class="regular-txt" @click="$router.push('/')">APPLY</li>
+          <li class="regular-txt" @click="$router.push('/news')">NEWS</li>
+          <li class="regular-txt" @click="$router.push('/booking')">BOOKING</li>
           <li class="regular-txt" @click="$router.push('/about')">ABOUT</li>
           <li class="regular-txt" v-if="!isAuthenticated" @click="$router.push('/login')">LOGIN</li>
           <li class="regular-txt" v-if="isAuthenticated" @click="$router.push('/personal-account')">ACCOUNT</li>

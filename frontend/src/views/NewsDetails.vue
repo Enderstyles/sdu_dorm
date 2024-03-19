@@ -1,8 +1,9 @@
 <template>
   <div class="news-details">
     <div class="news-details__back container">
-      <button class="nnews-details__back-btn" @click="$router.go(-1)">
-        Back
+      <button class="news-details__back-btn" @click="$router.go(-1)">
+        <img src="@/assets/images/svg/arrow-return.svg" alt="arrow-return">
+        <p class="light-txt">Back</p>
       </button>
     </div>
     <div class="news-details__content container">
@@ -157,9 +158,12 @@ export default {
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    button {
-      font-size: 24px;
-      color: $primary;
+    &-btn {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 20px;
+      color: $grey;
     }
   }
   &__content {

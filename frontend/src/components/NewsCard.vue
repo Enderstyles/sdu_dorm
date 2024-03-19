@@ -4,7 +4,7 @@
     <div class="news-card__content">
       <div class="news-card__content-left">
         <div class="news-card__content-left-block1">
-          <p class="news-card__content-left-block1-date regular-txt">{{ item.date_of_the_event }}</p>
+          <p class="news-card__content-left-block1-date regular-txt">{{ formatDate(item.date_of_the_event) }}</p>
         </div>
         <div class="news-card__content-left-block2">
           <p class="news-card__content-left-block2-location regular-txt">{{ item.place_of_the_event }}</p>
@@ -39,6 +39,10 @@ export default {
     getCategoryName(categoryId) {
       const category = this.categories.find(cat => cat.id === categoryId);
       return category ? category.category_name : "";
+    },
+    formatDate(date) {
+      const options = { month: 'long', day: 'numeric' };
+      return new Date(date).toLocaleDateString('en-US', options);
     },
   },
   async created() {
