@@ -1,13 +1,15 @@
+import datetime
+
 from drf_spectacular.utils import extend_schema
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost
+from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
     NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer
 
@@ -126,20 +128,20 @@ class NewsObjectApi(RetrieveAPIView):
 
 
 # class GetNewsCategoriesApi(RetrieveAPIView):
-    # permission_classes = (AllowAny,)
-    # authentication_classes = []
-    #
-    # serializer_class = NewsCategoriesSerializer
-    # queryset = NewsCategories.objects.all()
-    #
-    # def retrieve(self, request, *args, **kwargs):
-    #     object_id = kwargs.get('pk')  # 'pk' is the default name for the primary key parameter
-    #     try:
-    #         queryset = self.get_queryset().get(id=object_id)
-    #         serializer = self.get_serializer(queryset)
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     except NewsPost.DoesNotExist:
-    #         return Response({"detail": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
+#     permission_classes = (AllowAny)
+#     authentication_classes = []
+#
+#     serializer_class = NewsCategoriesSerializer
+#     queryset = NewsCategories.objects.all()
+#
+#     def retrieve(self, request, *args, **kwargs):
+#         object_id = kwargs.get('pk')  # 'pk' is the default name for the primary key parameter
+#         try:
+#             queryset = self.get_queryset().get(id=object_id)
+#             serializer = self.get_serializer(queryset)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except NewsPost.DoesNotExist:
+#             return Response({"detail": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
 
 class GetNewsCategoriesApi(ListAPIView):
     permission_classes = (AllowAny,)
@@ -150,4 +152,39 @@ class GetNewsCategoriesApi(ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = NewsCategories.objects.all()
         serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FollowPostApi(APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        try:
+            follower_id = request.data["student_id"]
+            post_id = request.data["post_id"]
+
+            student = CustomUser.objects.get(student_id=follower_id)
+            post = NewsPost.objects.get(id=post_id)
+            if Enrollment.objects.filter(student_id=student, post=post).exists():
+                return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+            Enrollment.objects.create(student_id=student, post=post, date=datetime.datetime.now())
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetAllFollowingPostsApi(ListAPIView):
+    serializer_class = NewsSerializer
+
+    @extend_schema(responses=NewsSerializer)
+    def list(self, request, *args, **kwargs):
+        user = CustomUser.objects.get(student_id=request.user.student_id)
+        all_posts = user.follows.all().values_list("id")
+        print(all_posts)
+        queryset = NewsPost.objects.filter(id__in=all_posts)
+        serializer = NewsSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

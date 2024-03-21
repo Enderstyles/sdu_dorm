@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from eazzy import settings
 from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, MainPageApi, NewsFeedApi, \
-    NewsObjectApi, GetNewsCategoriesApi
+    NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi
 
 router = routers.DefaultRouter()
 
@@ -27,7 +27,9 @@ urlpatterns = [
     path('api/main_page/', MainPageApi.as_view(), name='main_page'),
     path('api/news/', NewsFeedApi.as_view(), name='news'),
     path('api/news/<int:pk>/', NewsObjectApi.as_view(), name='news_object_api'),
-    path('api/news_categories/', GetNewsCategoriesApi.as_view(), name='news_categories')
+    path('api/news_categories/', GetNewsCategoriesApi.as_view(), name='news_categories'),
+    path('api/follow_post/', FollowPostApi.as_view(), name='follow'),
+    path('api/get_followed_posts/', GetAllFollowingPostsApi.as_view(), name='followed_posts')
     # path('api/edit_main_page/', EditMainPage.as_view(), name='edit_main_page')
     # path('api/new_student', NewStudentApi.as_view(), name='new_student')
 ]

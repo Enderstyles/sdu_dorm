@@ -6,6 +6,34 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
+def news_image_upload(instance, filename):
+    return 'news/{0}/{1}'.format(instance.id, filename)
+
+
+class NewsCategories(models.Model):
+    category_name = models.TextField(null=False, blank=False)
+
+    def __str__(self):
+        return self.category_name
+
+
+class NewsPost(models.Model):
+    news_title = models.TextField(default="News title")
+    news_description = models.TextField(default="News description")
+    main_image = models.ImageField(upload_to=news_image_upload)
+    what_to_expect = models.TextField(blank=True)
+    registration = models.TextField(default="Registration", blank=True)
+    additional_info = models.TextField(blank=True)
+    date_posted = models.DateTimeField(auto_now_add=True)
+    date_of_the_event = models.DateField(blank=True)
+    time_of_the_event = models.TimeField(blank=True)
+    place_of_the_event = models.TextField(blank=True)
+    category_of_the_event = models.ForeignKey(NewsCategories, on_delete=models.CASCADE, blank=False)
+
+    def __str__(self):
+        return str(self.news_title)
+
+
 class AuthUserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -36,7 +64,6 @@ class AuthUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-
     student_id = models.CharField(_('student_id'), unique=True, max_length=10)
     email = models.EmailField(_('Email address'), blank=True)
     first_name = models.CharField(_('First name'), max_length=30, blank=True)
@@ -52,6 +79,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     reservation = models.CharField(max_length=4, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', default='profile_pics/default.jpg')
     isStudent = models.BooleanField(default=True)
+    follows = models.ManyToManyField(NewsPost, through="Enrollment")
 
     objects = AuthUserManager()
 
@@ -63,6 +91,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.student_id
+
+
+class Enrollment(models.Model):
+    student_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    post = models.ForeignKey(NewsPost, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
 
 
 class AboutPost(models.Model):
@@ -119,31 +153,3 @@ class MainPageModel(models.Model):
     dorm_image3 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
     dorm_image4 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
     dorm_image5 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
-
-
-def news_image_upload(instance, filename):
-    return 'news/{0}/{1}'.format(instance.id, filename)
-
-
-class NewsCategories(models.Model):
-    category_name = models.TextField(null=False, blank=False)
-
-    def __str__(self):
-        return self.category_name
-
-
-class NewsPost(models.Model):
-    news_title = models.TextField(default="News title")
-    news_description = models.TextField(default="News description")
-    main_image = models.ImageField(upload_to=news_image_upload)
-    what_to_expect = models.TextField(blank=True)
-    registration = models.TextField(default="Registration", blank=True)
-    additional_info = models.TextField(blank=True)
-    date_posted = models.DateTimeField(auto_now_add=True)
-    date_of_the_event = models.DateField(blank=True)
-    time_of_the_event = models.TimeField(blank=True)
-    place_of_the_event = models.TextField(blank=True)
-    category_of_the_event = models.ForeignKey(NewsCategories, on_delete=models.CASCADE, blank=False)
-
-    def __str__(self):
-        return str(self.news_title)
