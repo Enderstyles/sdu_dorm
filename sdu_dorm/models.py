@@ -72,7 +72,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True, blank=True)
     is_staff = models.BooleanField(_('is_staff'), default=False, blank=True)
     age = models.IntegerField(default=18, blank=True)
-    gender = models.BooleanField(default=True)
+    gender = models.IntegerField(default=True)
     grade = models.FloatField(default=1, blank=True)
     major = models.CharField(max_length=25, default='is', blank=True)
     status = models.BooleanField(default=True)
