@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost
+from .models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, TakenPlace
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -62,4 +62,10 @@ class NewsSerializer(serializers.ModelSerializer):
 class NewsCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = NewsCategories
+        fields = '__all__'
+
+
+class TakeASeatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TakenPlace
         fields = '__all__'

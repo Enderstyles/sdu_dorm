@@ -153,3 +153,17 @@ class MainPageModel(models.Model):
     dorm_image3 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
     dorm_image4 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
     dorm_image5 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
+
+
+class TakenPlace(models.Model):
+    block = models.IntegerField(blank=False, null=False)
+    floor = models.IntegerField(blank=False, null=False)
+    taraf = models.IntegerField(blank=False, null=False)
+    room = models.IntegerField(blank=False, null=False)
+    place = models.IntegerField(blank=False, null=False)
+
+    taken_by = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )

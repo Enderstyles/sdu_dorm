@@ -6,11 +6,16 @@ from rest_framework import routers
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+
 from eazzy import settings
+from sdu_dorm import views
 from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, MainPageApi, NewsFeedApi, \
-    NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi
+    NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi, TakeAPlaceApi, GetTakenPlacesApi
 
 router = routers.DefaultRouter()
+
+
+
 
 
 urlpatterns = [
@@ -29,7 +34,10 @@ urlpatterns = [
     path('api/news/<int:pk>/', NewsObjectApi.as_view(), name='news_object_api'),
     path('api/news_categories/', GetNewsCategoriesApi.as_view(), name='news_categories'),
     path('api/follow_post/', FollowPostApi.as_view(), name='follow'),
-    path('api/get_followed_posts/', GetAllFollowingPostsApi.as_view(), name='followed_posts')
+    path('api/get_followed_posts/', GetAllFollowingPostsApi.as_view(), name='followed_posts'),
+    path('api/take_place/', TakeAPlaceApi.as_view(), name='take_place'),
+    path('api/get_taken_places/', GetTakenPlacesApi.as_view(), name='get_taken_places'),
+    path('test_celery', views.test, name='test')
     # path('api/edit_main_page/', EditMainPage.as_view(), name='edit_main_page')
     # path('api/new_student', NewStudentApi.as_view(), name='new_student')
 ]

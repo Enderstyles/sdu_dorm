@@ -1,23 +1,31 @@
 import datetime
 
+from django.http import HttpResponse
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework import status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment
+from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
+    TakenPlace
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
-    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer
+    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
+
+from .tasks import test_task, check_event
+
+
+def test(request):
+    check_event.delay()
+    return HttpResponse("Done")
 
 
 class ProfileApi(ListAPIView):
     serializer_class = UserInfoSerializer
 
-    @extend_schema(responses=UserInfoSerializer)
     def list(self, request, *args, **kwargs):
         queryset = CustomUser.objects.filter(student_id=request.user.student_id)
         serializer = self.get_serializer(queryset, many=True)
@@ -27,10 +35,8 @@ class ProfileApi(ListAPIView):
 class AboutPiecesViewApi(ListAPIView):
     permission_classes = (AllowAny,)
     authentication_classes = []
-
     serializer_class = AboutSerializer
 
-    @extend_schema(responses=AboutSerializer)
     def list(self, request, *args, **kwargs):
         queryset = AboutPost.objects.all()
         serializer = self.get_serializer(queryset, many=True)
@@ -78,7 +84,6 @@ class MainPageApi(ListAPIView):
     authentication_classes = []
     serializer_class = MainPageSerializer
 
-    @extend_schema(responses=MainPageSerializer)
     def list(self, request, *args, **kwargs):
         queryset = MainPageModel.objects.filter(id=1)
         serializer = self.get_serializer(queryset, many=True)
@@ -148,7 +153,6 @@ class GetNewsCategoriesApi(ListAPIView):
     authentication_classes = []
     serializer_class = NewsCategoriesSerializer
 
-    @extend_schema(responses=MainPageSerializer)
     def list(self, request, *args, **kwargs):
         queryset = NewsCategories.objects.all()
         serializer = self.get_serializer(queryset, many=True)
@@ -180,7 +184,6 @@ class FollowPostApi(APIView):
 class GetAllFollowingPostsApi(ListAPIView):
     serializer_class = NewsSerializer
 
-    @extend_schema(responses=NewsSerializer)
     def list(self, request, *args, **kwargs):
         user = CustomUser.objects.get(student_id=request.user.student_id)
         all_posts = user.follows.all().values_list("id")
@@ -188,3 +191,32 @@ class GetAllFollowingPostsApi(ListAPIView):
         queryset = NewsPost.objects.filter(id__in=all_posts)
         serializer = NewsSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetTakenPlacesApi(ListAPIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+    serializer_class = TakeASeatSerializer
+
+    def get_queryset(self):
+        return TakenPlace.objects.all()
+
+
+class TakeAPlaceApi(APIView):
+    serializer_class = TakeASeatSerializer
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        try:
+            student_id = request.data["student_id"]
+            place = request.data["place"]
+            student = CustomUser.objects.get(student_id=student_id)
+
+            if TakenPlace.objects.get(place=place).exists():
+                return Response(status=status.HTTP_409_CONFLICT)
+
+            TakenPlace.objects.create(place=place, taken_by=student)
+
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)

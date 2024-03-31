@@ -18,6 +18,11 @@ To start project
 ```
 python manage.py runserver
 ```
+
+To start celery beat server
+```
+celery -A sdu_dorm.celery  beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+```
 APIs
 ```
 localhost:8000/api/schema/docs          - SwaggerView
