@@ -16,6 +16,7 @@
                 v-model="v$.id.$model"
                 placeholder="Enter Student ID"
                 @keyup.enter="loginForm"
+                maxlength="9"
             />
             <template v-for="(error, index) of v$.id.$errors" :key="index">
               <p class="errorValid">{{ error.$message }}</p>
@@ -66,12 +67,13 @@
                   v-model="v$.for_student_id.$model"
                   placeholder="Enter Student ID"
                   :class="{'errorValidPlace': v$.for_student_id.$error}"
-              />
+                  maxlength="9"
+              >
               <template v-for="(error, index) of v$.for_student_id.$errors" :key="index">
                 <p class="errorValid">{{ error.$message }}</p>
               </template>
             </div>
-<!--            <button @click="sendCode" class="main-button">Send a code</button>-->
+            <!--            <button @click="sendCode" class="main-button">Send a code</button>-->
           </div>
           <div class="forgot-pass">
             <div class="forgot-pass-input">
@@ -82,7 +84,7 @@
                   placeholder="Enter new password"
                   @keyup="onlyLatin()"
                   :class="{'errorValidPlace': v$.for_pass.$error}"
-              />
+              >
               <template v-if="v$.for_pass.$error">
                 <p class="errorValid" v-if="v$.for_pass.required.$invalid">Required field</p>
                 <p class="errorValid" v-if="v$.for_pass.minLength.$invalid">Minimum character length: 8</p>
@@ -98,7 +100,7 @@
                   v-model="v$.for_pass_repeat.$model"
                   placeholder="Repeat password"
                   :class="{'errorValidPlace': v$.for_pass_repeat.$error}"
-              />
+              >
               <template
                   v-for="(error, index) of v$.for_pass_repeat.$errors"
                   :key="index"
@@ -207,7 +209,7 @@ export default {
             .then(res => {
               localStorage.setItem("access_token", res.data.access);
               localStorage.setItem("refresh_token", res.data.refresh);
-              this.$toaster.success("Log in Successfully");
+              this.$toaster.success("You have successfully logged in!");
               this.resetForm()
               setTimeout(() => {
                 this.requestUser();

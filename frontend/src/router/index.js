@@ -6,6 +6,8 @@ import PersonalAccount from "@/views/PersonalAccount.vue";
 import News from "@/views/News.vue";
 import NewsDetails from "@/views/NewsDetails.vue";
 import Booking from "@/views/Booking.vue";
+import store from "@/store";
+import Confirmation from "@/views/Confirmation.vue";
 
 const routes = [
     {
@@ -34,6 +36,11 @@ const routes = [
         component: Booking
     },
     {
+        path: '/confirmation',
+        name: 'confirmation',
+        component: Confirmation,
+    },
+    {
         path: '/news',
         name: 'news',
         component: News,
@@ -53,33 +60,33 @@ const router = createRouter({
     },
 })
 
-// router.beforeEach((to, from, next) => {
-//     // Check if the user is already authenticated
-//     if (store.getters.getAuth) {
-//         // If authenticated, prevent access to 'login' and 'create-account' pages
-//         if (to.name === 'login') {
-//             // Redirect to the home page or another appropriate page
-//             next('/');
-//         } else {
-//             // Allow access to other routes
-//             next();
-//         }
-//     } else {
-//         // User is not authenticated, continue with the regular logic
-//         // Check if the route requires authentication
-//         if (to.meta.requiresAuth) {
-//             // Check if the user is authenticated
-//             if (store.getters.getAuth) {
-//                 // User is authenticated, proceed to the route
-//                 next();
-//             } else {
-//                 // User is not authenticated, redirect to the login page
-//                 next('/login');
-//             }
-//         } else {
-//             next();
-//         }
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    // Check if the user is already authenticated
+    if (localStorage.getItem('access_token')) {
+        // If authenticated, prevent access to 'login' and 'create-account' pages
+        if (to.name === 'login') {
+            // Redirect to the home page or another appropriate page
+            next('/');
+        } else {
+            // Allow access to other routes
+            next();
+        }
+    } else {
+        // User is not authenticated, continue with the regular logic
+        // Check if the route requires authentication
+        if (to.meta.requiresAuth) {
+            // Check if the user is authenticated
+            if (store.getters.getAuth) {
+                // User is authenticated, proceed to the route
+                next();
+            } else {
+                // User is not authenticated, redirect to the login page
+                next('/login');
+            }
+        } else {
+            next();
+        }
+    }
+});
 
 export default router;

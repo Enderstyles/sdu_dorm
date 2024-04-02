@@ -26,7 +26,13 @@
           </div>
         </div>
         <div class="news-details__content-box-btn">
-          <button class="main-button">Alert me</button>
+          <button
+              :style="{ background: notificationButtonColor }"
+              class="main-button"
+              @click="alertNotification"
+          >
+            Alert me
+          </button>
         </div>
       </div>
 
@@ -63,6 +69,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   data() {
     return {
@@ -79,6 +87,19 @@ export default {
       formattedDate: '',
       formattedTime: '',
       categories: [],
+      notifications: [],
+      news_id: null,
+    }
+  },
+  computed: {
+    ...mapGetters(["getUser", "getAuth"]),
+    isNotificationDisabled() {
+      // Проверяем наличие совпадения newsID и id в массиве notifications
+      return this.notifications.some(notification => notification.id === this.news_id);
+    },
+    notificationButtonColor() {
+      // Возвращаем серый цвет, если кнопка отключена, иначе возвращаем белый цвет
+      return this.isNotificationDisabled ? '#9C9C9C' : '#F8A46F';
     }
   },
   methods: {
@@ -103,6 +124,7 @@ export default {
             this.what_to_expect = newsDetailData.what_to_expect;
             this.registration = newsDetailData.registration;
             this.additional_info = newsDetailData.additional_info;
+            this.news_id = newsDetailData.id;
           })
           .catch((e) => {
             console.log(e);
@@ -124,6 +146,46 @@ export default {
             console.log(e);
           });
     },
+    async alertNotification() {
+      if (this.isNotificationDisabled) {
+        this.$toaster.error("You have already added this event to notifications");
+      } else {
+        await this.$axios
+            .post(`follow_post/`, {
+                  student_id: this.getUser.id,
+                  post_id: this.news_id
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                  },
+                }
+            )
+            .then((response) => {
+              if (response.status === 200) {
+                this.$toaster.success("The event has been added! Available in profile/notifications");
+                window.location.reload();
+              }
+            })
+            .catch((e) => {
+              this.$toaster.error(e.message);
+            });
+      }
+    },
+    async fetchNotificationData() {
+      await this.$axios
+          .get(`get_followed_posts/`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((response) => {
+            this.notifications = response.data;
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    },
     getCategoryName(categoryId) {
       const category = this.categories.find(cat => cat.id === categoryId);
       return category ? category.category_name : "";
@@ -141,7 +203,10 @@ export default {
     const newsID = this.$route.params.newsID;
     await this.fetchNewsDetailData(newsID);
     await this.fetchNewsCategoryData();
+    await this.fetchNotificationData();
   },
+  watch: {
+  }
 }
 </script>
 

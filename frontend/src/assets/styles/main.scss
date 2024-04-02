@@ -8,12 +8,15 @@ $white: #FFFFFF;
 $black: #000000;
 $primary: #2F345C;
 $secondary: #F8A46F;
+$available: #DEF7E2;
+$occupied: #FFDFDF;
 $grey: #9C9C9C;
 
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
   font-family: $inter;
+  transition: ease all 0.2s;
 }
 
 h1 {
@@ -38,6 +41,27 @@ h4 {
   width: 360px;
   height: 70px;
   border-radius: 25px;
+  color: $white;
+  &:hover {
+    border: 1px solid $secondary;
+    background-color: transparent;
+    color: $secondary;
+  }
+}
+
+.unfilled-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-size: 24px;
+  border: 1px solid $secondary;
+  border-radius: 25px;
+  color: $secondary;
+  &:hover {
+    background-color: $secondary;
+    color: $white;
+  }
 }
 
 .grey-button {
@@ -49,6 +73,23 @@ h4 {
   padding: 20px 40px;
   border-radius: 25px;
   color: $white;
+}
+
+.grey-unfilled-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  font-size: 24px;
+  padding: 20px 40px;
+  border: 1px solid $grey;
+  border-radius: 25px;
+  color: $grey;
+  &:hover {
+    background-color: $secondary;
+    border: 1px solid $secondary;
+    color: $white;
+  }
 }
 
 .swiper-pagination {

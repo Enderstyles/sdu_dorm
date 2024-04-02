@@ -6,43 +6,51 @@
       </div>
       <div class="header__content-nav">
         <ul class="header__content-nav-links">
-          <li
+          <router-link
               class="medium-txt"
-              @click="$router.push('/news')"
+              to="/news"
               :class="{ 'active': $route.path === '/news' }"
           >
             News
-          </li>
-          <li
+          </router-link>
+          <router-link
               class="medium-txt"
-              @click="$router.push('/apply')"
-              :class="{ 'active': $route.path === '/apply' }"
+              v-if="isAuthenticated"
+              to="/booking"
+              :class="{ 'active': $route.path === '/booking' }"
           >
             Booking
-          </li>
-          <li
+          </router-link>
+          <router-link
               class="medium-txt"
-              @click="$router.push('/about')"
+              v-if="!isAuthenticated"
+              to="/login"
+          >
+            Booking
+          </router-link>
+          <router-link
+              class="medium-txt"
+              to="/about"
               :class="{ 'active': $route.path === '/about' }"
           >
             About
-          </li>
-          <li
+          </router-link>
+          <router-link
               class="medium-txt"
               v-if="!isAuthenticated"
-              @click="$router.push('/login')"
+              to="/login"
               :class="{ 'active': $route.path === '/login' }"
           >
             Login
-          </li>
-          <li
+          </router-link>
+          <router-link
               class="medium-txt"
               v-if="isAuthenticated"
-              @click="$router.push('/personal-account')"
+              to="/personal-account"
               :class="{ 'active': $route.path === '/personal-account' }"
           >
             {{ getUser.headerName || Account }}
-          </li>
+          </router-link>
         </ul>
       </div>
     </div>
@@ -108,9 +116,10 @@ export default {
         display: flex;
         align-items: center;
         gap: 72px;
-        li {
+        a {
           font-size: 24px;
           cursor: pointer;
+          padding-bottom: 5px;
           &:hover {
             border-bottom: 1px solid $secondary;
           }
