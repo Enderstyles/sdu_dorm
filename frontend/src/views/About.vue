@@ -27,7 +27,7 @@
             <h3 class="regular-txt">{{ activeTabData.name_of_head_of_dormitory }}</h3>
             <div class="about__content_main-info-contacts-services">
               <div class="about__content_main-info-contacts-services-block">
-                <p class="bold-txt">Head of boys’ dormitory</p>
+                <p class="bold-txt">Head of dormitory</p>
                 <p class="regular-txt">{{ activeTabData.contacts_head_of_dormitory }}</p>
               </div>
               <div class="about__content_main-info-contacts-services-block">

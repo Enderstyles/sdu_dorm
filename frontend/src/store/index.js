@@ -6,27 +6,26 @@ import {createToaster} from "@meforma/vue-toaster";
 const toaster = createToaster({ position: "top-right", duration: 1900 });
 export default createStore({
     state: {
-        // lang: localStorage.getItem('lang') ? localStorage.getItem('lang') : navigator.language.startsWith("ru") ? 'ru' : navigator.language.startsWith("kk") ? 'kz' : 'en' || 'en',
         auth: localStorage.getItem("access_token") ? true : false,
         user: false,
+        selectedBlock: parseInt(localStorage.getItem('selectedBlock')) || 0,
     },
     getters: {
-        // getLang: (state) => state.lang,
         getAuth(state) {
             return state.auth;
         },
         getUser: (state) => state.user,
+        getSelectedBlock: (state) => state.selectedBlock,
     },
     mutations: {
-        // UPDATE_LANG(state, lang) {
-        //     state.lang = lang
-        //     localStorage.setItem("lang", lang);
-        // },
         SET_AUTH(state, auth) {
             state.auth = auth;
         },
         SET_USER(state, user) {
             state.user = user;
+        },
+        SET_SELECTED_BLOCK(state, block) {
+            state.selectedBlock = block;
         },
         SET_USER_PROFILE(state, profileData) {
             state.user = { ...state.user, ...profileData };
@@ -56,44 +55,49 @@ export default createStore({
                         headerName: userProfile.first_name && userProfile.last_name ? `${userProfile.first_name} ${userProfile.last_name.charAt(0)}.` : 'Unknown',
                         id: userProfile.student_id || 'Not filled in',
                         major: userProfile.major || 'Not filled in',
-                        gender: userProfile.gender ? 'Male' : 'Female',
+                        gender: userProfile.gender === 1 ? 'Male' : 'Female',
                         grade: userProfile.grade || 'Not filled in',
-                        status: userProfile.status ? 'Active' : 'Inactive',
+                        age: userProfile.age,
+                        status: userProfile.status,
                         avatar: userProfile.profile_pic,
                         reservation: userProfile.reservation
                     };
                     commit("SET_USER_PROFILE", profileData);
                     commit("SET_AUTH", true);
                 } catch (err) {
-                    // dispatch('logoutUser');
                     commit("SET_USER", false);
                     commit("SET_AUTH", false);
                     localStorage.removeItem("access_token");
                     router.push("/login");
+                    console.log(err);
                 }
             } else {
-                localStorage.removeItem("access_token");
                 commit("SET_USER", false);
                 commit("SET_AUTH", false);
             }
         },
-        // async logoutUser({ commit }) {
-        //     try {
-        //         const response = await axios.post('logout', {}, {
-        //             headers: {
-        //                 Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        //             }
-        //         });
-        //         localStorage.removeItem("access_token");
-        //         router.push("/login");
-        //         commit("SET_USER", false);
-        //         commit("SET_AUTH", false);
-        //     } catch (err) {
-        //         if (err.response && err.response.message) {
-        //             toaster.error(err.response.message);
-        //         }
-        //     }
-        // },
+        async logoutUser({ commit }) {
+            // try {
+            //     const response = await axios.post('logout/', {
+            //     }, {
+            //         headers: {
+            //             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            //         },
+            //         params: {
+            //             refresh_token: localStorage.getItem("refresh_token")
+            //         }
+            //     });
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("refresh_token");
+                router.push("/login");
+                commit("SET_USER", false);
+                commit("SET_AUTH", false);
+            // } catch (err) {
+            //     if (err.response && err.response.message) {
+            //         toaster.error(err.response.message);
+            //     }
+            // }
+        },
     },
     modules: {
     }
