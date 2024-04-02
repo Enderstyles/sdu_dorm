@@ -1,8 +1,7 @@
 import datetime
 
 from django.http import HttpResponse
-from django.utils import timezone
-from drf_spectacular.utils import extend_schema
+
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -15,7 +14,7 @@ from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories,
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
     NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
 
-from .tasks import test_task, check_event
+from .tasks import check_event
 
 
 def test(request):
