@@ -29,6 +29,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 ALLOWED_HOSTS = [
     'alazizaskhat.pythonanywhere.com',
     'localhost',
+    '77.243.80.198',
 ]
 
 AUTH_USER_MODEL = 'sdu_dorm.CustomUser'
