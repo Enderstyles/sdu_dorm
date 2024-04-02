@@ -85,6 +85,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://192.168.0.102:8080",
     "http://alazizaskhat.pythonanywhere.com",
+    "https://www.sdudorm.kz/",
+    "https://77.243.80.198/",
+    "http://77.243.80.198/",
 ]
 
 MIDDLEWARE = [
