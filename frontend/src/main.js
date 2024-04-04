@@ -6,14 +6,14 @@ import axios from "axios";
 import { createToaster } from "@meforma/vue-toaster";
 
 const axiosInstance = axios.create({
-    baseURL: 'http://77.243.80.198/api/',
+    baseURL: 'http://77.243.80.198:8000/api/',
     // baseURL: 'http://localhost:8000/api/',
     params: {
         lang: store.getters.getLang
     }
 })
 
-axios.defaults.baseURL = 'http://77.243.80.198/api/';
+axios.defaults.baseURL = 'http://77.243.80.198:8000/api/';
 // axios.defaults.baseURL = 'http://localhost:8000/api/';
 // axios.defaults.params = {
 //     lang: store.getters.getLang
