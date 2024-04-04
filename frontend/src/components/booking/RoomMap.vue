@@ -118,6 +118,9 @@ export default {
           width: 240px;
           height: 150px;
           cursor: pointer;
+          &:hover {
+            background: $secondary;
+          }
         }
       }
     }

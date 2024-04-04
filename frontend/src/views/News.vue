@@ -251,7 +251,7 @@ export default {
             align-items: center;
             gap: 10px;
             p {
-              font-size: 24px;
+              font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
             }
             input {
               width: 200px;
@@ -365,7 +365,7 @@ export default {
               border: 1px solid $primary;
               border-radius: 5px;
               p {
-                font-size: 24px;
+                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               }
               &:hover {
                 color: $white;

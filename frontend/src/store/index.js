@@ -67,7 +67,7 @@ export default createStore({
                 } catch (err) {
                     commit("SET_USER", false);
                     commit("SET_AUTH", false);
-                    localStorage.removeItem("access_token");
+                    localStorage.clear();
                     router.push("/login");
                     console.log(err);
                 }
@@ -87,11 +87,10 @@ export default createStore({
             //             refresh_token: localStorage.getItem("refresh_token")
             //         }
             //     });
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("refresh_token");
-                router.push("/login");
-                commit("SET_USER", false);
-                commit("SET_AUTH", false);
+            localStorage.clear();
+            router.push("/login");
+            commit("SET_USER", false);
+            commit("SET_AUTH", false);
             // } catch (err) {
             //     if (err.response && err.response.message) {
             //         toaster.error(err.response.message);

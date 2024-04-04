@@ -198,7 +198,7 @@ export default {
         display: flex;
         align-items: center;
         p {
-          font-size: 24px;
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         }
         span {
           font-size: 20px;
@@ -293,7 +293,7 @@ export default {
             align-items: center;
             gap: 25px;
             p {
-              font-size: 24px;
+              font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               display: -webkit-box;
               -webkit-line-clamp: 1;
               -webkit-box-orient: vertical;

@@ -270,7 +270,7 @@ export default {
               height: auto;
             }
             p {
-              font-size: 24px;
+              font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
             }
           }
         }
@@ -305,7 +305,7 @@ export default {
         align-items: flex-start;
         gap: 30px;
         p {
-          font-size: 24px;
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         }
         &-txt {
           display: flex;

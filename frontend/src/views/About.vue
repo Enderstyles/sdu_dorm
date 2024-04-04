@@ -237,7 +237,7 @@ export default {
           cursor: pointer;
           color: $black;
           p {
-            font-size: 24px;
+            font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           }
           &:hover {
             border-bottom: 6px solid $secondary;
@@ -295,7 +295,7 @@ export default {
             align-items: flex-start;
             gap: 20px;
             p {
-              font-size: 24px;
+              font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               height: 200px;
               overflow-y: auto;
             }
@@ -337,7 +337,7 @@ export default {
               height: auto;
               gap: 30px;
               p {
-                font-size: 24px;
+                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               }
             }
           }

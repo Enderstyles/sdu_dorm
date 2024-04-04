@@ -117,7 +117,7 @@ export default {
         align-items: center;
         gap: 72px;
         a {
-          font-size: 24px;
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           cursor: pointer;
           padding-bottom: 5px;
           &:hover {
