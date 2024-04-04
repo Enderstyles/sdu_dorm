@@ -217,7 +217,7 @@ export default {
               }, 200);
             })
             .catch(err => {
-              this.$toaster.error(err.response.data.detail);
+              this.$toaster.error(err.data.detail);
             })
       }
       else {
