@@ -15,9 +15,6 @@ from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, Lo
 router = routers.DefaultRouter()
 
 
-
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
