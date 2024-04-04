@@ -324,7 +324,7 @@ export default {
           width: 365px;
           gap: 17px;
           p {
-            font-size: 24px;
+            font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           }
           input {
             width: 100%;
@@ -409,7 +409,7 @@ export default {
       width: 100%;
       gap: 15px;
       p {
-        font-size: 24px;
+        font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
       }
       input {
         width: 100%;
@@ -447,7 +447,7 @@ export default {
   //    gap: 15px;
   //    p {
   //      color: $grey;
-  //      font-size: 24px;
+  //      font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
   //    }
   //    input {
   //      width: 100%;
@@ -494,7 +494,7 @@ export default {
       width: 100%;
       gap: 15px;
       p {
-        font-size: 24px;
+        font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
       }
       input {
         width: 100%;

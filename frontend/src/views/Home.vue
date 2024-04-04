@@ -333,7 +333,7 @@ export default {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    gap: 150px;
+    gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 7.8585))), 150px);
     padding-bottom: 150px;
     &-main {
       display: flex;
@@ -353,7 +353,7 @@ export default {
         height: 100%;
         gap: 30px;
         p {
-          font-size: 24px;
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           text-align: center;
           width: 60%;
         }
@@ -400,7 +400,7 @@ export default {
             padding-bottom: 5px;
           }
           p {
-            font-size: 24px;
+            font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           }
         }
       }
@@ -478,7 +478,7 @@ export default {
               width: 30%;
               gap: 5px;
               p {
-                font-size: 24px;
+                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               }
             }
           }
@@ -496,7 +496,7 @@ export default {
             height: max-content;
             gap: 25px;
             p {
-              font-size: 24px;
+              font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               text-align: center;
             }
           }
@@ -525,7 +525,7 @@ export default {
           justify-content: space-between;
           width: 100%;
           button {
-            font-size: 24px;
+            font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
             border-bottom: 1px solid $secondary;
           }
         }

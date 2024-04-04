@@ -90,7 +90,7 @@ export default {
       &-number {
         width: 110px;
         height: 40px;
-        font-size: 24px;
+        font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         cursor: pointer;
       }
     }

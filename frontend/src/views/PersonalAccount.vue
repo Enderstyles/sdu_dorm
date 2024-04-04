@@ -105,14 +105,17 @@
               </div>
             </template>
             <template v-if="booking">
-              <div class="account__content-info-profile-infoboard-noBooking">
-                <div class="account__content-info-profile-infoboard-noBooking-message">
-                  <p class="regular-txt">You didn’t book a room yet</p>
-                  <span class="regular-txt">After booking all needed information can be found here</span>
-                </div>
-                <div class="account__content-info-profile-infoboard-noBooking-btns">
-                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/booking')">Go back to booking</button>
-                </div>
+<!--              <div class="account__content-info-profile-infoboard-noBooking">-->
+<!--                <div class="account__content-info-profile-infoboard-noBooking-message">-->
+<!--                  <p class="regular-txt">You didn’t book a room yet</p>-->
+<!--                  <span class="regular-txt">After booking all needed information can be found here</span>-->
+<!--                </div>-->
+<!--                <div class="account__content-info-profile-infoboard-noBooking-btns">-->
+<!--                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/booking')">Go back to booking</button>-->
+<!--                </div>-->
+<!--              </div>-->
+              <div class="account__content-info-profile-infoboard-haveBooking">
+                <BookingBoard/>
               </div>
             </template>
             <template v-if="logout">
@@ -135,8 +138,9 @@
 import {mapActions, mapGetters} from "vuex";
 import router from "@/router";
 import NotificationBoard from "@/components/NotificationBoard.vue";
+import BookingBoard from "@/components/booking/BookingBoard.vue";
 export default {
-  components: {NotificationBoard},
+  components: {BookingBoard, NotificationBoard},
   data: () => ({
     profile: false,
     notif: false,
@@ -358,7 +362,7 @@ export default {
               align-items: flex-start;
               gap: 50px;
               p {
-                font-size: 24px;
+                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               }
               &-form {
                 display: flex;
@@ -385,7 +389,7 @@ export default {
                 align-items: center;
                 gap: 30px;
                 p {
-                  font-size: 24px;
+                  font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
                 }
                 .status {
                   position: relative;
@@ -444,7 +448,7 @@ export default {
                 font-size: 42px;
               }
               span {
-                font-size: 24px;
+                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               }
             }
             &-btns {
@@ -473,7 +477,7 @@ export default {
                 font-size: 42px;
               }
               span {
-                font-size: 24px;
+                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               }
             }
             &-btns {

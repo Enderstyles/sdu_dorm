@@ -127,7 +127,7 @@ export default {
       height: 220px;
       justify-content: space-between;
       h2 {
-        font-size: 24px;
+        font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
       }
       &-details {
         font-size: 17px;
@@ -143,7 +143,7 @@ export default {
         height: 220px;
         justify-content: space-between;
         li {
-          font-size: 24px;
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           cursor: pointer;
         }
       }
@@ -160,7 +160,7 @@ export default {
         align-items: flex-start;
         gap: 30px;
         h2 {
-          font-size: 24px;
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         }
         &-icons {
           display: flex;

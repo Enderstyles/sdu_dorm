@@ -12,7 +12,7 @@
       <div class="confirmation__main_total">
         <div class="confirmation__main_total-reservation">
           <h4 class="regular-txt">Reservation valid</h4>
-          <h1 class="confirmation__main_total-reservation-timer regular-txt">{{ timer }}</h1>
+          <h1 class="confirmation__main_total-reservation-timer regular-txt">{{ formattedTimer  }}</h1>
         </div>
         <div class="confirmation__main_total-payment">
           <p class="regular-txt">Pay for the place until timer ends in order to confirm your reservation</p>
@@ -24,6 +24,7 @@
       <button
           class="main-button"
           style="width: 510px; height: 190px"
+          @click="payment"
       >
         <span class="regular-txt">Go to the payment</span>
       </button>
@@ -40,8 +41,9 @@ export default {
       selectedTaraf: parseInt(localStorage.getItem('selectedTaraf')) || 0,
       selectedRoom:  parseInt(localStorage.getItem('selectedRoom')) || 0,
       selectedBed:  parseInt(localStorage.getItem('selectedBed')) || 0,
-      timer: null,
-      timerStart: localStorage.getItem('timerStart') ? parseInt(localStorage.getItem('timerStart')) : null
+      timerStart: localStorage.getItem('timerStart') ? parseInt(localStorage.getItem('timerStart')) : null,
+      timerDuration: 60,
+      timerInterval: null
     };
   },
   computed: {
@@ -53,50 +55,55 @@ export default {
         4: 'D'
       };
       return blockMapping[this.selectedBlock] || '';
+    },
+    formattedTimer() {
+      const minutes = Math.floor(this.timerDuration / 60);
+      const seconds = this.timerDuration % 60;
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
   },
-  // beforeRouteLeave(to, from, next) {
-  //   // if (to.name !== 'сonfirmation') {
-  //   //   next(false);
-  //   // } else {
-  //   //   next();
-  //   // }
-  // },
-  mounted() {
-    this.startTimer();
+  beforeRouteLeave(to, from, next) {
+    if (localStorage.getItem('timerStart') > 0) {
+      this.$toaster.error('You will not be able to leave this page until you have made the payment!');
+      next(false);
+    } else {
+      next();
+    }
+  },
+  created() {
+    if (!localStorage.getItem('timerStart')) {
+      this.startTimer();
+    } else {
+      this.restoreTimer();
+    }
   },
   beforeDestroy() {
     clearInterval(this.timerInterval);
-    this.stopTimer();
   },
   methods: {
     startTimer() {
-      let startTime;
-      if (this.timerStart) {
-        const now = Math.floor(new Date().getTime() / 1000);
-        const elapsedSeconds = now - this.timerStart;
-        startTime = 60 - elapsedSeconds;
-      } else {
-        startTime = 60;
-        localStorage.setItem('timerStart', Math.floor(new Date().getTime() / 1000));
-      }
-
-      const countdown = setInterval(() => {
-        startTime--;
-        const minutes = Math.floor(startTime / 60);
-        const remainingSeconds = startTime % 60;
-        this.timer = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-        if (startTime === 0) {
-          clearInterval(countdown);
-          this.$router.push('/booking');
-          this.handleTimeout();
-          this.$toaster.error('Your time for confirmation and payment has expired!');
-        }
+      this.timerStart = Date.now();
+      localStorage.setItem('timerStart', this.timerStart);
+      this.timerInterval = setInterval(() => {
+        this.updateTimer();
       }, 1000);
     },
-    stopTimer() {
-      clearInterval(this.timer);
-      this.timer = null;
+    restoreTimer() {
+      const elapsedTime = Math.floor((Date.now() - this.timerStart) / 1000);
+      this.timerDuration = Math.max(this.timerDuration - elapsedTime, 0);
+      this.timerInterval = setInterval(() => {
+        this.updateTimer();
+      }, 1000);
+    },
+    updateTimer() {
+      if (this.timerDuration > 0) {
+        this.timerDuration--;
+        localStorage.setItem('timer', this.timerDuration);
+      } else {
+        clearInterval(this.timerInterval);
+        this.handleTimeout();
+        this.$router.push("/booking");
+      }
     },
     handleTimeout() {
       localStorage.removeItem('selectedBlock');
@@ -104,8 +111,41 @@ export default {
       localStorage.removeItem('selectedFloor');
       localStorage.removeItem('selectedRoom');
       localStorage.removeItem('selectedBed');
+      localStorage.removeItem('timer');
       localStorage.removeItem('timerStart');
-    }
+      this.$toaster.error('Your time for confirmation and payment has expired!');
+    },
+    payment() {
+      const auth = 'DCEB8O_ZM5U7SO_T_U5EJQ';
+      const invoiceId = 838438822;
+      const amount = 4700000;
+      halyk.showPaymentWidget(
+          this.createPaymentObject(auth, invoiceId, amount),
+          (response) => {
+            if (response.success) {
+              this.$router.push("/");
+            }
+          }
+      );
+    },
+    createPaymentObject(auth, invoiceId, amount) {
+      let paymentObject = {
+        invoiceId: invoiceId,
+        backLink: "",
+        failureBackLink: "",
+        postLink: "",
+        failurePostLink: "",
+        language: "en",
+        description: "Buying a place in an SDU dormitory",
+        accountId: "SDU Dormitory",
+        terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
+        amount: amount,
+        currency: "KZT",
+        cardSave: true, //Параметр должен передаваться как Boolean
+      };
+      paymentObject.auth = auth;
+      return paymentObject;
+    },
   },
 
 }
@@ -139,7 +179,7 @@ export default {
         border: 2px solid #000000;
         border-radius: 25px;
         p {
-          font-size: 32px;
+          font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
         }
       }
     }
@@ -167,7 +207,7 @@ export default {
         width: 100%;
         gap: 35px;
         p {
-          font-size: 24px;
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           max-width: 60%;
           text-align: right;
         }
