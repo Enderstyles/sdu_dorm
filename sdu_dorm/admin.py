@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AboutPost, CustomUser, MainPageModel, NewsPost, NewsCategories, Enrollment, TakenPlace
+from .models import AboutPost, CustomUser, MainPageModel, NewsPost, NewsCategories, Enrollment, TakenPlace, Gender
 
 # Register your models here.
 admin.site.register(CustomUser)
@@ -9,3 +9,4 @@ admin.site.register(NewsPost)
 admin.site.register(NewsCategories)
 admin.site.register(Enrollment)
 admin.site.register(TakenPlace)
+admin.site.register(Gender)
