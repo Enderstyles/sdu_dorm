@@ -21,7 +21,7 @@
         >
           <div
               class="room-map_main-rooms-block-placement"
-              :class="{'activeRoom': room === activeRoom}"
+              :class="{'activeRoom': room === activeRoom, 'unavailable': isRoomUnavailable(room)}"
               @click="selectRoom(room)"
           >
             <p class="bold-txt">{{room}}</p>
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  props: ["rooms"],
+  props: ["rooms", "takenPlaces"],
   data() {
     return {
       activeRoom: parseInt(localStorage.getItem('selectedRoom')) || 0,
@@ -55,16 +55,24 @@ export default {
       else {
         return [];
       }
-    }
+    },
   },
   methods: {
     selectRoom(roomNum) {
-      this.activeRoom = roomNum;
-      localStorage.setItem("selectedRoom", roomNum);
-      this.$router.push({query: {block: this.$route.query.block, taraf: this.$route.query.taraf, room: roomNum}})
-      this.$emit("stage-change", 4);
+      if (!this.isRoomUnavailable(roomNum)) {
+        this.activeRoom = roomNum;
+        localStorage.setItem("selectedRoom", roomNum);
+        this.$router.push({query: {block: this.$route.query.block, taraf: this.$route.query.taraf, room: roomNum}})
+        this.$emit("stage-change", 4);
+      } else {
+        this.$toaster.error('All the beds in this room are occupied');
+      }
+    },
+    isRoomUnavailable(roomNum) {
+      const takenBeds = this.takenPlaces.filter(place => place.room === roomNum);
+      return takenBeds.length === 4;
     }
-  }
+  },
 }
 </script>
 
@@ -128,5 +136,9 @@ export default {
 }
 .activeRoom {
   background: $secondary !important;
+}
+.unavailable {
+  background: #FFDFDF;
+  cursor: not-allowed;
 }
 </style>

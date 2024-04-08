@@ -42,10 +42,10 @@
           <TarafMap v-if="bookingStages === 2" @stage-change="changeStage" :tarafs="tarafs"/>
         </div>
         <div class="booking__content_map-view">
-          <RoomMap v-if="bookingStages === 3" @stage-change="changeStage" :rooms="tarafs"/>
+          <RoomMap v-if="bookingStages === 3" @stage-change="changeStage" :rooms="tarafs" :takenPlaces="takenPlaces"/>
         </div>
         <div class="booking__content_map-view">
-          <BedMap v-if="bookingStages === 4"/>
+          <BedMap v-if="bookingStages === 4" :takenPlaces="takenPlaces"/>
         </div>
       </div>
     </div>
@@ -62,6 +62,7 @@ export default {
   components: {BedMap, RoomMap, TarafMap, BlockMap},
   data: () => ({
     bookingStages: 1,
+    takenPlaces: [],
     selectedBlock: parseInt(localStorage.getItem('selectedBlock')) || 0,
     selectedFloor: parseInt(localStorage.getItem('selectedFloor')) || 0,
     selectedTaraf: parseInt(localStorage.getItem('selectedTaraf')) || 0,
@@ -125,9 +126,29 @@ export default {
       const storedPage = localStorage.getItem('bookingStage');
       this.bookingStages = storedPage ? parseInt(storedPage) : 1;
     },
+    async fetchTakenPlaceData() {
+      await this.$axios
+          .get('get_taken_places/',
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            this.takenPlaces = response.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
   },
   created() {
     this.loadStageFromLocalStorage();
+    this.fetchTakenPlaceData();
+    setInterval(() => {
+      this.fetchTakenPlaceData();
+    }, 60000);
   },
   watch: {
     $route() {

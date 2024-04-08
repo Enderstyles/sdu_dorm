@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   data() {
     return {
@@ -47,6 +49,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["getUser", "getAuth"]),
     selectedBlockLetter() {
       const blockMapping = {
         1: 'A',
@@ -116,17 +119,43 @@ export default {
       this.$toaster.error('Your time for confirmation and payment has expired!');
     },
     payment() {
-      const auth = 'DCEB8O_ZM5U7SO_T_U5EJQ';
-      const invoiceId = 838438822;
-      const amount = 4700000;
-      halyk.showPaymentWidget(
-          this.createPaymentObject(auth, invoiceId, amount),
-          (response) => {
-            if (response.success) {
-              this.$router.push("/");
+        this.$axios
+          .post(`take_place/`, {
+                taken_by_id: 200103333,
+                block: this.selectedBlock,
+                floor: this.selectedFloor,
+                taraf: this.selectedTaraf,
+                room: this.selectedRoom,
+                place: this.selectedBed,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              const auth = 'DCEB8O_ZM5U7SO_T_U5EJQ';
+              const invoiceId = 838438822;
+              const amount = 4700000;
+              halyk.showPaymentWidget(
+                  this.createPaymentObject(auth, invoiceId, amount),
+                  (response) => {
+                    if (response.success) {
+                      this.$router.push("/");
+                    }
+                  }
+              );
             }
-          }
-      );
+          })
+          .catch((err) => {
+            if (err.response.data.message) {
+              this.$toaster.error(err.response.data.message);
+            } else if (err.response.data.detail) {
+              this.$toaster.error(err.response.data.detail);
+            }
+          });
     },
     createPaymentObject(auth, invoiceId, amount) {
       let paymentObject = {
