@@ -16,7 +16,7 @@ from rest_framework.authtoken.models import Token
 from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
     TakenPlace, PaymentModel
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
-    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer, PaymentSerializer
+    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
 
 from .tasks import check_event
 
