@@ -511,7 +511,7 @@ export default {
       background: #FAFBFF;
       padding: 80px 0 170px 0;
       width: 100%;
-      height: 910px;
+      height: auto;
       &-view {
         display: flex;
         flex-direction: column;

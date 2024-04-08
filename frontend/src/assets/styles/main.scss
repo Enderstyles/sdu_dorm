@@ -20,16 +20,16 @@ $grey: #9C9C9C;
 }
 
 h1 {
-  font-size: min(max(64px, calc(4rem + ((1vw - 3.93px) * 2.0956))), 96px);
+  font-size: min(max(48px, calc(3rem + ((1vw - 3.93px) * 3.1434))), 96px);
 }
 h2 {
-  font-size: min(max(32px, calc(2rem + ((1vw - 3.93px) * 2.0956))), 64px);
+  font-size: min(max(28px, calc(1.75rem + ((1vw - 3.93px) * 2.3576))), 64px);
 }
 h3 {
-  font-size: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 0.7859))), 36px);
+  font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 1.0478))), 36px);
 }
 h4 {
-  font-size: min(max(28px, calc(1.75rem + ((1vw - 3.93px) * 1.4407))), 50px);
+  font-size: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.7027))), 50px);
 }
 
 .main-button {
@@ -38,8 +38,8 @@ h4 {
   justify-content: center;
   background-color: $secondary;
   font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
-  width: 360px;
-  height: 70px;
+  width: min(max(160px, calc(10rem + ((1vw - 3.93px) * 13.0976))), 360px);
+  height: min(max(35px, calc(2.1875rem + ((1vw - 3.93px) * 2.2921))), 70px);
   border-radius: 25px;
   color: $white;
   &:hover {

@@ -6,7 +6,7 @@
           <img src="@/assets/images/png/sdu-login-logo.png" alt="sdu-login-logo" @click="$router.push('/')">
         </div>
         <div class="login__content-form-title">
-          <h1 class="semi-bold-txt">LOG IN TO STUDENT HOUSE PORTAL</h1>
+          <h3 class="semi-bold-txt">Log In to student house portal</h3>
         </div>
         <div class="login__content-form-enter">
           <div class="login__content-form-enter-input">
@@ -217,7 +217,11 @@ export default {
               }, 200);
             })
             .catch(err => {
-              this.$toaster.error(err.data.detail);
+              if (err.response.data.detail) {
+                this.$toaster.error(err.response.data.detail);
+              } else {
+                this.$toaster.error("An error has occurred, try logging in again!");
+              }
             })
       }
       else {
@@ -284,22 +288,26 @@ export default {
   &__content {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    padding: 50px 0;
+    height: 100%;
+    margin: 40px 0;
     &-form {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       width: 100%;
+      height: 100%;
       color: $black;
       &-logo {
         display: flex;
         align-items: center;
-        height: 100%;
+        justify-content: center;
+        width: 100%;
         img {
-          width: 206px;
-          height: 100%;
+          width: auto;
+          height: min(max(74px, calc(4.625rem + ((1vw - 3.93px) * 8.5134))), 204px);
           cursor: pointer;
         }
       }
@@ -307,28 +315,26 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 60px 0 45px 0;
-        h1 {
-          font-size: 64px;
-        }
+        text-align: center;
+        padding: 48px 0 32px 0;
       }
       &-enter {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 32px;
+        gap: 16px;
         &-input {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
           width: 365px;
-          gap: 17px;
+          gap: 16px;
           p {
             font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           }
           input {
             width: 100%;
-            height: 50px;
+            height: min(max(25px, calc(1.5625rem + ((1vw - 3.93px) * 1.6372))), 50px);
             border: 1px solid $black;
             background: #F0F0F0;
             padding: 10px 15px;
@@ -354,8 +360,10 @@ export default {
       &-login {
         display: flex;
         flex-direction: column;
-        width: 365px;
-        padding-top: 43px;
+        align-items: center;
+        justify-content: center;
+        max-width: 365px;
+        padding-top: 40px;
         &-btn {
           color: $primary;
         }
@@ -363,7 +371,7 @@ export default {
       &-return {
         display: flex;
         align-items: center;
-        padding-top: 140px;
+        padding-top: 64px;
         gap: 10px;
         cursor: pointer;
         p {

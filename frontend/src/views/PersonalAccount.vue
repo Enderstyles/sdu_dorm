@@ -254,7 +254,10 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 200px 0;
+  padding: 200px 0 100px 0;
+  @media screen and (max-width: $pc) {
+    padding: 170px 0 100px 0;
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -274,28 +277,35 @@ export default {
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: center;
           box-sizing: border-box;
           width: 35%;
-          height: 900px;
+          height: 100%;
           border: 1px solid #000000;
           border-radius: 25px;
-          padding: 55px 70px;
-          gap: 95px;
+          padding: 56px 0;
+          gap: min(max(28px, calc(1.75rem + ((1vw - 3.93px) * 1.8337))), 56px);
+          @media screen and (max-width: $pc) {
+            padding: 28px 0;
+          }
           &-pic {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
-            gap: 25px;
+            gap: 24px;
             img {
               display: flex;
               align-items: center;
               justify-content: center;
               background: #838383;
               max-width: 100%;
-              height: 172px;
+              height: 180px;
               border-radius: 25px;
+              @media screen and (max-width: $pc) {
+                height: 120px;
+              }
             }
             h3 {
                text-align: center;
@@ -305,16 +315,16 @@ export default {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 35px;
+            gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
             &-link {
               display: flex;
               align-items: center;
               cursor: pointer;
               position: relative;
               width: 100%;
-              gap: 15px;
+              gap: 16px;
               p {
-                font-size: 32px;
+                font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
               }
               img {
                 max-width: 100%;
@@ -336,7 +346,6 @@ export default {
                   stroke: $secondary;
                 }
                 color: $secondary;
-                border-bottom: 3px solid $secondary;
               }
             }
           }
@@ -351,12 +360,15 @@ export default {
           background: #FAFBFF;
           border: 1px solid #000000;
           border-radius: 25px;
-          padding: 80px;
+          padding: 56px 80px;
+          @media screen and (max-width: $pc) {
+            padding: 28px 80px;
+          }
           &-general {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 70px;
+            gap: min(max(28px, calc(1.75rem + ((1vw - 3.93px) * 2.3576))), 64px);
             &-blank {
               display: flex;
               align-items: flex-start;
@@ -369,13 +381,13 @@ export default {
                 flex-direction: column;
                 align-items: flex-start;
                 width: 130px;
-                gap: 23px;
+                gap: 24px;
               }
               &-user {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 23px;
+                gap: 24px;
               }
             }
 
@@ -419,7 +431,7 @@ export default {
             height: 100%;
             gap: 52px;
             p {
-              font-size: 42px;
+              font-size: min(max(22px, calc(1.375rem + ((1vw - 3.93px) * 1.3098))), 42px);
               text-align: center;
             }
             &-btns {
@@ -445,7 +457,7 @@ export default {
               text-align: center;
               gap: 20px;
               p {
-                font-size: 42px;
+                font-size: min(max(22px, calc(1.375rem + ((1vw - 3.93px) * 1.3098))), 42px);
               }
               span {
                 font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
@@ -474,7 +486,7 @@ export default {
               text-align: center;
               gap: 20px;
               p {
-                font-size: 42px;
+                font-size: min(max(22px, calc(1.375rem + ((1vw - 3.93px) * 1.3098))), 42px);
               }
               span {
                 font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
@@ -518,7 +530,7 @@ export default {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 15px;
+          gap: 16px;
           &-modify {
             padding: 20px 70px;
             background: #B7B7B7;
@@ -541,6 +553,7 @@ export default {
     stroke: $secondary;
   }
   color: $secondary;
+  padding-bottom: 5px;
   border-bottom: 3px solid $secondary;
 }
 </style>

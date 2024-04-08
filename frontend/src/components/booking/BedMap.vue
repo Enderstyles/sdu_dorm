@@ -43,7 +43,7 @@
             </defs>
           </svg>
 
-          <img src="@/assets/images/png/table.png" alt="table">
+          <img class="bed-map_space-content-bedding-table" src="@/assets/images/png/table.png" alt="table">
         </div>
 
         <div class="bed-map_space-content-bedding">
@@ -84,7 +84,7 @@
             </defs>
           </svg>
 
-          <img src="@/assets/images/png/table.png" alt="table">
+          <img class="bed-map_space-content-bedding-table" src="@/assets/images/png/table.png" alt="table">
         </div>
       </div>
       <div class="bed-map_space-window">
@@ -145,19 +145,27 @@ export default {
     justify-content: space-between;
     background: #F6F6F6;
     border: 1px solid black;
-    width: 1280px;
-    height: 608px;
+    width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 64.1781))), 1280px);
+    height: min(max(158px, calc(9.875rem + ((1vw - 3.93px) * 29.4695))), 608px);
     &-exit {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100%;
+      img {
+        max-width: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 2.6195))), 60px);
+        height: auto;
+      }
     }
     &-window {
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100%;
+      img {
+        max-width: 100%;
+        height: min(max(77px, calc(4.8125rem + ((1vw - 3.93px) * 12.4427))), 267px);
+      }
     }
     &-content {
       display: flex;
@@ -169,17 +177,31 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 50px;
+        gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.7027))), 50px);
         width: 100%;
         &-wardrobe {
           display: flex;
           align-items: center;
-          gap: 30px;
+          gap: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.9168))), 30px);
+          img {
+            max-width: min(max(40px, calc(2.5rem + ((1vw - 3.93px) * 5.239))), 120px);
+            height: auto;
+          }
+        }
+        &-table {
+          max-width: min(max(50px, calc(3.125rem + ((1vw - 3.93px) * 5.5665))), 135px);
+          height: auto;
         }
       }
     }
   }
 }
+
+svg {
+  max-width: min(max(52px, calc(3.25rem + ((1vw - 3.93px) * 10.4781))), 212px);
+  height: 100%;
+}
+
 .bed {
   cursor: pointer;
   &:hover {

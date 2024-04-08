@@ -109,6 +109,12 @@ export default {
   width: 100%;
   height: auto;
 }
+
+svg {
+  max-width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 63.1958))), 1265px);
+  height: 100%;
+}
+
 .boys-block {
   max-width: 100%;
   height: auto;

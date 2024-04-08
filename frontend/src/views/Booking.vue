@@ -173,6 +173,10 @@ export default {
       align-items: flex-start;
       gap: 20px;
       width: 100%;
+      p {
+        font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+        width: 60%;
+      }
     }
     &_map {
       display: flex;

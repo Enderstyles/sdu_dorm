@@ -156,7 +156,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 260px 0 80px 0;
+  padding: 200px 0 80px 0;
   gap: 100px;
   width: 100%;
   height: auto;
@@ -169,7 +169,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 100px;
+      gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
       &-choice {
@@ -187,7 +187,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 100px;
+      gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
       &-reservation {
@@ -197,7 +197,7 @@ export default {
         width: 100%;
         gap: 5px;
         h1 {
-          font-size: 128px;
+          font-size: min(max(40px, calc(2.5rem + ((1vw - 3.93px) * 5.7629))), 128px);
         }
       }
       &-payment {
