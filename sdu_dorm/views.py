@@ -1,5 +1,6 @@
 import datetime
 import time
+import requests
 
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
@@ -11,7 +12,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.authtoken.models import Token
 
 from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
     TakenPlace, PaymentModel
@@ -235,8 +235,9 @@ class TakeAPlaceApi(APIView):
             taraf = request.data["taraf"]
             room_id = request.data["room"]
             place = request.data["place"]
+            print(11212)
             taken_by = CustomUser.objects.get(student_id=student_id)
-
+            print(12121)
             if TakenPlace.objects.filter(taken_by_id=taken_by).exists():
                 return Response({"message": "User already applied for place"}, status=status.HTTP_409_CONFLICT)
             if TakenPlace.objects.filter(block=block,
@@ -246,21 +247,44 @@ class TakeAPlaceApi(APIView):
                                          place=place).exists():
                 return Response({"message": "Place is already taken"}, status=status.HTTP_409_CONFLICT)
 
-            token = Token.objects.create(user=CustomUser.objects.get(student_id=student_id))
-            amount = 470000
+            grant_type = "client_credentials"
+            scope = "webapi webapi usermanagement email_send verification statement statistics payment"
+            client_id = "test"
+            client_secret = "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG"
             invoice_id = generate_invoice_id()
             while PaymentModel.objects.filter(invoiceID=invoice_id).exists():
                 invoice_id = generate_invoice_id()
-            PaymentModel.objects.create(invoiceID=invoice_id, token=token, amount=amount)
+            amount = 470000
+            currency = "KZT"
+            terminal = "67e34d63-102f-4bd1-898e-370781d0074d"
+
+            url = 'https://testoauth.homebank.kz/epay2/oauth2/token'
+            body = {
+                "grant_type": grant_type,
+                "scope": scope,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "invoiceID": invoice_id,
+                "amount": amount,
+                "currency": currency,
+                "terminal": terminal
+            }
+            r = requests.request(method='POST', url=url, data=body)
+            content = r.json()
+            auth = content['access_token']
+
+            PaymentModel.objects.create(invoiceID=invoice_id, token=auth, amount=amount)
             TakenPlace.objects.create(block=block, floor=floor, taraf=taraf, room=room_id, place=place,
                                       taken_by_id=taken_by)
+
             return Response({
                 "message": "Successfully created",
-                "auth": token.key,
+                "auth": auth,
                 "amount": amount,
                 "invoiceId": invoice_id
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
+
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
 
