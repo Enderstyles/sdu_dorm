@@ -184,3 +184,9 @@ class TakenPlace(models.Model):
 
     def __str__(self):
         return f"By {self.taken_by}"
+
+
+class PaymentModel(models.Model):
+    invoiceID = models.CharField(unique=True, max_length=15, blank=False, null=False)
+    token = models.TextField(unique=True, blank=False, null=False)
+    amount = models.TextField(blank=False, null=False)

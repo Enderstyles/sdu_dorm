@@ -11,8 +11,8 @@ from eazzy import settings
 from sdu_dorm import views
 from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, NewsFeedApi, \
     NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi, TakeAPlaceApi, GetTakenPlacesApi, \
-    CreateStudentApi
-# from sdu_dorm.views import MainPageApi
+    CreateStudentApi, UnfollowPostApi
+from sdu_dorm.views import MainPageApi
 
 router = routers.DefaultRouter()
 
@@ -28,11 +28,12 @@ urlpatterns = [
     path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/forgot_password/', ForgotPasswordApi.as_view(), name='auth_change_password'),
     path('api/logout/', LogoutView.as_view(), name='auth_logout'),
-    # path('api/main_page/', MainPageApi.as_view(), name='main_page'),
+    path('api/main_page/', MainPageApi.as_view(), name='main_page'),
     path('api/news/', NewsFeedApi.as_view(), name='news'),
     path('api/news/<int:pk>/', NewsObjectApi.as_view(), name='news_object_api'),
     path('api/news_categories/', GetNewsCategoriesApi.as_view(), name='news_categories'),
     path('api/follow_post/', FollowPostApi.as_view(), name='follow'),
+    path('api/unfollow_post/', UnfollowPostApi.as_view(), name='unfollow'),
     path('api/get_followed_posts/', GetAllFollowingPostsApi.as_view(), name='followed_posts'),
     path('api/take_place/', TakeAPlaceApi.as_view(), name='take_place'),
     path('api/get_taken_places/', GetTakenPlacesApi.as_view(), name='get_taken_places'),
