@@ -11,7 +11,7 @@ from eazzy import settings
 from sdu_dorm import views
 from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, NewsFeedApi, \
     NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi, TakeAPlaceApi, GetTakenPlacesApi, \
-    CreateStudentApi, UnfollowPostApi
+    CreateStudentApi, UnfollowPostApi, PostLink, FailureLink
 from sdu_dorm.views import MainPageApi
 
 router = routers.DefaultRouter()
@@ -38,7 +38,9 @@ urlpatterns = [
     path('api/take_place/', TakeAPlaceApi.as_view(), name='take_place'),
     path('api/get_taken_places/', GetTakenPlacesApi.as_view(), name='get_taken_places'),
     path('test_celery', views.test, name='test'),
-    path('api/create_student/', CreateStudentApi.as_view(), name='create_student')
+    path('api/create_student/', CreateStudentApi.as_view(), name='create_student'),
+    path('api/postlink/', PostLink.as_view(), name='post_link'),
+    path('api/failurelink/', FailureLink.as_view(), name='failure_link')
     # path('api/edit_main_page/', EditMainPage.as_view(), name='edit_main_page')
     # path('api/new_student', NewStudentApi.as_view(), name='new_student')
 ]

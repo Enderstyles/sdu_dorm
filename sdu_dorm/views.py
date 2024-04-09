@@ -1,4 +1,5 @@
 import datetime
+import json
 import time
 import requests
 
@@ -309,3 +310,15 @@ class CreateStudentApi(CreateAPIView):
             return Response({"message": "User already exists"}, status.HTTP_409_CONFLICT)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PostLink(APIView):
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        return Response(status=status.HTTP_200_OK)
+
+
+class FailureLink(APIView):
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        return Response(status=status.HTTP_200_OK)
