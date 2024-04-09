@@ -279,7 +279,9 @@ class TakeAPlaceApi(APIView):
 
             return Response({
                 "message": "Successfully created",
-                "response_data": content
+                "response_data": content,
+                "invoiceID": invoice_id,
+                "amount": amount,
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
 
