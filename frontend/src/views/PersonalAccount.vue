@@ -105,17 +105,17 @@
               </div>
             </template>
             <template v-if="booking">
-<!--              <div class="account__content-info-profile-infoboard-noBooking">-->
-<!--                <div class="account__content-info-profile-infoboard-noBooking-message">-->
-<!--                  <p class="regular-txt">You didn’t book a room yet</p>-->
-<!--                  <span class="regular-txt">After booking all needed information can be found here</span>-->
-<!--                </div>-->
-<!--                <div class="account__content-info-profile-infoboard-noBooking-btns">-->
-<!--                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/booking')">Go back to booking</button>-->
-<!--                </div>-->
-<!--              </div>-->
-              <div class="account__content-info-profile-infoboard-haveBooking">
-                <BookingBoard/>
+              <div class="account__content-info-profile-infoboard-noBooking" v-if="filteredMyPlace.length === 0">
+                <div class="account__content-info-profile-infoboard-noBooking-message">
+                  <p class="regular-txt">You didn’t book a room yet</p>
+                  <span class="regular-txt">After booking all needed information can be found here</span>
+                </div>
+                <div class="account__content-info-profile-infoboard-noBooking-btns">
+                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/booking')">Go back to booking</button>
+                </div>
+              </div>
+              <div class="account__content-info-profile-infoboard-haveBooking" v-else>
+                <BookingBoard :myPlace="filteredMyPlace"/>
               </div>
             </template>
             <template v-if="logout">
@@ -136,7 +136,6 @@
 
 <script>
 import {mapActions, mapGetters} from "vuex";
-import router from "@/router";
 import NotificationBoard from "@/components/NotificationBoard.vue";
 import BookingBoard from "@/components/booking/BookingBoard.vue";
 export default {
@@ -147,7 +146,8 @@ export default {
     booking: false,
     logout: false,
     notifData: [],
-    categoryData: []
+    categoryData: [],
+    myPlace: [],
   }),
   beforeRouteLeave(to, from, next) {
     const selectedTab = localStorage.getItem('selectedBoardTab');
@@ -224,6 +224,22 @@ export default {
             console.log(e);
           });
     },
+    async fetchTakenPlaceData() {
+      await this.$axios
+          .get('get_taken_places/',
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            this.myPlace = response.data.filter(place => place.taken_by === this.getUser.id);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
     saveSelectedBoardTab(tabName) {
       localStorage.setItem('selectedBoardTab', tabName);
     },
@@ -238,11 +254,15 @@ export default {
   },
   computed: {
     ...mapGetters(["getUser", "getAuth"]),
+    filteredMyPlace() {
+      return this.myPlace.filter(place => place.taken_by === this.getUser.id);
+    }
   },
   created() {
     // this.requestUser();
     this.fetchNotificationData();
     this.fetchNewsCategoryData();
+    this.fetchTakenPlaceData();
     this.setSelectedBoardTabFromStorage();
   },
 }

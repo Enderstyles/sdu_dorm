@@ -45,7 +45,8 @@ export default {
       selectedBed:  parseInt(localStorage.getItem('selectedBed')) || 0,
       timerStart: localStorage.getItem('timerStart') ? parseInt(localStorage.getItem('timerStart')) : null,
       timerDuration: 60,
-      timerInterval: null
+      timerInterval: null,
+      confirmPay: false,
     };
   },
   computed: {
@@ -65,14 +66,14 @@ export default {
       return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
   },
-  beforeRouteLeave(to, from, next) {
-    if (localStorage.getItem('timerStart') > 0) {
-      this.$toaster.error('You will not be able to leave this page until you have made the payment!');
-      next(false);
-    } else {
-      next();
-    }
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   if (localStorage.getItem('timerStart') > 0) {
+  //     this.$toaster.error('You will not be able to leave this page until you have made the payment!');
+  //     next(false);
+  //   } else {
+  //     next();
+  //   }
+  // },
   created() {
     if (!localStorage.getItem('timerStart')) {
       this.startTimer();
@@ -121,7 +122,7 @@ export default {
     payment() {
         this.$axios
           .post(`take_place/`, {
-                taken_by_id: 200103333,
+                taken_by_id: this.getUser.id,
                 block: this.selectedBlock,
                 floor: this.selectedFloor,
                 taraf: this.selectedTaraf,
@@ -135,15 +136,22 @@ export default {
               }
           )
           .then((response) => {
-            if (response.status === 200) {
-              const auth = 'DCEB8O_ZM5U7SO_T_U5EJQ';
-              const invoiceId = 838438822;
-              const amount = 4700000;
+            this.confirmPay = true;
+            if (response.status === 201) {
+              const auth = response.data.response_data;
+              const invoiceId = response.data.invoiceID;
+              const amount = response.data.amount;
+              console.log(auth);
               halyk.showPaymentWidget(
                   this.createPaymentObject(auth, invoiceId, amount),
                   (response) => {
                     if (response.success) {
+                      this.$toaster.success('You have successfully purchased a place in the dormitory!');
                       this.$router.push("/");
+                      this.confirmPay = true;
+                    } else {
+                      this.$toaster.error('An error occurred with the payment');
+                      this.confirmPay = true;
                     }
                   }
               );
@@ -164,9 +172,9 @@ export default {
         failureBackLink: "",
         postLink: "",
         failurePostLink: "",
-        language: "en",
+        language: "rus",
         description: "Buying a place in an SDU dormitory",
-        accountId: "SDU Dormitory",
+        accountId: "sdu-dormitory",
         terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
         amount: amount,
         currency: "KZT",

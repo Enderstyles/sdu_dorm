@@ -97,7 +97,6 @@
           class="grey-unfilled-button"
           style="width: 400px; height: 100px"
           @click="goToConfirmation"
-          :disabled="isBedUnavailable"
       >
         <span class="regular-txt">CHOOSE</span>
       </button>

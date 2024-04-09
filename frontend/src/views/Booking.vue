@@ -1,6 +1,21 @@
 <template>
   <div class="booking">
     <div class="booking__content container">
+      <div class="booking__content_information">
+        <h2 class="semi-bold-txt">Map Of Dormitory</h2>
+        <p class="regular-txt" v-if="bookingStages === 1">
+          Choose the block you want to live in. Pay attention to fact that A and B blocks are for females, C and D blocks for males
+        </p>
+        <p class="regular-txt" v-if="bookingStages === 2">
+          Choose the taraf you want to live in. Every taraf has WC and shower
+        </p>
+        <p class="regular-txt" v-if="bookingStages === 3">
+          Choose the room you want to live in
+        </p>
+        <p class="regular-txt" v-if="bookingStages === 4">
+          Choose the taraf you want to live in. Every taraf has WC and shower
+        </p>
+      </div>
       <div class="booking__content_roadmap">
         <span
             class="medium-txt"
@@ -24,15 +39,18 @@
         </span>
         <span
             class="medium-txt"
+            @click="$router.push('/confirmation')"
+            v-if="timer"
+        >
+          // Confitmation
+        </span>
+        <span
+            class="medium-txt"
             @click="changeStage(4)"
             v-if="selectedRoom"
         >
           // Room {{ selectedRoom }}
         </span>
-      </div>
-      <div class="booking__content_information">
-        <h2 class="semi-bold-txt">Map Of Dormitory</h2>
-        <p class="regular-txt">Choose the block you want to live in. Pay attention to fact that A and B blocks are for females, C and D blocks for males</p>
       </div>
       <div class="booking__content_map">
         <div class="booking__content_map-view">
@@ -67,6 +85,7 @@ export default {
     selectedFloor: parseInt(localStorage.getItem('selectedFloor')) || 0,
     selectedTaraf: parseInt(localStorage.getItem('selectedTaraf')) || 0,
     selectedRoom :  parseInt(localStorage.getItem('selectedRoom')) || 0,
+    timer: parseInt(localStorage.getItem('timerStart')) || 0,
     tarafs: [
       {
         floor: 2,
@@ -177,11 +196,13 @@ export default {
     &_roadmap {
       display: flex;
       align-items: flex-start;
+      justify-content: flex-start;
+      padding-top: 24px;
       gap: 5px;
       width: 100%;
       span {
         cursor: pointer;
-        font-size: 16px;
+        font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         color: $black;
         &:hover {
           color: $secondary;

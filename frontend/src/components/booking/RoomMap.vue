@@ -90,8 +90,11 @@ export default {
     justify-content: space-between;
     background: #F6F6F6;
     border: 1px solid black;
-    width: 580px;
+    width: 480px;
     height: auto;
+    @media screen and (max-width: $pc) {
+      width: 400px;
+    }
     &-static {
       display: flex;
       flex-direction: column;
@@ -99,6 +102,13 @@ export default {
       &-icon {
         padding: 30px;
         width: auto;
+        img {
+          max-width: 70%;
+          height: auto;
+          @media screen and (max-width: $pc) {
+            max-width: 60%;
+          }
+        }
       }
       .center {
         border-bottom: 1px solid black;
@@ -123,9 +133,13 @@ export default {
           justify-content: center;
           background: $available;
           border: 1px solid black;
-          width: 240px;
-          height: 150px;
+          width: 180px;
+          height: 120px;
           cursor: pointer;
+          @media screen and (max-width: $pc) {
+            width: 160px;
+            height: 100px;
+          }
           &:hover {
             background: $secondary;
           }

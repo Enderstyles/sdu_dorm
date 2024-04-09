@@ -73,7 +73,6 @@
                 <p class="errorValid">{{ error.$message }}</p>
               </template>
             </div>
-            <!--            <button @click="sendCode" class="main-button">Send a code</button>-->
           </div>
           <div class="forgot-pass">
             <div class="forgot-pass-input">

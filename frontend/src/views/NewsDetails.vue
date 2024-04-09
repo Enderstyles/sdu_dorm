@@ -94,11 +94,9 @@ export default {
   computed: {
     ...mapGetters(["getUser", "getAuth"]),
     isNotificationDisabled() {
-      // Проверяем наличие совпадения newsID и id в массиве notifications
       return this.notifications.some(notification => notification.id === this.news_id);
     },
     notificationButtonColor() {
-      // Возвращаем серый цвет, если кнопка отключена, иначе возвращаем белый цвет
       return this.isNotificationDisabled ? '#9C9C9C' : '#F8A46F';
     }
   },

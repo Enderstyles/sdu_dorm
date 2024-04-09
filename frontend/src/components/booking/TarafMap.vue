@@ -53,7 +53,7 @@ export default {
         this.$router.push({query: {block: this.$route.query.block, taraf: tarafId }})
         localStorage.setItem("selectedFloor", this.activeFloor);
         localStorage.setItem("selectedTaraf", tarafId);
-        this.$emit("stage-change", 3); // Переключаем на следующий этап
+        this.$emit("stage-change", 3);
       }
     },
     chooseFloor(floor) {
