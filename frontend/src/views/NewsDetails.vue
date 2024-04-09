@@ -94,11 +94,9 @@ export default {
   computed: {
     ...mapGetters(["getUser", "getAuth"]),
     isNotificationDisabled() {
-      // Проверяем наличие совпадения newsID и id в массиве notifications
       return this.notifications.some(notification => notification.id === this.news_id);
     },
     notificationButtonColor() {
-      // Возвращаем серый цвет, если кнопка отключена, иначе возвращаем белый цвет
       return this.isNotificationDisabled ? '#9C9C9C' : '#F8A46F';
     }
   },
@@ -167,8 +165,12 @@ export default {
                 window.location.reload();
               }
             })
-            .catch((e) => {
-              this.$toaster.error(e.message);
+            .catch((err) => {
+              if (err.response.data.messages) {
+                this.$toaster.error(err.response.data.messages[0].message);
+              } else if (err.response.data.detail) {
+                this.$toaster.error(err.response.data.detail);
+              }
             });
       }
     },
@@ -217,7 +219,7 @@ export default {
   gap: 30px;
   width: 100%;
   height: 100%;
-  padding: 260px 0;
+  padding: 200px 0;
   &__back {
     display: flex;
     align-items: flex-start;
@@ -235,7 +237,7 @@ export default {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    gap: 70px;
+    gap: 56px;
     &-box {
       display: flex;
       flex-direction: column;
@@ -247,10 +249,11 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 7px;
+        gap: 10px;
         img {
-          max-width: 450px;
+          max-width: 100%;
           height: auto;
+          object-fit: cover;
         }
         &-block {
           width: 100%;
@@ -277,7 +280,11 @@ export default {
       }
       &-btn {
         button {
-          color: $white;
+          &:hover {
+            color: $white;
+            background: transparent;
+            border: 1px solid $secondary;
+          }
         }
       }
     }
@@ -287,7 +294,7 @@ export default {
       flex-direction: column;
       align-items: flex-start;
       width: 50%;
-      gap: 50px;
+      gap: 44px;
       &-title {
         display: flex;
         flex-direction: column;
@@ -303,7 +310,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 30px;
+        gap: 28px;
         p {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         }

@@ -53,7 +53,7 @@ export default {
         this.$router.push({query: {block: this.$route.query.block, taraf: tarafId }})
         localStorage.setItem("selectedFloor", this.activeFloor);
         localStorage.setItem("selectedTaraf", tarafId);
-        this.$emit("stage-change", 3); // Переключаем на следующий этап
+        this.$emit("stage-change", 3);
       }
     },
     chooseFloor(floor) {
@@ -72,7 +72,7 @@ export default {
   width: 100%;
   height: auto;
   &_rect {
-    max-width: 100%;
+    width: 100%;
     height: auto;
   }
   &_floor {
@@ -95,6 +95,11 @@ export default {
       }
     }
   }
+}
+
+svg {
+  max-width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 42.5671))), 950px);
+  height: 100%;
 }
 
 #taraf {

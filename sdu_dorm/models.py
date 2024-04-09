@@ -6,6 +6,14 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
+class Gender(models.Model):
+    name = models.TextField()
+    value = models.IntegerField(primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+
 def news_image_upload(instance, filename):
     return 'news/{0}/{1}'.format(instance.id, filename)
 
@@ -42,7 +50,7 @@ class AuthUserManager(BaseUserManager):
         Creates and saves a User with the given student_id and password.
         """
         if not student_id:
-            raise ValueError('The given email must be set')
+            raise ValueError('The student id must be set')
         student_id = self.normalize_email(student_id)
         user = self.model(student_id=student_id, **extra_fields)
         user.set_password(password)
@@ -64,7 +72,7 @@ class AuthUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    student_id = models.CharField(_('student_id'), unique=True, max_length=10)
+    student_id = models.CharField(_('student_id'), unique=True, max_length=10, primary_key=True)
     email = models.EmailField(_('Email address'), blank=True)
     first_name = models.CharField(_('First name'), max_length=30, blank=True)
     last_name = models.CharField(_('Last name'), max_length=30, blank=True)
@@ -72,7 +80,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True, blank=True)
     is_staff = models.BooleanField(_('is_staff'), default=False, blank=True)
     age = models.IntegerField(default=18, blank=True)
-    gender = models.IntegerField(default=True)
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE, default=Gender.objects.get(name="male").value)
     grade = models.FloatField(default=1, blank=True)
     major = models.CharField(max_length=25, default='is', blank=True)
     status = models.BooleanField(default=True)
@@ -97,6 +105,9 @@ class Enrollment(models.Model):
     student_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     post = models.ForeignKey(NewsPost, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.post} + {self.student_id}"
 
 
 class AboutPost(models.Model):
@@ -154,6 +165,9 @@ class MainPageModel(models.Model):
     dorm_image4 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
     dorm_image5 = models.ImageField(upload_to='main_page/dorm_images', blank=True)
 
+    def __str__(self):
+        return "Main page"
+
 
 class TakenPlace(models.Model):
     block = models.IntegerField(blank=False, null=False)
@@ -167,3 +181,12 @@ class TakenPlace(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
+
+    def __str__(self):
+        return f"By {self.taken_by}"
+
+
+class PaymentModel(models.Model):
+    invoiceID = models.CharField(unique=True, max_length=15, blank=False, null=False)
+    token = models.TextField(unique=True, blank=False, null=False)
+    amount = models.TextField(blank=False, null=False)

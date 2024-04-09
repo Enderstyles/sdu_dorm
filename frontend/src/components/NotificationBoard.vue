@@ -18,14 +18,11 @@
             Reset
           </span>
         </div>
-<!--        <div class="notification__filter-form-btn">-->
-<!--          <select name="category" v-model="category">-->
-<!--            <option value="all" class="regular-txt">All categories</option>-->
-<!--            <option v-for="cat in categories" :key="cat.id" :value="cat.id" class="regular-txt">{{ cat.category_name }}</option>-->
-<!--          </select>-->
-<!--        </div>-->
         <div class="notification__filter-form-btn">
-          <button class="notification__filter-form-btn-button">
+          <button
+              class="notification__filter-form-btn-button"
+              @click="deleteSelectedNotifications"
+          >
             <img src="@/assets/images/svg/delete.svg">
             <span class="regular-txt">Delete</span>
           </button>
@@ -48,6 +45,11 @@
           v-for="notification in paginatedNotifData"
           :key="notification.id"
       >
+        <input
+            type="checkbox"
+            :value="notification.id"
+            @click="chooseNotifId(notification.id)"
+        >
         <div class="notification__content-block-message">
           <div class="notification__content-block-message-title">
             <div class="notification__content-block-message-title-txt">
@@ -74,28 +76,28 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   data: () => ({
     currentNotifPage: 1,
     pageSize: 6,
-    category: 'all'
+    category: 'all',
+    selectedNotifications: null,
   }),
   props: ["notifData", "categories"],
   computed: {
-    // Вычисляемое свойство для определения начального и конечного индексов текущей страницы
+    ...mapGetters(["getUser", "getAuth"]),
     currentPageStart() {
       return (this.currentNotifPage - 1) * this.pageSize + 1;
     },
     currentPageEnd() {
       return Math.min(this.currentNotifPage * this.pageSize, this.notifData.length);
     },
-    // Вычисляемое свойство для общего количества страниц
     totalPages() {
       return Math.ceil(this.notifData.length / this.pageSize);
     },
-    // Вычисляемое свойство для пагинации данных
     paginatedNotifData() {
-      // Фильтруем уведомления по категории
       let filteredNotifData = this.notifData;
       if (this.category !== 'all') {
         filteredNotifData = filteredNotifData.filter(notification => {
@@ -103,7 +105,6 @@ export default {
         });
       }
 
-      // Вычисляем начальный и конечный индексы для текущей страницы
       const startIndex = (this.currentNotifPage - 1) * this.pageSize;
       return filteredNotifData.slice(startIndex, startIndex + this.pageSize);
     }
@@ -158,6 +159,31 @@ export default {
         return "#1386B7";
       } else {
         return "#F8A46F";
+      }
+    },
+    chooseNotifId(notifId) {
+      this.selectedNotifications = notifId;
+    },
+    deleteSelectedNotifications() {
+      if (!this.selectedNotifications) {
+        this.$toaster.error("Please select the news you want to delete");
+      } else {
+        this.$axios.post('unfollow_post/',
+            {
+              student_id: this.getUser.id,
+              post_id: this.selectedNotifications
+            }
+        )
+          .then(response => {
+            window.location.reload();
+            if(response.message) {
+              this.$toaster.error(response.message);
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting notifications:', error);
+          });
+        console.log('Deleting notifications:', this.selectedNotifications);
       }
     },
     saveNotifPageToLocalStorage() {
@@ -277,6 +303,13 @@ export default {
       padding: 0px 10px 25px 20px;
       background: $white;
       border-top: 0.3px solid #9C9C9C;
+      input[type="checkbox"] {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        outline: none;
+        background: $white;
+      }
       &-message {
         display: flex;
         flex-direction: column;

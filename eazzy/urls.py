@@ -9,8 +9,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from eazzy import settings
 from sdu_dorm import views
-from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, MainPageApi, NewsFeedApi, \
-    NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi, TakeAPlaceApi, GetTakenPlacesApi
+from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, NewsFeedApi, \
+    NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi, TakeAPlaceApi, GetTakenPlacesApi, \
+    CreateStudentApi, UnfollowPostApi, PostLink, FailureLink
+from sdu_dorm.views import MainPageApi
 
 router = routers.DefaultRouter()
 
@@ -31,10 +33,14 @@ urlpatterns = [
     path('api/news/<int:pk>/', NewsObjectApi.as_view(), name='news_object_api'),
     path('api/news_categories/', GetNewsCategoriesApi.as_view(), name='news_categories'),
     path('api/follow_post/', FollowPostApi.as_view(), name='follow'),
+    path('api/unfollow_post/', UnfollowPostApi.as_view(), name='unfollow'),
     path('api/get_followed_posts/', GetAllFollowingPostsApi.as_view(), name='followed_posts'),
     path('api/take_place/', TakeAPlaceApi.as_view(), name='take_place'),
     path('api/get_taken_places/', GetTakenPlacesApi.as_view(), name='get_taken_places'),
-    path('test_celery', views.test, name='test')
+    path('test_celery', views.test, name='test'),
+    path('api/create_student/', CreateStudentApi.as_view(), name='create_student'),
+    path('api/postlink/', PostLink.as_view(), name='post_link'),
+    path('api/failurelink/', FailureLink.as_view(), name='failure_link')
     # path('api/edit_main_page/', EditMainPage.as_view(), name='edit_main_page')
     # path('api/new_student', NewStudentApi.as_view(), name='new_student')
 ]

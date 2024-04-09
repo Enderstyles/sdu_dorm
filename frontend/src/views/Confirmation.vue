@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   data() {
     return {
@@ -43,10 +45,12 @@ export default {
       selectedBed:  parseInt(localStorage.getItem('selectedBed')) || 0,
       timerStart: localStorage.getItem('timerStart') ? parseInt(localStorage.getItem('timerStart')) : null,
       timerDuration: 60,
-      timerInterval: null
+      timerInterval: null,
+      confirmPay: false,
     };
   },
   computed: {
+    ...mapGetters(["getUser", "getAuth"]),
     selectedBlockLetter() {
       const blockMapping = {
         1: 'A',
@@ -62,14 +66,14 @@ export default {
       return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
   },
-  beforeRouteLeave(to, from, next) {
-    if (localStorage.getItem('timerStart') > 0) {
-      this.$toaster.error('You will not be able to leave this page until you have made the payment!');
-      next(false);
-    } else {
-      next();
-    }
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   if (localStorage.getItem('timerStart') > 0) {
+  //     this.$toaster.error('You will not be able to leave this page until you have made the payment!');
+  //     next(false);
+  //   } else {
+  //     next();
+  //   }
+  // },
   created() {
     if (!localStorage.getItem('timerStart')) {
       this.startTimer();
@@ -116,17 +120,50 @@ export default {
       this.$toaster.error('Your time for confirmation and payment has expired!');
     },
     payment() {
-      const auth = 'DCEB8O_ZM5U7SO_T_U5EJQ';
-      const invoiceId = 838438822;
-      const amount = 4700000;
-      halyk.showPaymentWidget(
-          this.createPaymentObject(auth, invoiceId, amount),
-          (response) => {
-            if (response.success) {
-              this.$router.push("/");
+        this.$axios
+          .post(`take_place/`, {
+                taken_by_id: this.getUser.id,
+                block: this.selectedBlock,
+                floor: this.selectedFloor,
+                taraf: this.selectedTaraf,
+                room: this.selectedRoom,
+                place: this.selectedBed,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            this.confirmPay = true;
+            if (response.status === 201) {
+              const auth = response.data.response_data;
+              const invoiceId = response.data.invoiceID;
+              const amount = response.data.amount;
+              console.log(auth);
+              halyk.showPaymentWidget(
+                  this.createPaymentObject(auth, invoiceId, amount),
+                  (response) => {
+                    if (response.success) {
+                      this.$toaster.success('You have successfully purchased a place in the dormitory!');
+                      this.$router.push("/");
+                      this.confirmPay = true;
+                    } else {
+                      this.$toaster.error('An error occurred with the payment');
+                      this.confirmPay = true;
+                    }
+                  }
+              );
             }
-          }
-      );
+          })
+          .catch((err) => {
+            if (err.response.data.message) {
+              this.$toaster.error(err.response.data.message);
+            } else if (err.response.data.detail) {
+              this.$toaster.error(err.response.data.detail);
+            }
+          });
     },
     createPaymentObject(auth, invoiceId, amount) {
       let paymentObject = {
@@ -135,9 +172,9 @@ export default {
         failureBackLink: "",
         postLink: "",
         failurePostLink: "",
-        language: "en",
+        language: "rus",
         description: "Buying a place in an SDU dormitory",
-        accountId: "SDU Dormitory",
+        accountId: "sdu-dormitory",
         terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
         amount: amount,
         currency: "KZT",
@@ -156,7 +193,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 260px 0 80px 0;
+  padding: 200px 0 80px 0;
   gap: 100px;
   width: 100%;
   height: auto;
@@ -169,7 +206,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 100px;
+      gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
       &-choice {
@@ -187,7 +224,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 100px;
+      gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
       &-reservation {
@@ -197,7 +234,7 @@ export default {
         width: 100%;
         gap: 5px;
         h1 {
-          font-size: 128px;
+          font-size: min(max(40px, calc(2.5rem + ((1vw - 3.93px) * 5.7629))), 128px);
         }
       }
       &-payment {
