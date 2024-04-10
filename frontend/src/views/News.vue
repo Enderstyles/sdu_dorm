@@ -211,13 +211,13 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 225px 0;
+  padding: 200px 0;
   &__view {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 30px;
+    gap: 24px;
     width: 100%;
     &_results {
       display: flex;
@@ -230,7 +230,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 30px;
+      gap: 24px;
       width: 100%;
       &-filter {
         display: flex;
@@ -303,13 +303,15 @@ export default {
       }
       &-content {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 75px 100px;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 60px 40px;
+        width: 100%;
         margin: 35px 0;
         &-posts {
           display: flex;
-          align-items: flex-start;
-          width: 100%;
+          align-items: center;
+          justify-content: center;
+          width: auto;
           gap: 40px;
           &-pic {
             display: flex;
@@ -385,6 +387,6 @@ export default {
 }
 
 .news-card {
-  width: 510px;
+  width: 400px;
 }
 </style>

@@ -1,8 +1,13 @@
 import datetime
+import json
+import time
+import requests
 
 from django.http import HttpResponse
+from django.contrib.auth.hashers import make_password
+from django.utils.crypto import get_random_string
 
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -10,7 +15,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
-    TakenPlace
+    TakenPlace, PaymentModel
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
     NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
 
@@ -58,7 +63,7 @@ class ForgotPasswordApi(APIView):
             return Response({'message': 'Does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.update_password(serializer.validated_data)
-        return Response({'success': 'Password has been changed'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Password has been changed'}, status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView):
@@ -68,14 +73,13 @@ class LogoutView(APIView):
     @staticmethod
     def post(request, *args, **kwargs):
         try:
-            print("aa")
             refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)
             token.blacklist()
 
-            return Response(status=status.HTTP_205_RESET_CONTENT)
+            return Response({"message": "Success"}, status=status.HTTP_205_RESET_CONTENT)
         finally:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Unexpected error"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MainPageApi(ListAPIView):
@@ -128,7 +132,7 @@ class NewsObjectApi(RetrieveAPIView):
             serializer = self.get_serializer(queryset)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except NewsPost.DoesNotExist:
-            return Response({"detail": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 # class GetNewsCategoriesApi(RetrieveAPIView):
@@ -171,13 +175,32 @@ class FollowPostApi(APIView):
             student = CustomUser.objects.get(student_id=follower_id)
             post = NewsPost.objects.get(id=post_id)
             if Enrollment.objects.filter(student_id=student, post=post).exists():
-                return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+                return Response({"message": "Already followed"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
             Enrollment.objects.create(student_id=student, post=post, date=datetime.datetime.now())
-            return Response(status=status.HTTP_200_OK)
+            return Response({"message": "Success"}, status=status.HTTP_200_OK)
         except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UnfollowPostApi(APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        try:
+            student_id = request.data["student_id"]
+            post_id = request.data["post_id"]
+
+            student = CustomUser.objects.get(student_id=student_id)
+            post = NewsPost.objects.get(id=post_id)
+            enrollment = Enrollment.objects.filter(student_id=student, post=post)
+            if enrollment.exists():
+                enrollment.delete()
+            return Response({"message": "Success"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetAllFollowingPostsApi(ListAPIView):
@@ -207,15 +230,95 @@ class TakeAPlaceApi(APIView):
     @staticmethod
     def post(request, *args, **kwargs):
         try:
-            student_id = request.data["student_id"]
+            student_id = request.data["taken_by_id"]
+            block = request.data["block"]
+            floor = request.data["floor"]
+            taraf = request.data["taraf"]
+            room_id = request.data["room"]
             place = request.data["place"]
-            student = CustomUser.objects.get(student_id=student_id)
+            print(11212)
+            taken_by = CustomUser.objects.get(student_id=student_id)
+            print(12121)
+            if TakenPlace.objects.filter(taken_by_id=taken_by).exists():
+                return Response({"message": "User already applied for place"}, status=status.HTTP_409_CONFLICT)
+            if TakenPlace.objects.filter(block=block,
+                                         floor=floor,
+                                         taraf=taraf,
+                                         room=room_id,
+                                         place=place).exists():
+                return Response({"message": "Place is already taken"}, status=status.HTTP_409_CONFLICT)
 
-            if TakenPlace.objects.get(place=place).exists():
-                return Response(status=status.HTTP_409_CONFLICT)
+            grant_type = "client_credentials"
+            scope = "payment"
+            client_id = "test"
+            client_secret = "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG"
+            invoice_id = generate_invoice_id()
+            while PaymentModel.objects.filter(invoiceID=invoice_id).exists():
+                invoice_id = generate_invoice_id()
+            amount = 470000
+            currency = "KZT"
+            terminal = "67e34d63-102f-4bd1-898e-370781d0074d"
 
-            TakenPlace.objects.create(place=place, taken_by=student)
+            url = 'https://testoauth.homebank.kz/epay2/oauth2/token'
+            body = {
+                "grant_type": grant_type,
+                "scope": scope,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "invoiceID": invoice_id,
+                "amount": amount,
+                "currency": currency,
+                "terminal": terminal
+            }
+            r = requests.request(method='POST', url=url, data=body)
+            content = r.json()
+            auth = content['access_token']
 
+            PaymentModel.objects.create(invoiceID=invoice_id, token=auth, amount=amount)
+            TakenPlace.objects.create(block=block, floor=floor, taraf=taraf, room=room_id, place=place,
+                                      taken_by_id=taken_by)
+
+            return Response({
+                "message": "Successfully created",
+                "response_data": content,
+                "invoiceID": invoice_id,
+                "amount": amount,
+            }, status=status.HTTP_201_CREATED)
         except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def generate_invoice_id():
+    return get_random_string(15, "0123456789")
+
+
+class CreateStudentApi(CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            serializer = UserInfoSerializer(data=request.data)
+            if serializer.is_valid() and CustomUser.objects.filter(student_id=serializer.validated_data["student_id"]):
+                password = make_password(serializer.validated_data.get("password"))
+                serializer.validated_data["last_login"] = time.strftime('%Y-%m-%d %H:%M:%S')
+                serializer.validated_data["date_joined"] = time.strftime('%Y-%m-%d %H:%M:%S')
+                serializer.validated_data["email"] = str(serializer.validated_data["student_id"]) + "@stu.sdu.edu.kz"
+                serializer.validated_data["is_active"] = True
+                serializer.validated_data["password"] = password
+
+                serializer.save()
+                return Response({"message": "Successfully created!"}, status=status.HTTP_201_CREATED)
+            return Response({"message": "User already exists"}, status.HTTP_409_CONFLICT)
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PostLink(APIView):
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        return Response(status=status.HTTP_200_OK)
+
+
+class FailureLink(APIView):
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        return Response(status=status.HTTP_200_OK)

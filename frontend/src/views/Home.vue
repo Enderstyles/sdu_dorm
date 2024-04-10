@@ -144,11 +144,6 @@
             <h3 class="semi-bold-txt">{{ deadlinesTitle }}</h3>
           </div>
           <div class="home__content-requirements-deadlines-info">
-<!--            <ul class="home__content-requirements-deadlines-info-list">-->
-<!--              <li class="regular-txt">Applications are accepted till August 25.</li>-->
-<!--              <li class="regular-txt">Student house check-in – August 28</li>-->
-<!--            </ul>-->
-<!--            <p class="regular-txt">The number of places at the dormitory are limited. 1st year students are given priority when allocating the places. Students of 2, 3, 4 years can submit their applications after August 25.</p>-->
             <p class="regular-txt">{{ deadlinesDesc }}</p>
           </div>
         </div>
@@ -158,10 +153,6 @@
             <h3 class="semi-bold-txt">{{ docsTitle }}</h3>
           </div>
           <ul class="home__content-requirements-docs-list">
-<!--            <li class="regular-txt">3х4cm sized 2 photos;</li>-->
-<!--            <li class="regular-txt">Copy of Medical №075</li>-->
-<!--            <li class="regular-txt">Copy of National ID;</li>-->
-<!--            <li class="regular-txt">Copy of payment invoice.</li>-->
             <p class="regular-txt">{{ docsDesc }}</p>
           </ul>
         </div>
@@ -511,7 +502,7 @@ export default {
       background: #FAFBFF;
       padding: 80px 0 170px 0;
       width: 100%;
-      height: 910px;
+      height: auto;
       &-view {
         display: flex;
         flex-direction: column;

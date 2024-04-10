@@ -39,6 +39,7 @@ import {mapGetters} from "vuex";
 export default {
   data: () => ({
     block: parseInt(localStorage.getItem('selectedBlock')) || 0,
+    purchasedPlace: [],
   }),
   beforeRouteLeave(to, from, next) {
     const selectedBlock = localStorage.getItem('selectedBlock');
@@ -49,40 +50,75 @@ export default {
   },
   computed: {
     ...mapGetters(["getUser", "getAuth"]),
+    filteredPurchasedPlace() {
+      return this.purchasedPlace.filter(place => place.taken_by === this.getUser.id);
+    }
   },
   methods: {
+    async fetchTakenPlaceData() {
+      await this.$axios
+          .get('get_taken_places/',
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            this.purchasedPlace = response.data;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+    },
     chooseABlock() {
       if(this.getUser.gender === 'Female') {
-        this.block = 1;
-        this.updateSelectedBlock();
-        this.saveSelectedBlock(this.block);
+        if (this.filteredPurchasedPlace.length > 0) {
+          this.$toaster.error("You already have a place");
+        } else {
+          this.block = 1;
+          this.updateSelectedBlock();
+          this.saveSelectedBlock(this.block);
+        }
       } else {
         this.$toaster.error("Only female people can choose this building!");
       }
     },
     chooseBBlock() {
       if(this.getUser.gender === 'Female') {
-        this.block = 2;
-        this.updateSelectedBlock();
-        this.saveSelectedBlock(this.block);
+        if (this.filteredPurchasedPlace.length > 0) {
+          this.$toaster.error("You already have a place");
+        } else {
+          this.block = 2;
+          this.updateSelectedBlock();
+          this.saveSelectedBlock(this.block);
+        }
       } else {
         this.$toaster.error("Only female people can choose this building!");
       }
     },
     chooseCBlock() {
       if(this.getUser.gender === 'Male') {
-        this.block = 3;
-        this.updateSelectedBlock();
-        this.saveSelectedBlock(this.block);
+        if (this.filteredPurchasedPlace.length > 0) {
+          this.$toaster.error("You already have a place");
+        } else {
+          this.block = 3;
+          this.updateSelectedBlock();
+          this.saveSelectedBlock(this.block);
+        }
       } else {
         this.$toaster.error("Only male people can choose this building!");
       }
     },
     chooseDBlock() {
       if(this.getUser.gender === 'Male') {
-        this.block = 4;
-        this.updateSelectedBlock();
-        this.saveSelectedBlock(this.block);
+        if (this.filteredPurchasedPlace.length > 0) {
+          this.$toaster.error("You already have a place");
+        } else {
+          this.block = 3;
+          this.updateSelectedBlock();
+          this.saveSelectedBlock(this.block);
+        }
       } else {
         this.$toaster.error("Only male people can choose this building!");
       }
@@ -97,6 +133,8 @@ export default {
     },
   },
   created() {
+    this.fetchTakenPlaceData();
+    console.log(this.filteredPurchasedPlace);
   }
 }
 </script>
@@ -109,6 +147,12 @@ export default {
   width: 100%;
   height: auto;
 }
+
+svg {
+  max-width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 63.1958))), 1265px);
+  height: 100%;
+}
+
 .boys-block {
   max-width: 100%;
   height: auto;

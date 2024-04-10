@@ -7,14 +7,19 @@
           <p class="news-card__content-left-block1-date regular-txt">{{ formatDate(item.date_of_the_event) }}</p>
         </div>
         <div class="news-card__content-left-block2">
-          <p class="news-card__content-left-block2-location regular-txt">{{ item.place_of_the_event }}</p>
+          <p class="news-card__content-left-block2-location regular-txt" v-if="item.place_of_the_event">
+            {{ item.place_of_the_event }}
+          </p>
+          <p class="news-card__content-left-block2-location regular-txt" v-else>
+            Not defined
+          </p>
         </div>
       </div>
       <div class="news-card__content-right">
         <div class="news-card__content-right-txt">
           <div class="news-card__content-right-txt-title">
             <span class="light-txt">{{ getCategoryName(item.category_of_the_event) }}</span>
-            <h1 class="medium-txt">{{ item.news_title }}</h1>
+            <h3 class="medium-txt">{{ item.news_title }}</h3>
           </div>
           <p class="regular-txt" v-text="item.news_description"></p>
         </div>
@@ -61,7 +66,7 @@ export default {
   height: 510px;
   z-index: 3;
   &_pic {
-    max-width: 520px;
+    max-width: 510px;
     height: 230px;
     object-fit: cover;
     border-radius: 25px 25px 0 0;
@@ -130,8 +135,8 @@ export default {
             font-size: 12px;
             font-style: italic;
           }
-          h1 {
-            font-size: 32px;
+          h3 {
+            font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -139,7 +144,7 @@ export default {
           }
         }
         p {
-          font-size: 20px;
+          font-size: min(max(14px, calc(0.875rem + ((1vw - 3.93px) * 0.3929))), 20px);
           display: -webkit-box;
           -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;

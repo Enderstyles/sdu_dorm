@@ -3,36 +3,40 @@
     <div class="bookboard__block">
       <h3 class="medium-txt">Reserved place</h3>
       <div class="bookboard__block_info">
-        <div class="bookboard__block_info-place">
+        <div
+            class="bookboard__block_info-place"
+            v-for="(place, idx) in myPlace"
+            :key="place"
+        >
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
               <p class="regular-txt">Block</p>
             </div>
-            <p class="regular-txt">B</p>
+            <p class="regular-txt">{{ blockLetters(place.block) }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
               <p class="regular-txt">Floor</p>
             </div>
-            <p class="regular-txt">4</p>
+            <p class="regular-txt">{{ place.floor }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
               <p class="regular-txt">Taraf</p>
             </div>
-            <p class="regular-txt">1</p>
+            <p class="regular-txt">{{ place.taraf }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
               <p class="regular-txt">Room</p>
             </div>
-            <p class="regular-txt">203</p>
+            <p class="regular-txt">{{ place.room }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
               <p class="regular-txt">Bed</p>
             </div>
-            <p class="regular-txt">2</p>
+            <p class="regular-txt">{{ place.place }}</p>
           </div>
         </div>
 
@@ -62,17 +66,28 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
+  props: ['myPlace'],
   data: () => ({
   }),
   computed: {
     ...mapGetters(["getUser", "getAuth"]),
   },
   methods: {
-
+    blockLetters(block) {
+      const blockMapping = {
+        1: 'A',
+        2: 'B',
+        3: 'C',
+        4: 'D'
+      };
+      return blockMapping[block] || '';
+    }
   },
+  created() {
+  }
 }
 </script>
 

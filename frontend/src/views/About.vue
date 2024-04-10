@@ -205,6 +205,9 @@ export default {
   width: 100%;
   height: 100%;
   padding: 140px 0;
+  @media screen and (max-width: $pc) {
+    padding: 125px 0;
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -216,8 +219,9 @@ export default {
       flex-direction: column;
       align-items: center;
       background: $primary;
-      padding: 85px 0 65px 0;
-      gap: 65px;
+      padding: 60px 0;
+      width: 100%;
+      gap: 56px;
       position: relative;
       &-tabs {
         display: flex;
@@ -226,7 +230,7 @@ export default {
         background: $white;
         border-radius: 25px;
         width: 100%;
-        gap: 35px;
+        gap: 32px;
         &-button {
           display: flex;
           align-items: center;
@@ -254,7 +258,7 @@ export default {
           max-width: 370px;
           height: auto;
           p {
-            font-size: 26px;
+            font-size: min(max(18px, calc(1.125rem + ((1vw - 3.93px) * 0.5239))), 26px);
           }
         }
         &-contacts {
@@ -264,7 +268,7 @@ export default {
           justify-content: flex-start;
           max-width: 735px;
           height: auto;
-          gap: 50px;
+          gap: 48px;
           &-services {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -300,13 +304,15 @@ export default {
               overflow-y: auto;
             }
           }
-          &-pic {
-            display: flex;
-            align-items: center;
-            img {
-              max-width: 100%;
-              height: auto;
-            }
+        }
+        &-pic {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          height: 293px;
+          img {
+            width: 100%;
+            height: 293px;
           }
         }
       }

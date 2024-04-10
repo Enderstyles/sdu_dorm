@@ -86,7 +86,7 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 60px 0 220px 0;
+  padding: 64px 0;
   background: $primary;
   color: $white;
   border-top-left-radius: 50px;
@@ -145,6 +145,11 @@ export default {
         li {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           cursor: pointer;
+          transition: opacity 0.15s linear;
+          &:hover {
+            padding-bottom: 5px;
+            border-bottom: 1px solid $white;
+          }
         }
       }
     }

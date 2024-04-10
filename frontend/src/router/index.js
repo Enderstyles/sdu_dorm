@@ -8,6 +8,7 @@ import NewsDetails from "@/views/NewsDetails.vue";
 import Booking from "@/views/Booking.vue";
 import store from "@/store";
 import Confirmation from "@/views/Confirmation.vue";
+import NotFound from "@/views/NotFound.vue";
 
 const routes = [
     {
@@ -50,6 +51,11 @@ const routes = [
         name: 'news-detail',
         component: NewsDetails,
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: NotFound
+    },
 ]
 
 const router = createRouter({
@@ -61,26 +67,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    // Check if the user is already authenticated
     if (localStorage.getItem('access_token')) {
-        // If authenticated, prevent access to 'login' and 'create-account' pages
         if (to.name === 'login') {
-            // Redirect to the home page or another appropriate page
             next('/');
         } else {
-            // Allow access to other routes
             next();
         }
     } else {
-        // User is not authenticated, continue with the regular logic
-        // Check if the route requires authentication
         if (to.meta.requiresAuth) {
-            // Check if the user is authenticated
             if (store.getters.getAuth) {
-                // User is authenticated, proceed to the route
                 next();
             } else {
-                // User is not authenticated, redirect to the login page
                 next('/login');
             }
         } else {

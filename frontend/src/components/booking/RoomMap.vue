@@ -21,7 +21,7 @@
         >
           <div
               class="room-map_main-rooms-block-placement"
-              :class="{'activeRoom': room === activeRoom}"
+              :class="{'activeRoom': room === activeRoom, 'unavailable': isRoomUnavailable(room)}"
               @click="selectRoom(room)"
           >
             <p class="bold-txt">{{room}}</p>
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  props: ["rooms"],
+  props: ["rooms", "takenPlaces"],
   data() {
     return {
       activeRoom: parseInt(localStorage.getItem('selectedRoom')) || 0,
@@ -55,16 +55,24 @@ export default {
       else {
         return [];
       }
-    }
+    },
   },
   methods: {
     selectRoom(roomNum) {
-      this.activeRoom = roomNum;
-      localStorage.setItem("selectedRoom", roomNum);
-      this.$router.push({query: {block: this.$route.query.block, taraf: this.$route.query.taraf, room: roomNum}})
-      this.$emit("stage-change", 4);
+      if (!this.isRoomUnavailable(roomNum)) {
+        this.activeRoom = roomNum;
+        localStorage.setItem("selectedRoom", roomNum);
+        this.$router.push({query: {block: this.$route.query.block, taraf: this.$route.query.taraf, room: roomNum}})
+        this.$emit("stage-change", 4);
+      } else {
+        this.$toaster.error('All the beds in this room are occupied');
+      }
+    },
+    isRoomUnavailable(roomNum) {
+      const takenBeds = this.takenPlaces.filter(place => place.room === roomNum);
+      return takenBeds.length === 4;
     }
-  }
+  },
 }
 </script>
 
@@ -82,8 +90,11 @@ export default {
     justify-content: space-between;
     background: #F6F6F6;
     border: 1px solid black;
-    width: 580px;
+    width: 480px;
     height: auto;
+    @media screen and (max-width: $pc) {
+      width: 400px;
+    }
     &-static {
       display: flex;
       flex-direction: column;
@@ -91,6 +102,13 @@ export default {
       &-icon {
         padding: 30px;
         width: auto;
+        img {
+          max-width: 70%;
+          height: auto;
+          @media screen and (max-width: $pc) {
+            max-width: 60%;
+          }
+        }
       }
       .center {
         border-bottom: 1px solid black;
@@ -115,9 +133,13 @@ export default {
           justify-content: center;
           background: $available;
           border: 1px solid black;
-          width: 240px;
-          height: 150px;
+          width: 180px;
+          height: 120px;
           cursor: pointer;
+          @media screen and (max-width: $pc) {
+            width: 160px;
+            height: 100px;
+          }
           &:hover {
             background: $secondary;
           }
@@ -128,5 +150,9 @@ export default {
 }
 .activeRoom {
   background: $secondary !important;
+}
+.unavailable {
+  background: #FFDFDF;
+  cursor: not-allowed;
 }
 </style>
