@@ -249,7 +249,7 @@ class TakeAPlaceApi(APIView):
                 return Response({"message": "Place is already taken"}, status=status.HTTP_409_CONFLICT)
 
             grant_type = "client_credentials"
-            scope = "webapi webapi usermanagement email_send verification statement statistics payment"
+            scope = "payment"
             client_id = "test"
             client_secret = "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG"
             invoice_id = generate_invoice_id()
