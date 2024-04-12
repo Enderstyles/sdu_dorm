@@ -46,7 +46,6 @@ export default {
       timerStart: localStorage.getItem('timerStart') ? parseInt(localStorage.getItem('timerStart')) : null,
       timerDuration: 60,
       timerInterval: null,
-      confirmPay: false,
     };
   },
   computed: {
@@ -80,6 +79,7 @@ export default {
     } else {
       this.restoreTimer();
     }
+    this.createPaymentObject();
   },
   beforeDestroy() {
     clearInterval(this.timerInterval);
@@ -136,26 +136,24 @@ export default {
               }
           )
           .then((response) => {
-            this.confirmPay = true;
-            if (response.status === 201) {
-              const auth = response.data.response_data;
-              const invoiceId = response.data.invoiceID;
-              const amount = response.data.amount;
+              let auth = response.data.response_data;
+              let invoiceId = response.data.invoiceID;
+              let amount = response.data.amount;
               console.log(auth);
               halyk.showPaymentWidget(
                   this.createPaymentObject(auth, invoiceId, amount),
                   (response) => {
                     if (response.success) {
                       this.$toaster.success('You have successfully purchased a place in the dormitory!');
+                      this.handleTimeout();
                       this.$router.push("/");
-                      this.confirmPay = true;
                     } else {
                       this.$toaster.error('An error occurred with the payment');
-                      this.confirmPay = true;
+                      this.handleTimeout();
+                      this.$router.push("/booking");
                     }
                   }
               );
-            }
           })
           .catch((err) => {
             if (err.response.data.message) {
@@ -168,23 +166,24 @@ export default {
     createPaymentObject(auth, invoiceId, amount) {
       let paymentObject = {
         invoiceId: invoiceId,
-        backLink: "",
-        failureBackLink: "",
-        postLink: "localhost:8000/api/postlink/",
-        failurePostLink: "localhost:8000/api/failurelink/",
+        backLink: "https://example.kz",
+        failureBackLink: "https://example.kz",
+        postLink: "https://example.kz",
+        failurePostLink: "https://example.kz",
         language: "rus",
-        description: "Buying a place in an SDU dormitory",
-        accountId: "sdu-dormitory",
+        description: "SDU Dormitory booking system",
+        accountId: "test",
         terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
         amount: amount,
         currency: "KZT",
+        phone: "+7 (777) 777 77 77",
+        email: "example@mail.ru",
         cardSave: true, //Параметр должен передаваться как Boolean
       };
       paymentObject.auth = auth;
       return paymentObject;
     },
   },
-
 }
 </script>
 

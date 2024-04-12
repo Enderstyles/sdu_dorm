@@ -127,7 +127,6 @@ export default {
       localStorage.setItem('selectedBlock', block);
     },
     updateSelectedBlock() {
-      this.$store.commit('SET_SELECTED_BLOCK', this.block);
       this.$router.push({query: {block: this.block}})
       this.$emit('stage-change', 2);
     },

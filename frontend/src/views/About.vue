@@ -213,7 +213,7 @@ export default {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    gap: 100px;
+    gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
     &_main {
       display: flex;
       flex-direction: column;
@@ -311,8 +311,10 @@ export default {
           width: 100%;
           height: 293px;
           img {
-            width: 100%;
+            max-width: 100%;
             height: 293px;
+            border-radius: 25px;
+            object-fit: cover;
           }
         }
       }
@@ -323,7 +325,6 @@ export default {
         width: 100%;
         height: 390px;
         background: #FAFBFF;
-        margin-top: 100px;
         &-block {
           display: flex;
           align-items: center;

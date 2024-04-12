@@ -137,7 +137,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import NotificationBoard from "@/components/NotificationBoard.vue";
-import BookingBoard from "@/components/booking/BookingBoard.vue";
+import BookingBoard from "@/components/BookingBoard.vue";
 export default {
   components: {BookingBoard, NotificationBoard},
   data: () => ({

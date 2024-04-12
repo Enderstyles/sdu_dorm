@@ -170,9 +170,7 @@ export default {
     },
     filterNews() {
       this.sortedNewsData = this.filterNewsByDate();
-      if (this.category === 'all') {
-        this.sortedNewsData = this.sortedNewsByDate;
-      } else {
+      if (this.category !== 'all') {
         this.sortedNewsData = this.sortedNewsData.filter((item) => {
           return item.category_of_the_event === this.category;
         });

@@ -5,6 +5,7 @@
           class="home__content-main"
           :style="{ backgroundImage: `url('${mainBanner}')` }"
       >
+        <div class="home__content-main-back"></div>
         <div class="home__content-main-info container">
           <h1 class="extra-bold-txt">{{ mainTitle }}</h1>
           <p class="regular-txt">
@@ -324,7 +325,7 @@ export default {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 7.8585))), 150px);
+    gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
     padding-bottom: 150px;
     &-main {
       display: flex;
@@ -336,6 +337,17 @@ export default {
       width: 100%;
       color: $white;
       padding: 90px 0;
+      position: relative;
+      z-index: 1;
+      &-back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(38, 38, 38, 0.5);
+        z-index: 2;
+      }
       &-info {
         display: flex;
         flex-direction: column;
@@ -343,6 +355,7 @@ export default {
         justify-content: flex-end;
         height: 100%;
         gap: 30px;
+        z-index: 3;
         p {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           text-align: center;
@@ -432,7 +445,7 @@ export default {
       flex-direction: column;
       align-items: center;
       width: 100%;
-      gap: 77px;
+      gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 2.6195))), 60px);
       &-title {
         display: flex;
         justify-content: flex-start;
@@ -443,7 +456,7 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 60px;
+        gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 2.6195))), 60px);
         width: 100%;
         height: 100%;
         img {
@@ -503,6 +516,9 @@ export default {
       padding: 80px 0 170px 0;
       width: 100%;
       height: auto;
+      @media screen and (max-width: $pc) {
+        padding: 60px 0 80px 0;
+      }
       &-view {
         display: flex;
         flex-direction: column;
@@ -533,6 +549,9 @@ export default {
             max-width: 100%;
             height: auto;
             margin-bottom: 100px;
+            @media screen and (max-width: $pc) {
+              margin-bottom: 50px;
+            }
           }
           .swiper-wrapper {
             display: flex;

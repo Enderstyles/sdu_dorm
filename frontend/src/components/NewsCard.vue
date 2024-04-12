@@ -65,6 +65,9 @@ export default {
   max-width: 510px;
   height: 510px;
   z-index: 3;
+  @media screen and (max-width: $pc) {
+    height: 450px;
+  }
   &_pic {
     max-width: 510px;
     height: 230px;
