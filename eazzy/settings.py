@@ -30,6 +30,7 @@ ALLOWED_HOSTS = [
     'alazizaskhat.pythonanywhere.com',
     'localhost',
     '77.243.80.198',
+    'admin.sdudorm.kz'
 ]
 
 AUTH_USER_MODEL = 'sdu_dorm.CustomUser'
@@ -88,12 +89,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://alazizaskhat.pythonanywhere.com",
     "https://www.sdudorm.kz",
     "https://admin.sdudorm.kz",
-    "https://www.admin.sdudorm.kz"
+    "https://www.admin.sdudorm.kz",
     "http://77.243.80.198:8000",
     "http://77.243.80.198",
     "http://77.243.80.198:8080",
-    "http://77.243.80.198:8010"
-
+    "http://77.243.80.198:8010",
 ]
 
 MIDDLEWARE = [
