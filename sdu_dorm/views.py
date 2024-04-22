@@ -16,7 +16,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
     TakenPlace, PaymentModel, UploadDocumentsModel
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
-    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer, DocumentsSerializer
+    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
 
 from .tasks import check_event
 
@@ -319,6 +319,20 @@ class PostLink(APIView):
 
 
 class FailureLink(APIView):
+    @staticmethod
+    def post(request, *args, **kwargs):
+        print(request.data)
+        return Response(status=status.HTTP_200_OK)
+
+
+class BackLink(APIView):
+    @staticmethod
+    def post(request, *args, **kwargs):
+        print(request.data)
+        return Response(status=status.HTTP_200_OK)
+
+
+class FailureBackLink(APIView):
     @staticmethod
     def post(request, *args, **kwargs):
         print(request.data)
