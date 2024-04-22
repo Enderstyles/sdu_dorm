@@ -1,5 +1,4 @@
 import datetime
-import json
 import time
 import requests
 
@@ -15,9 +14,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
-    TakenPlace, PaymentModel
+    TakenPlace, PaymentModel, UploadDocumentsModel
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
-    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
+    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer, DocumentsSerializer
 
 from .tasks import check_event
 
@@ -236,9 +235,9 @@ class TakeAPlaceApi(APIView):
             taraf = request.data["taraf"]
             room_id = request.data["room"]
             place = request.data["place"]
-            print(11212)
+
             taken_by = CustomUser.objects.get(student_id=student_id)
-            print(12121)
+
             if TakenPlace.objects.filter(taken_by_id=taken_by).exists():
                 return Response({"message": "User already applied for place"}, status=status.HTTP_409_CONFLICT)
             if TakenPlace.objects.filter(block=block,
@@ -313,12 +312,45 @@ class CreateStudentApi(CreateAPIView):
 
 
 class PostLink(APIView):
-    def post(self, request, *args, **kwargs):
+    @staticmethod
+    def post(request, *args, **kwargs):
         print(request.data)
         return Response(status=status.HTTP_200_OK)
 
 
 class FailureLink(APIView):
-    def post(self, request, *args, **kwargs):
+    @staticmethod
+    def post(request, *args, **kwargs):
         print(request.data)
         return Response(status=status.HTTP_200_OK)
+
+
+class UploadDocumentsApi(APIView):
+    @staticmethod
+    def post(request, *args, **kwargs):
+        try:
+            student = CustomUser.objects.get(student_id=request.data["student_id"])
+            if UploadDocumentsModel.objects.filter(student=student).exists():
+                return Response({"message": "already uploaded"}, status=status.HTTP_409_CONFLICT)
+            application = request.FILES["application"]
+            photo = request.FILES["photo"]
+            identity_card = request.FILES["identity_card"]
+            form_075 = request.FILES["form_075"]
+            payment_check = request.FILES["payment_check"]
+            power_of_attorney = request.FILES["power_of_attorney"]
+            address_certificate = request.FILES["address_certificate"]
+            university_admission_form = request.FILES["university_admission_form"]
+
+            UploadDocumentsModel.objects.create(student=student,
+                                                application=application,
+                                                photo=photo,
+                                                identity_card=identity_card,
+                                                form_075=form_075,
+                                                payment_check=payment_check,
+                                                power_of_attorney=power_of_attorney,
+                                                address_certificate=address_certificate,
+                                                university_admission_form=university_admission_form)
+
+            return Response({"message": "Error"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)

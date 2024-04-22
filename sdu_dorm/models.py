@@ -14,6 +14,14 @@ class Gender(models.Model):
         return self.name
 
 
+class CitizenshipModel(models.Model):
+    status = models.TextField(blank=False, null=False)
+    value = models.IntegerField(primary_key=True)
+
+    def __str__(self):
+        return self.status
+
+
 def news_image_upload(instance, filename):
     return 'news/{0}/{1}'.format(instance.id, filename)
 
@@ -88,7 +96,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profile_pic = models.ImageField(upload_to='profile_pics', default='profile_pics/default.jpg')
     isStudent = models.BooleanField(default=True)
     follows = models.ManyToManyField(NewsPost, through="Enrollment")
-
+    citizenship = models.ForeignKey(CitizenshipModel,
+                                    on_delete=models.CASCADE,
+                                    default=CitizenshipModel.objects.get(status="Is citizen").value)
     objects = AuthUserManager()
 
     USERNAME_FIELD = 'student_id'
@@ -190,3 +200,18 @@ class PaymentModel(models.Model):
     invoiceID = models.CharField(unique=True, max_length=15, blank=False, null=False)
     token = models.TextField(unique=True, blank=False, null=False)
     amount = models.TextField(blank=False, null=False)
+
+
+class UploadDocumentsModel(models.Model):
+    student = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    application = models.FileField(upload_to='documents/applications')
+    photo = models.FileField(upload_to='documents/photos')
+    identity_card = models.FileField(upload_to='documents/identity_cards')
+    form_075 = models.FileField(upload_to='documents/form_075')
+    payment_check = models.FileField(upload_to='documents/checks')
+    power_of_attorney = models.FileField(upload_to='documents/powers_of_attorney')
+    address_certificate = models.FileField(upload_to='documents/address_certificates')
+    university_admission_form = models.FileField(upload_to='documents/admission_forms')
+
+    def __str__(self):
+        return f"{self.student.student_id}"

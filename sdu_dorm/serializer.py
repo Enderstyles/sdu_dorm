@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, TakenPlace, PaymentModel
+from .models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, TakenPlace, PaymentModel, \
+    UploadDocumentsModel
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -74,4 +75,10 @@ class TakeASeatSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentModel
+        fields = '__all__'
+
+
+class DocumentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UploadDocumentsModel
         fields = '__all__'
