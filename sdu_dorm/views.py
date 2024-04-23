@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
-    TakenPlace, PaymentModel, UploadDocumentsModel
+    TakenPlaces, PaymentModel, UploadDocumentsModel
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
     NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
 
@@ -220,7 +220,7 @@ class GetTakenPlacesApi(ListAPIView):
     serializer_class = TakeASeatSerializer
 
     def get_queryset(self):
-        return TakenPlace.objects.all()
+        return TakenPlaces.objects.all()
 
 
 class TakeAPlaceApi(APIView):
@@ -238,13 +238,13 @@ class TakeAPlaceApi(APIView):
 
             taken_by = CustomUser.objects.get(student_id=student_id)
 
-            if TakenPlace.objects.filter(taken_by_id=taken_by).exists():
+            if TakenPlaces.objects.filter(taken_by_id=taken_by).exists():
                 return Response({"message": "User already applied for place"}, status=status.HTTP_409_CONFLICT)
-            if TakenPlace.objects.filter(block=block,
-                                         floor=floor,
-                                         taraf=taraf,
-                                         room=room_id,
-                                         place=place).exists():
+            if TakenPlaces.objects.filter(block=block,
+                                          floor=floor,
+                                          taraf=taraf,
+                                          room=room_id,
+                                          place=place).exists():
                 return Response({"message": "Place is already taken"}, status=status.HTTP_409_CONFLICT)
 
             grant_type = "client_credentials"
@@ -274,8 +274,8 @@ class TakeAPlaceApi(APIView):
             auth = content['access_token']
 
             PaymentModel.objects.create(invoiceID=invoice_id, token=auth, amount=amount)
-            TakenPlace.objects.create(block=block, floor=floor, taraf=taraf, room=room_id, place=place,
-                                      taken_by_id=taken_by)
+            TakenPlaces.objects.create(block=block, floor=floor, taraf=taraf, room=room_id, place=place,
+                                       taken_by_id=taken_by)
 
             return Response({
                 "message": "Successfully created",
@@ -364,7 +364,6 @@ class UploadDocumentsApi(APIView):
                                                 power_of_attorney=power_of_attorney,
                                                 address_certificate=address_certificate,
                                                 university_admission_form=university_admission_form)
-
-            return Response({"message": "Error"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Success"}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)

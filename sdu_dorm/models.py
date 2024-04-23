@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+import os
 # Create your models here.
 
 
@@ -179,7 +180,7 @@ class MainPageModel(models.Model):
         return "Main page"
 
 
-class TakenPlace(models.Model):
+class TakenPlaces(models.Model):
     block = models.IntegerField(blank=False, null=False)
     floor = models.IntegerField(blank=False, null=False)
     taraf = models.IntegerField(blank=False, null=False)
@@ -202,16 +203,21 @@ class PaymentModel(models.Model):
     amount = models.TextField(blank=False, null=False)
 
 
+def get_upload_path(instance, filename):
+    # Construct the upload path based on student_id
+    return os.path.join('documents', str(instance.student.student_id), filename)
+
+
 class UploadDocumentsModel(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    application = models.FileField(upload_to='documents/applications')
-    photo = models.FileField(upload_to='documents/photos')
-    identity_card = models.FileField(upload_to='documents/identity_cards')
-    form_075 = models.FileField(upload_to='documents/form_075')
-    payment_check = models.FileField(upload_to='documents/checks')
-    power_of_attorney = models.FileField(upload_to='documents/powers_of_attorney')
-    address_certificate = models.FileField(upload_to='documents/address_certificates')
-    university_admission_form = models.FileField(upload_to='documents/admission_forms')
+    application = models.FileField(upload_to=get_upload_path, blank=True)
+    photo = models.FileField(upload_to=get_upload_path, blank=True)
+    identity_card = models.FileField(upload_to=get_upload_path, blank=True)
+    form_075 = models.FileField(upload_to=get_upload_path, blank=True)
+    payment_check = models.FileField(upload_to=get_upload_path, blank=True)
+    power_of_attorney = models.FileField(upload_to=get_upload_path, blank=True)
+    address_certificate = models.FileField(upload_to=get_upload_path, blank=True)
+    university_admission_form = models.FileField(upload_to=get_upload_path, blank=True)
 
     def __str__(self):
         return f"{self.student.student_id}"
