@@ -16,7 +16,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from sdu_dorm.models import CustomUser, MainPageModel, NewsPost, NewsCategories, AboutPost, Enrollment, \
     TakenPlaces, PaymentModel, UploadDocumentsModel
 from sdu_dorm.serializer import UserInfoSerializer, AboutSerializer, ChangePasswordSerializer, MainPageSerializer, \
-    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer
+    NewsSerializer, NewsCategoriesSerializer, NewsObjectSerializer, TakeASeatSerializer, DocumentsSerializer
 
 from .tasks import check_event
 
@@ -365,5 +365,18 @@ class UploadDocumentsApi(APIView):
                                                 address_certificate=address_certificate,
                                                 university_admission_form=university_admission_form)
             return Response({"message": "Success"}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetDocumentsApi(ListAPIView):
+    def get(self, request, *args, **kwargs):
+        student = CustomUser.objects.get(student_id=request.user.student_id)
+        try:
+            if UploadDocumentsModel.objects.filter(student=student).exists():
+                data = UploadDocumentsModel.objects.get(student=student)
+                serializer = DocumentsSerializer(data)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({"message": "not uploaded"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
