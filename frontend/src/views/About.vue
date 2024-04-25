@@ -51,6 +51,7 @@
           <Swiper
               :options="swiperOptions"
               :pagination="paginationOptions"
+              :autoplay="true"
               :slides-per-view="1"
               :space-between="40"
               ref="swiper"
@@ -108,11 +109,12 @@
 
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import SwiperCore, { Pagination } from 'swiper'
+import SwiperCore, {Autoplay, Navigation, Pagination} from 'swiper'
 import 'swiper/css';
+import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
-SwiperCore.use([Pagination]);
+SwiperCore.use([Pagination, Navigation, Autoplay]);
 export default {
   components: {Swiper, SwiperSlide},
   data() {
@@ -126,10 +128,6 @@ export default {
       activeTab: 1,
       swiperOptions: {
         loop: true,
-        autoplay: {
-          delay: 5000,
-          disableOnInteraction: false,
-        },
       },
       paginationOptions: {
         el: '.swiper-pagination',

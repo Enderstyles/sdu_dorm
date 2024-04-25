@@ -81,7 +81,7 @@ export default {
       results: 0,
       pages: 1,
       currentPage: 1,
-      pageSize: 10,
+      pageSize: 12,
       category: 'all',
       fromDate: null,
       untilDate: null,

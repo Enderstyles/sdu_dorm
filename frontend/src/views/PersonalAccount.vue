@@ -5,10 +5,12 @@
         <div class="account__content-info-profile">
           <div class="account__content-info-profile-nav">
             <div class="account__content-info-profile-nav-pic">
-              <img
-                  :src="getUser.avatar"
-                  alt="avatar"
-              >
+              <div class="account__content-info-profile-nav-pic-avatar">
+                <img
+                    :src="getUser.avatar"
+                    alt="avatar"
+                >
+              </div>
               <h3 class="semi-bold-txt">{{ getUser.name }}</h3>
             </div>
             <div class="account__content-info-profile-nav-board">
@@ -46,6 +48,25 @@
                   <path d="M5 8.33334V31.6667C5 34.4333 11.6667 36.6667 20 36.6667C28.3333 36.6667 35 34.4333 35 31.6667V8.33334" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <p class="regular-txt">Booking</p>
+              </div>
+              <div
+                  class="account__content-info-profile-nav-board-link"
+                  @click.stop="docsBoard"
+                  :class="{ 'activeBoard': documents === true }"
+              >
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_1545_14817)">
+                    <path d="M2.60002 35.8857L1.42859 15.8857C1.40423 15.6842 1.42308 15.4799 1.48388 15.2863C1.54468 15.0926 1.64604 14.9142 1.78121 14.7628C1.91637 14.6114 2.08224 14.4906 2.26777 14.4083C2.4533 14.326 2.65422 14.2842 2.85716 14.2857H16.0286C16.3488 14.2877 16.6595 14.3951 16.9125 14.5914C17.1656 14.7876 17.347 15.0618 17.4286 15.3714L18.5714 20H37.1429C37.3405 19.9994 37.5361 20.0397 37.7173 20.1186C37.8985 20.1974 38.0614 20.313 38.1957 20.458C38.33 20.603 38.4327 20.7743 38.4973 20.961C38.562 21.1477 38.5873 21.3459 38.5714 21.5429L37.4572 35.8286C37.3996 36.546 37.0733 37.2153 36.5436 37.7027C36.0139 38.19 35.3198 38.4594 34.6 38.4571H5.45716C4.7464 38.4607 4.05983 38.1992 3.53152 37.7237C3.0032 37.2483 2.67109 36.5929 2.60002 35.8857Z" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.99998 8.57145V2.85716C9.99998 2.47828 10.1505 2.11492 10.4184 1.84701C10.6863 1.5791 11.0497 1.42859 11.4285 1.42859H35.7143C36.0931 1.42859 36.4565 1.5791 36.7244 1.84701C36.9923 2.11492 37.1428 2.47828 37.1428 2.85716V14.2857" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21.4286 8.57144H30" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_1545_14817">
+                      <rect width="40" height="40" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+                <p class="regular-txt">Documents</p>
               </div>
               <div
                   class="account__content-info-profile-nav-board-link"
@@ -94,28 +115,42 @@
               <div class="account__content-info-profile-infoboard-haveNotif" v-if="notifData.length > 0">
                 <NotificationBoard :notifData="notifData" :categories="categoryData"/>
               </div>
-              <div class="account__content-info-profile-infoboard-noNotif" v-else>
-                <div class="account__content-info-profile-infoboard-noNotif-message">
+              <div class="account__content-info-profile-infoboard-nodata" v-else>
+                <div class="account__content-info-profile-infoboard-nodata-message">
                   <p class="regular-txt">You don’t have any notifications yet</p>
                   <span class="regular-txt">Add a reminder about some news and it will appear here</span>
                 </div>
-                <div class="account__content-info-profile-infoboard-noNotif-btns">
+                <div class="account__content-info-profile-infoboard-nodata-btns">
                   <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/news')">Go back to news</button>
                 </div>
               </div>
             </template>
             <template v-if="booking">
-              <div class="account__content-info-profile-infoboard-noBooking" v-if="filteredMyPlace.length === 0">
-                <div class="account__content-info-profile-infoboard-noBooking-message">
+              <div class="account__content-info-profile-infoboard-nodata" v-if="filteredMyPlace.length === 0">
+                <div class="account__content-info-profile-infoboard-nodata-message">
                   <p class="regular-txt">You didn’t book a room yet</p>
                   <span class="regular-txt">After booking all needed information can be found here</span>
                 </div>
-                <div class="account__content-info-profile-infoboard-noBooking-btns">
+                <div class="account__content-info-profile-infoboard-nodata-btns">
                   <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/booking')">Go back to booking</button>
                 </div>
               </div>
               <div class="account__content-info-profile-infoboard-haveBooking" v-else>
                 <BookingBoard :myPlace="filteredMyPlace"/>
+              </div>
+            </template>
+            <template v-if="documents">
+              <div class="account__content-info-profile-infoboard-docs" v-if="!docsUploaded">
+                <DocumentsBoard :docsData="documentsData"/>
+              </div>
+              <div class="account__content-info-profile-infoboard-nodata" v-else>
+                <div class="account__content-info-profile-infoboard-nodata-message">
+                  <p class="regular-txt">You have already uploaded all the necessary documents</p>
+                  <span class="regular-txt">You can ask the administration for all the information</span>
+                </div>
+                <div class="account__content-info-profile-infoboard-nodata-btns">
+                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/')">Go to main page</button>
+                </div>
               </div>
             </template>
             <template v-if="logout">
@@ -138,14 +173,18 @@
 import {mapActions, mapGetters} from "vuex";
 import NotificationBoard from "@/components/NotificationBoard.vue";
 import BookingBoard from "@/components/BookingBoard.vue";
+import DocumentsBoard from "@/components/DocumentsBoard.vue";
 export default {
-  components: {BookingBoard, NotificationBoard},
+  components: {DocumentsBoard, BookingBoard, NotificationBoard},
   data: () => ({
     profile: false,
     notif: false,
     booking: false,
+    documents: false,
     logout: false,
     notifData: [],
+    documentsData: [],
+    docsUploaded: false,
     categoryData: [],
     myPlace: [],
   }),
@@ -164,6 +203,7 @@ export default {
       this.profile = true;
       this.notif = false;
       this.booking = false;
+      this.documents = false;
       this.logout = false;
       this.saveSelectedBoardTab('profile');
     },
@@ -171,6 +211,7 @@ export default {
       this.booking = true;
       this.notif = false;
       this.profile = false;
+      this.documents = false;
       this.logout = false;
       this.saveSelectedBoardTab('booking');
     },
@@ -178,13 +219,23 @@ export default {
       this.notif = true;
       this.booking = false;
       this.profile = false;
+      this.documents = false;
       this.logout = false;
       this.saveSelectedBoardTab('notif');
+    },
+    docsBoard() {
+      this.documents = true;
+      this.booking = false;
+      this.profile = false;
+      this.notif = false;
+      this.logout = false;
+      this.saveSelectedBoardTab('documents');
     },
     logoutBoard() {
       this.logout = true;
       this.booking = false;
       this.profile = false;
+      this.documents = false;
       this.notif = false;
       this.saveSelectedBoardTab('logout');
     },
@@ -206,6 +257,26 @@ export default {
           })
           .catch((error) => {
             console.error(error);
+          });
+    },
+    async fetchDocumentsData() {
+      await this.$axios
+          .get(`get_documents/`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((response) => {
+            if (response.data) {
+              this.documentsData = response.data;
+              this.docsUploaded = true;
+            }
+          })
+          .catch((error) => {
+            if (error.response.data.message) {
+              this.$toaster.error(error.response.data.message);
+              this.docsUploaded = false;
+            }
           });
     },
     async fetchNewsCategoryData() {
@@ -261,6 +332,7 @@ export default {
   created() {
     // this.requestUser();
     this.fetchNotificationData();
+    this.fetchDocumentsData();
     this.fetchNewsCategoryData();
     this.fetchTakenPlaceData();
     this.setSelectedBoardTabFromStorage();
@@ -300,31 +372,34 @@ export default {
           justify-content: center;
           box-sizing: border-box;
           width: 35%;
-          height: 100%;
+          height: 75lvh;
           border: 1px solid #000000;
           border-radius: 25px;
-          padding: 56px 0;
-          gap: min(max(28px, calc(1.75rem + ((1vw - 3.93px) * 1.8337))), 56px);
-          @media screen and (max-width: $pc) {
-            padding: 28px 0;
-          }
+          gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.5538))), 32px);
           &-pic {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
-            gap: 24px;
-            img {
+            gap: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.5538))), 24px);
+            &-avatar {
               display: flex;
               align-items: center;
               justify-content: center;
-              background: #838383;
               max-width: 100%;
               height: 180px;
               border-radius: 25px;
               @media screen and (max-width: $pc) {
                 height: 120px;
+              }
+              img {
+                max-width: 100%;
+                height: 180px;
+                border-radius: 25px;
+                @media screen and (max-width: $pc) {
+                  height: 120px;
+                }
               }
             }
             h3 {
@@ -335,7 +410,7 @@ export default {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
+            gap: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.3692))), 24px);
             &-link {
               display: flex;
               align-items: center;
@@ -344,14 +419,16 @@ export default {
               width: 100%;
               gap: 16px;
               p {
-                font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
+                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5538))), 28px);
               }
               img {
                 max-width: 100%;
                 height: auto;
                 stroke: $black;
               }
-              svg path {
+              svg {
+                width: 30px;
+                height: 30px;
               }
               span {
                 content: "";
@@ -462,36 +539,7 @@ export default {
             }
           }
 
-          &-noBooking {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            gap: 52px;
-            &-message {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              text-align: center;
-              gap: 20px;
-              p {
-                font-size: min(max(22px, calc(1.375rem + ((1vw - 3.93px) * 1.3098))), 42px);
-              }
-              span {
-                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
-              }
-            }
-            &-btns {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              gap: 10px;
-            }
-          }
-
-          &-noNotif {
+          &-nodata {
             display: flex;
             flex-direction: column;
             align-items: center;

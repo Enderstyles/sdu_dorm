@@ -111,6 +111,8 @@ export default {
     return {
       selectedBed: parseInt(localStorage.getItem('selectedBed')) || 0,
       selectedRoom :  parseInt(localStorage.getItem('selectedRoom')) || 0,
+      docsData: [],
+      docsUploaded: false,
     };
   },
   methods: {
@@ -125,9 +127,14 @@ export default {
     goToConfirmation() {
       const bed = localStorage.getItem('selectedBed');
       if (bed) {
-        this.$router.push('/confirmation');
+        if (this.docsUploaded === false) {
+          localStorage.setItem('selectedBoardTab', 'documents');
+          this.$router.push('/personal-account');
+        } else {
+          this.$router.push('/confirmation');
+        }
       } else {
-        this.$toaster.error("Select a bed and proceed to confirmation!");
+        this.$toaster.error("Select a bed and upload documents proceed to confirmation!");
       }
     },
     isBedTaken(bedID) {
@@ -148,8 +155,29 @@ export default {
     getBedStrokeFill(bedID) {
       return this.isBedTaken(bedID) ? '#D72C2C' : '#4ED72C';
     },
+    async fetchDocumentsData() {
+      await this.$axios
+          .get(`get_documents/`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((response) => {
+            if (response.data) {
+              this.docsData = response.data;
+              this.docsUploaded = true;
+            }
+          })
+          .catch((error) => {
+            if (error.response.data.message) {
+              this.$toaster.error(error.response.data.message);
+              this.docsUploaded = false;
+            }
+          });
+    },
   },
-  mounted() {
+  created() {
+    this.fetchDocumentsData();
   }
 }
 </script>

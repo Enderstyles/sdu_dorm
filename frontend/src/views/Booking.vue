@@ -132,7 +132,7 @@ export default {
   }),
   beforeRouteLeave(to, from, next) {
     if (this.bookingStages) {
-      localStorage.removeItem('bookingStage');
+
       next();
     }
   },
@@ -185,10 +185,10 @@ export default {
   },
   watch: {
     $route() {
-     this.selectedBlock = parseInt(localStorage.getItem('selectedBlock'))
-     this.selectedFloor = parseInt(localStorage.getItem('selectedFloor'))
-     this.selectedTaraf = parseInt(localStorage.getItem('selectedTaraf'))
-     this.selectedRoom  = parseInt(localStorage.getItem('selectedRoom'))
+      this.selectedBlock = parseInt(localStorage.getItem('selectedBlock'))
+      this.selectedFloor = parseInt(localStorage.getItem('selectedFloor'))
+      this.selectedTaraf = parseInt(localStorage.getItem('selectedTaraf'))
+      this.selectedRoom  = parseInt(localStorage.getItem('selectedRoom'))
     }
   }
 }

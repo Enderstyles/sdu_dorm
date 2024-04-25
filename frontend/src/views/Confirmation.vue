@@ -106,7 +106,8 @@ export default {
       } else {
         clearInterval(this.timerInterval);
         this.handleTimeout();
-        this.$router.push("/booking");
+        this.$toaster.error('Your time for confirmation and payment has expired!');
+        this.$router.push("/");
       }
     },
     handleTimeout() {
@@ -115,9 +116,9 @@ export default {
       localStorage.removeItem('selectedFloor');
       localStorage.removeItem('selectedRoom');
       localStorage.removeItem('selectedBed');
+      localStorage.removeItem('bookingStage');
       localStorage.removeItem('timer');
       localStorage.removeItem('timerStart');
-      this.$toaster.error('Your time for confirmation and payment has expired!');
     },
     payment() {
         this.$axios
@@ -136,12 +137,14 @@ export default {
               }
           )
           .then((response) => {
-              let auth = response.data.response_data;
-              let invoiceId = response.data.invoiceID;
-              let amount = response.data.amount;
-              console.log(auth);
+            clearInterval(this.timerInterval);
+            localStorage.setItem('timer', this.timerDuration);
+
+              const auth = response.data.response_data;
+              const invoiceID = response.data.invoiceID;
+              const amount = response.data.amount;
               halyk.showPaymentWidget(
-                  this.createPaymentObject(auth, invoiceId, amount),
+                  this.createPaymentObject(auth, invoiceID, amount),
                   (response) => {
                     if (response.success) {
                       this.$toaster.success('You have successfully purchased a place in the dormitory!');
@@ -163,11 +166,11 @@ export default {
             }
           });
     },
-    createPaymentObject(auth, invoiceId, amount) {
+    createPaymentObject(auth, invoiceID, amount) {
       let paymentObject = {
-        invoiceId: invoiceId,
-        backLink: "https://example.kz",
-        failureBackLink: "https://example.kz",
+        invoiceId: invoiceID,
+        backLink: "",
+        failureBackLink: "",
         postLink: "https://example.kz",
         failurePostLink: "https://example.kz",
         language: "rus",

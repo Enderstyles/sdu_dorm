@@ -3,7 +3,7 @@
     <div class="footer__content container">
       <div class="footer__content_maininfo">
         <div class="footer__content_maininfo-logo">
-          <img src="@/assets/images/png/sdu-white-logo.png" alt="sdu-white-logo" @click="$router.push('/')">
+          <img src="@/assets/images/webp/sdu-white-logo.webp" alt="sdu-white-logo" @click="$router.push('/')">
         </div>
         <div class="footer__content_maininfo-location">
           <p class="regular-txt">© 2023 All rights reserved</p>

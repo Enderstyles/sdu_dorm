@@ -1,5 +1,6 @@
 <template>
-  <div class="home">
+  <Loader v-if="loading"/>
+  <div class="home" v-else>
     <div class="home__content">
       <div
           class="home__content-main"
@@ -57,6 +58,7 @@
           <Swiper
               :options="swiperOptions"
               :pagination="paginationOptions"
+              :autoplay="true"
               :space-between="40"
               ref="swiper"
               @swiper="onSwiper"
@@ -132,8 +134,12 @@
                   <UpcomingCard :item="item" :categories="categoryData" />
               </SwiperSlide>
             </Swiper>
-            <div class="swiper-button-prev" v-if="upcomingData.length > 2"><img src="@/assets/images/svg/arrow-left.svg" alt="left"></div>
-            <div class="swiper-button-next" v-if="upcomingData.length > 2"><img src="@/assets/images/svg/arrow-right.svg" alt="right"></div>
+            <div class="swiper-button-prev" v-if="upcomingData.length > 2">
+              <img src="@/assets/images/svg/arrow-left.svg" alt="left">
+            </div>
+            <div class="swiper-button-next" v-if="upcomingData.length > 2">
+              <img src="@/assets/images/svg/arrow-right.svg" alt="right">
+            </div>
             <h3 class="semi-bold-txt" v-else>There are no upcoming events yet</h3>
           </div>
         </div>
@@ -170,42 +176,43 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
+import Loader from "@/components/Loader.vue";
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 export default {
-  name: "HomeVue",
-  components: { Swiper, SwiperSlide, UpcomingCard },
+  components: {
+    Loader,
+    Swiper,
+    SwiperSlide,
+    UpcomingCard
+  },
   data() {
     return {
       furnitureData: [
-        { icon: 'beds.png', count: 4, info: 'Beds' },
-        { icon: 'desks.png', count: 2, info: 'Writing desks' },
-        { icon: 'shelves.png', count: 4, info: 'Book shelves' },
-        { icon: 'cupboards.png', count: 4, info: 'Storage cupboards' },
+        { icon: 'beds.webp', count: 4, info: 'Beds' },
+        { icon: 'desks.webp', count: 2, info: 'Writing desks' },
+        { icon: 'shelves.webp', count: 4, info: 'Book shelves' },
+        { icon: 'cupboards.webp', count: 4, info: 'Storage cupboards' },
       ],
       featureData: [
-        { icon: 'kitchen.png', feature: 'Kitchen' },
-        { icon: 'canteen.png', feature: 'Canteen' },
-        { icon: 'laundry.png', feature: 'Laundry' },
-        { icon: 'ironing.png', feature: 'Ironing room' },
-        { icon: 'lounge.png', feature: 'Lounge room' },
-        { icon: 'reading.png', feature: 'Reading room' },
-        { icon: 'medical.png', feature: 'Medical service' },
-        { icon: 'gym.png', feature: 'Gym' },
-        { icon: 'billiard.png', feature: 'Billiard' },
-        { icon: 'chess.png', feature: 'Chess' },
-        { icon: 'tennis.png', feature: 'Tennis' },
-        { icon: 'basketball.png', feature: 'Basketball court' },
-        { icon: 'football.png', feature: 'Football court' },
-        { icon: 'volleyball.png', feature: 'Volleyball court' },
+        { icon: 'kitchen.webp', feature: 'Kitchen' },
+        { icon: 'canteen.webp', feature: 'Canteen' },
+        { icon: 'laundry.webp', feature: 'Laundry' },
+        { icon: 'ironing.webp', feature: 'Ironing room' },
+        { icon: 'lounge.webp', feature: 'Lounge room' },
+        { icon: 'reading.webp', feature: 'Reading room' },
+        { icon: 'medical.webp', feature: 'Medical service' },
+        { icon: 'gym.webp', feature: 'Gym' },
+        { icon: 'billiard.webp', feature: 'Billiard' },
+        { icon: 'chess.webp', feature: 'Chess' },
+        { icon: 'tennis.webp', feature: 'Tennis' },
+        { icon: 'basketball.webp', feature: 'Basketball court' },
+        { icon: 'football.webp', feature: 'Football court' },
+        { icon: 'volleyball.webp', feature: 'Volleyball court' },
       ],
       categoryData: [],
       upcomingData: [],
       swiperOptions: {
         loop: true,
-        autoplay: {
-          delay: 5000,
-          disableOnInteraction: false,
-        },
       },
       paginationOptions: {
         el: '.swiper-pagination',
@@ -229,6 +236,7 @@ export default {
       dormImg: '',
       dormImages: [],
       currentSlide: 0,
+      loading: true,
     };
   },
   methods: {
@@ -240,6 +248,7 @@ export default {
       this.currentSlide = this.$refs.swiper.swiper.realIndex;
     },
     async fetchMainPageData() {
+      this.loading = true;
       await this.$axios
           .get('main_page/',
               {
@@ -307,9 +316,14 @@ export default {
     },
   },
   async created() {
-    await this.fetchMainPageData();
-    await this.fetchNewsUpcomingData();
-    await this.fetchNewsCategoryData();
+    try {
+      await this.fetchMainPageData();
+      await this.fetchNewsUpcomingData();
+      await this.fetchNewsCategoryData();
+      this.loading = false;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   },
 }
 </script>
@@ -373,12 +387,13 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 55px;
+        gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.4767))), 56px);
         h1 {
           font-style: italic;
         }
         p {
-          font-size: 32px;
+          font-size: min(max(18px, calc(1.125rem + ((1vw - 3.93px) * 0.6461))), 32px);
+          text-align: center;
         }
       }
     }
@@ -386,14 +401,24 @@ export default {
     &-information {
       display: flex;
       align-items: flex-start;
-      gap: 120px;
+      gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 4.6147))), 120px);
       margin-top: 20px;
+      @media screen and (max-width: $desktop) {
+        flex-direction: column;
+        align-items: center;
+      }
       &-desc {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         width: 35%;
         gap: 34px;
+        @media screen and (max-width: $laptopSm) {
+          width: 50%;
+        }
+        @media screen and (max-width: $desktop) {
+          width: 100%;
+        }
         &-txt {
           display: flex;
           flex-direction: column;
@@ -412,9 +437,12 @@ export default {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        width: 730px;
+        width: 60%;
         height: auto;
         position: relative;
+        @media screen and (max-width: $desktop) {
+          width: 100%;
+        }
         .swiper-info {
           width: 100%;
           height: 100%;
@@ -424,14 +452,17 @@ export default {
         .swiper-info-slide {
           display: flex;
           align-items: flex-start;
-          justify-content: flex-start;
+          justify-content: center;
           border-radius: 25px !important;
           width: auto;
           max-height: 555px !important;
           margin-bottom: 50px;
+          @media screen and (max-width: $laptopSm) {
+            margin-bottom: 25px;
+          }
         }
         img {
-          width: 730px;
+          width: 100%;
           max-height: 555px;
           object-fit: cover;
           margin-bottom: 70px;
@@ -613,7 +644,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 55px;
+        gap: 32px;
         width: 50%;
         &-title {
           width: 100%;
@@ -638,7 +669,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 55px;
+        gap: 32px;
         width: 25%;
         &-title {
           display: flex;

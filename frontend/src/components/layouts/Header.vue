@@ -2,7 +2,7 @@
   <header class="header" :class="{'login': $route.path === '/login'}">
     <div class="header__content container">
       <div class="header__content-logo">
-        <img src="@/assets/images/png/sdu-logo.png" alt="sdu-logo" @click="$router.push('/')">
+        <img src="@/assets/images/webp/sdu-logo.webp" alt="sdu-logo" @click="$router.push('/')">
       </div>
       <div class="header__content-nav">
         <ul class="header__content-nav-links">
@@ -116,7 +116,7 @@ export default {
       &-links {
         display: flex;
         align-items: center;
-        gap: 72px;
+        gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 2.215))), 72px);
         a {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           cursor: pointer;

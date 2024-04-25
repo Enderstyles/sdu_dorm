@@ -133,7 +133,6 @@ export default {
   },
   created() {
     this.fetchTakenPlaceData();
-    console.log(this.filteredPurchasedPlace);
   }
 }
 </script>

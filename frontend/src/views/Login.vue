@@ -1,9 +1,10 @@
 <template>
-  <div class="login">
+  <Loader v-if="isLoading" />
+  <div class="login" v-else>
     <div class="login__content container">
       <div class="login__content-form">
         <div class="login__content-form-logo">
-          <img src="@/assets/images/png/sdu-login-logo.png" alt="sdu-login-logo" @click="$router.push('/')">
+          <img src="@/assets/images/webp/sdu-login-logo.webp" alt="sdu-login-logo" @click="$router.push('/')">
         </div>
         <div class="login__content-form-title">
           <h3 class="semi-bold-txt">Log In to student house portal</h3>
@@ -41,12 +42,25 @@
           </div>
         </div>
         <div class="login__content-form-forgot">
-          <p class="regular-txt" @click="isOpen = true">Forgot a password?</p>
+          <p
+              class="regular-txt"
+              @click="isOpen = true"
+          >
+            Forgot a password?
+          </p>
         </div>
         <div class="login__content-form-login">
-          <button class="login__content-form-login-btn main-button" @click="loginForm">Log in</button>
+          <button
+              class="login__content-form-login-btn main-button"
+              @click="loginForm"
+          >
+            Log in
+          </button>
         </div>
-        <div class="login__content-form-return" @click="$router.push('/')">
+        <div
+            class="login__content-form-return"
+            @click="$router.push('/')"
+        >
           <img src="@/assets/images/svg/arrow-return.svg" alt="arrow-return">
           <p class="regular-txt">Return to main page</p>
         </div>
@@ -130,9 +144,11 @@ import {
   sameAs
 } from "@vuelidate/validators";
 import {mapActions} from "vuex";
+import Loader from "@/components/Loader.vue";
 
 export default {
   components: {
+    Loader,
     ModalWindow
   },
   data: () => ({
@@ -146,6 +162,7 @@ export default {
     step: 1,
     isOpen: false,
     codeTab: false,
+    isLoading: false,
   }),
   validations() {
     return {
@@ -204,6 +221,7 @@ export default {
           student_id: this.id,
           password: this.password,
         };
+        this.isLoading = true;
         this.$axios.post("login/", data)
             .then(res => {
               localStorage.setItem("access_token", res.data.access);
@@ -216,6 +234,7 @@ export default {
               }, 200);
             })
             .catch(err => {
+              this.isLoading = false;
               if (err.response.data.detail) {
                 this.$toaster.error(err.response.data.detail);
               } else {
@@ -266,12 +285,6 @@ export default {
     onlyLatin() {
       this.password = this.password.replace(/[^a-zA-Z0-9\s.!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, '');
       this.for_pass = this.for_pass.replace(/[^a-zA-Z0-9\s.!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, '');
-    },
-    onlyText() {
-      this.password = this.password.replace(/[^а-яА-ЯёЁәӘіІңҢғҒүҮұҰқҚөӨһҺa-zA-Z\-\s.]/gi, "");
-      this.password = this.password.replace(/\.{2,}|\s{2,}|\-{2,}/g, function (match) {
-        return match.substr(0, 1);
-      });
     },
   },
 };
