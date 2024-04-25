@@ -68,9 +68,12 @@ export default {
   @media screen and (max-width: $pc) {
     height: 450px;
   }
+  @media screen and (max-width: $tablet) {
+    max-width: 100%;
+  }
   &_pic {
-    max-width: 510px;
-    height: 230px;
+    max-width: 100%;
+    height: 40%;
     object-fit: cover;
     border-radius: 25px 25px 0 0;
   }
@@ -78,28 +81,29 @@ export default {
     display: flex;
     align-items: flex-start;
     padding: 25px;
-    gap: 40px;
+    gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.9229))), 40px);
     &-left {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       border: 1px solid $primary;
       border-radius: 5px;
-      width: 108px;
-      height: 104px;
+      width: 30%;
+      height: 120px;
       gap: 10px;
       &-block1 {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
-        padding: 10px 20px;
         background: $primary;
         text-align: center;
+        padding: 5px 0;
         width: 100%;
         color: $white;
         &-date {
           font-size: 16px;
-          width: max-content;
+          width: 100%;
         }
       }
       &-block2 {
@@ -116,13 +120,17 @@ export default {
           font-size: 12px;
           width: max-content;
         }
+        &-location {
+          font-size: 16px;
+          padding: 10px;
+        }
       }
     }
     &-right {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 35px;
+      gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.6922))), 35px);
       &-txt {
         display: flex;
         flex-direction: column;

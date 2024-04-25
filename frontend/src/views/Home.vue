@@ -124,6 +124,28 @@
                   nextEl: '.swiper-button-next',
                   prevEl: '.swiper-button-prev'
                 }"
+                :breakpoints="{
+                  1920: {
+                    slidesPerView: 3,
+                    spaceBetween: 40,
+                  },
+                  1024: {
+                    slidesPerView: 2,
+                    spaceBetween: 30,
+                  },
+                  768: {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                  },
+                  425: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                  },
+                  375: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                  },
+                }"
                 class="swiper-container"
             >
               <SwiperSlide
@@ -370,10 +392,13 @@ export default {
         height: 100%;
         gap: 30px;
         z-index: 3;
+        text-align: center;
         p {
-          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
-          text-align: center;
+          font-size: min(max(14px, calc(0.875rem + ((1vw - 3.93px) * 0.4615))), 24px);
           width: 60%;
+          @media screen and (max-width: $tablet) {
+            width: 100%;
+          }
         }
       }
     }
@@ -382,7 +407,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 100px;
+      gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 3.2303))), 100px);
       &-statistics {
         display: flex;
         flex-direction: column;
@@ -390,6 +415,10 @@ export default {
         gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.4767))), 56px);
         h1 {
           font-style: italic;
+          @media screen and (max-width: $mobile) {
+            font-size: 24px;
+            font-weight: 800;
+          }
         }
         p {
           font-size: min(max(18px, calc(1.125rem + ((1vw - 3.93px) * 0.6461))), 32px);
@@ -457,9 +486,6 @@ export default {
           width: auto;
           max-height: 555px !important;
           margin-bottom: 50px;
-          @media screen and (max-width: $laptopSm) {
-            margin-bottom: 25px;
-          }
         }
         img {
           width: 100%;
@@ -467,6 +493,12 @@ export default {
           object-fit: cover;
           margin-bottom: 70px;
           border-radius: 25px;
+          @media screen and (max-width: $laptopSm) {
+            margin-bottom: 50px;
+          }
+          @media screen and (max-width: $mobile) {
+            margin-bottom: 25px;
+          }
         }
       }
     }
@@ -490,21 +522,38 @@ export default {
         gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 2.6195))), 60px);
         width: 100%;
         height: 100%;
-        img {
-          max-width: 100%;
-          height: auto;
-        }
         &-furniture {
           display: flex;
           align-items: center;
           justify-content: space-between;
           width: 100%;
+          @media screen and (max-width: $desktop) {
+            align-items: flex-start;
+          }
           &-block {
             display: flex;
             align-items: flex-start;
             justify-content: center;
             width: max-content;
-            gap: 25px;
+            gap: min(max(15px, calc(0.9375rem + ((1vw - 3.93px) * 0.4615))), 25px);
+            @media screen and (max-width: $desktop) {
+              width: 20%;
+              flex-direction: column;
+              align-items: center;
+            }
+            img {
+              @media screen and (max-width: $laptopSm) {
+                height: 90px;
+              }
+              @media screen and (max-width: $desktop) {
+                width: 75px;
+                height: 75px;
+              }
+              @media screen and (max-width: $tablet) {
+                width: 65px;
+                height: 65px;
+              }
+            }
             &-info {
               display: flex;
               flex-direction: column;
@@ -512,8 +561,16 @@ export default {
               height: max-content;
               width: 30%;
               gap: 5px;
+              @media screen and (max-width: $desktop) {
+                width: 100%;
+                align-items: center;
+                justify-content: center;
+              }
               p {
-                font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+                font-size: min(max(14px, calc(0.875rem + ((1vw - 3.93px) * 0.4615))), 24px);
+                @media screen and (max-width: $desktop) {
+                  text-align: center;
+                }
               }
             }
           }
@@ -522,6 +579,21 @@ export default {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
           gap: 40px 60px;
+          @media screen and (max-width: $laptopSm) {
+            grid-template-columns: repeat(6, 1fr);
+          }
+          @media screen and (max-width: $desktop) {
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px 50px;
+          }
+          @media screen and (max-width: $tablet) {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px 40px;
+          }
+          @media screen and (max-width: $mobile) {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px 30px;
+          }
           &-block {
             display: flex;
             flex-direction: column;
@@ -530,6 +602,16 @@ export default {
             width: 100%;
             height: max-content;
             gap: 25px;
+            img {
+              max-width: 100%;
+              height: auto;
+              @media screen and (max-width: $laptopSm) {
+                max-width: 70%;
+              }
+              @media screen and (max-width: $tablet) {
+                max-width: 50%;
+              }
+            }
             p {
               font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               text-align: center;
@@ -550,13 +632,16 @@ export default {
       @media screen and (max-width: $pc) {
         padding: 60px 0 80px 0;
       }
+      @media screen and (max-width: $desktop) {
+        padding: 30px 0 40px 0;
+      }
       &-view {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         position: relative;
         width: 100%;
-        gap: 60px;
+        gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 1.3844))), 60px);
         &-title {
           display: flex;
           align-items: center;
@@ -583,6 +668,9 @@ export default {
             @media screen and (max-width: $pc) {
               margin-bottom: 50px;
             }
+            @media screen and (max-width: $desktop) {
+              margin-bottom: 25px;
+            }
           }
           .swiper-wrapper {
             display: flex;
@@ -606,9 +694,27 @@ export default {
             border-radius: 50%;
             padding: 40px;
             z-index: 999;
+            @media screen and (max-width: $laptopSm) {
+              padding: 30px;
+            }
+            @media screen and (max-width: $desktop) {
+              padding: 20px;
+            }
             img {
               width: 50px;
               height: 50px;
+              @media screen and (max-width: $laptopSm) {
+                width: 40px;
+                height: 40px;
+              }
+              @media screen and (max-width: $desktop) {
+                width: 30px;
+                height: 30px;
+              }
+              @media screen and (max-width: $tablet) {
+                width: 25px;
+                height: 25px;
+              }
             }
             &:after {
               display: none;
@@ -623,9 +729,29 @@ export default {
             border-radius: 50%;
             padding: 40px;
             z-index: 999;
+            @media screen and (max-width: $laptopSm) {
+              padding: 30px;
+              left: 70px;
+            }
+            @media screen and (max-width: $desktop) {
+              padding: 20px;
+              left: 50px;
+            }
             img {
               width: 50px;
               height: 50px;
+              @media screen and (max-width: $laptopSm) {
+                width: 40px;
+                height: 40px;
+              }
+              @media screen and (max-width: $desktop) {
+                width: 30px;
+                height: 30px;
+              }
+              @media screen and (max-width: $tablet) {
+                width: 25px;
+                height: 25px;
+              }
             }
             &:after {
               display: none;
@@ -640,18 +766,28 @@ export default {
       align-items: flex-start;
       justify-content: space-between;
       width: 100%;
+      @media screen and (max-width: $desktop) {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }
       &-deadlines {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 32px;
+        gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.5538))), 32px);
         width: 50%;
-        &-title {
+        @media screen and (max-width: $desktop) {
           width: 100%;
+        }
+        &-title {
           h3 {
             padding-bottom: 5px;
             border-bottom: 1px solid $secondary;
             width: 230px;
+            @media screen and (max-width: $laptopSm) {
+              width: 100%;
+            }
           }
         }
         &-info {
@@ -669,8 +805,11 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 32px;
+        gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.5538))), 32px);
         width: 25%;
+        @media screen and (max-width: $desktop) {
+          width: 100%;
+        }
         &-title {
           display: flex;
           align-items: flex-end;
@@ -678,6 +817,9 @@ export default {
             padding-bottom: 5px;
             border-bottom: 1px solid $secondary;
             width: 300px;
+            @media screen and (max-width: $laptopSm) {
+              width: 100%;
+            }
           }
         }
         ul li {

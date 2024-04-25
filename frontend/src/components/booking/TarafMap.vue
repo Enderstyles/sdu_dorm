@@ -75,9 +75,17 @@ export default {
   gap: 60px;
   width: 100%;
   height: auto;
+  @media screen and (max-width: $tablet) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
   &_rect {
     width: 100%;
     height: auto;
+    @media screen and (max-width: $tablet) {
+      order: 2;
+    }
   }
   &_floor {
     display: flex;
@@ -86,6 +94,13 @@ export default {
     gap: 30px;
     width: auto;
     height: 100%;
+    @media screen and (max-width: $tablet) {
+      justify-content: center;
+      flex-direction: row;
+      width: 100%;
+      order: 1;
+      gap: 20px;
+    }
     &-choose {
       display: flex;
       flex-direction: column;
@@ -99,6 +114,9 @@ export default {
         span {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           width: max-content;
+        }
+        @media screen and (max-width: $tablet) {
+          width: auto;
         }
       }
     }

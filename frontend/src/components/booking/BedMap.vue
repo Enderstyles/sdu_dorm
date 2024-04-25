@@ -231,6 +231,9 @@ export default {
         justify-content: center;
         gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.7027))), 50px);
         width: 100%;
+        @media screen and (max-width: $tablet) {
+          justify-content: space-between;
+        }
         &-wardrobe {
           display: flex;
           align-items: center;
@@ -239,10 +242,16 @@ export default {
             max-width: min(max(40px, calc(2.5rem + ((1vw - 3.93px) * 5.239))), 120px);
             height: auto;
           }
+          @media screen and (max-width: $tablet) {
+            display: none;
+          }
         }
         &-table {
           max-width: min(max(50px, calc(3.125rem + ((1vw - 3.93px) * 5.5665))), 135px);
           height: auto;
+          @media screen and (max-width: $tablet) {
+            display: none;
+          }
         }
       }
     }

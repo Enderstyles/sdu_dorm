@@ -3,7 +3,23 @@
     <div class="news__view container">
       <div class="news__view_feed">
         <div class="news__view_feed-filter">
-          <div class="news__view_feed-filter-form">
+          <div class="news__view_feed-filter-burger">
+            <div
+                @click.prevent="showNewsFilter"
+                :class="{ 'burger-active': isBurgerActive }"
+                class="news__view_feed-filter-burger-icon"
+            >
+              <div>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+          <div
+              class="news__view_feed-filter-form"
+              :class="{ 'mobile-form': isBurgerActive }"
+          >
             <div class="news__view_feed-filter-form-input">
               <p class="regular-txt">From:</p>
               <input type="date" v-model="fromDate">
@@ -34,6 +50,8 @@
             </p>
           </div>
         </div>
+
+
 
         <div class="news__view_results">
           <p class="regular-txt">{{ results }} results, {{ displayedPageNumbers.length }} pages</p>
@@ -86,6 +104,7 @@ export default {
       fromDate: null,
       untilDate: null,
       filterSearch: false,
+      isBurgerActive: false,
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -187,6 +206,10 @@ export default {
       this.currentPage = pageNumber;
       this.savePageToLocalStorage();
     },
+    showNewsFilter() {
+      return this.isBurgerActive = !this.isBurgerActive,
+          this.openMarsh = false
+    },
     savePageToLocalStorage() {
       localStorage.setItem('currentPage', this.currentPage);
     },
@@ -210,6 +233,9 @@ export default {
   width: 100%;
   height: 100%;
   padding: 200px 0;
+  @media screen and (max-width: $desktop) {
+    padding: 130px 0;
+  }
   &__view {
     display: flex;
     flex-direction: column;
@@ -238,38 +264,87 @@ export default {
         border-radius: 25px;
         width: 100%;
         padding: 40px;
-        gap: 100px;
+        gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 3.2303))), 100px);
         color: $white;
+        @media screen and (max-width: $desktop) {
+          justify-content: space-between;
+        }
+        &-burger {
+          display: none;
+          &-icon {
+            display: block;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            cursor: pointer;
+            span {
+              transition: all .3s ease 0s;
+              top: calc(50% - 2px);
+              left: 0;
+              position: absolute;
+              width: 100%;
+              height: 2px;
+              background-color: $secondary;
+              border: 2px solid $secondary;
+              border-radius: 25px;
+              &:first-child {
+                top: 0;
+              }
+              &:last-child {
+                top: auto;
+                bottom: 0;
+              }
+            }
+          }
+          @media screen and (max-width: $desktop) {
+            display: flex;
+            align-items: flex-start;
+            width: auto;
+          }
+        }
         &-form {
           display: flex;
           align-items: center;
           gap: 30px;
+          @media screen and (max-width: $desktop) {
+            display: none;
+          }
           &-input {
             display: flex;
             align-items: center;
+            width: 100%;
             gap: 10px;
             p {
               font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
             }
             input {
-              width: 200px;
+              width: min(max(130px, calc(8.125rem + ((1vw - 3.93px) * 3.2303))), 200px);
               height: 50px;
               padding: 10px 15px;
               border-radius: 25px;
-              font-size: 20px;
+              font-size: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.3692))), 20px);
               cursor: pointer;
+              @media screen and (max-width: $desktop) {
+                width: 100%;
+              }
             }
             select {
-              width: 200px;
+              width: min(max(130px, calc(8.125rem + ((1vw - 3.93px) * 3.2303))), 200px);
               height: 50px;
               padding: 10px 15px;
               border-radius: 25px;
               margin-left: 30px;
-              font-size: 20px;
+              font-size: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.3692))), 20px);
               outline: none;
               cursor: pointer;
               option {
                 cursor: pointer;
+              }
+              @media screen and (max-width: $laptopSm) {
+                margin-left: 0;
+              }
+              @media screen and (max-width: $desktop) {
+                width: 100%;
               }
             }
           }
@@ -300,11 +375,16 @@ export default {
         }
       }
       &-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-wrap: wrap;
         gap: 60px 40px;
         width: 100%;
         margin: 35px 0;
+        @media screen and (max-width: $laptopSm) {
+          gap: 40px 20px;
+        }
         &-posts {
           display: flex;
           align-items: center;
@@ -379,12 +459,21 @@ export default {
   }
 }
 
+.mobile-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  gap: 20px;
+}
+
 .activePage {
   color: $white;
   background: $primary;
 }
 
 .news-card {
-  width: 400px;
+  width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 4.6147))), 400px);
+  min-height: 0vw;
 }
 </style>

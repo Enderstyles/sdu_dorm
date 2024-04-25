@@ -201,6 +201,9 @@ export default {
   width: 100%;
   height: 100%;
   padding: 200px 0;
+  @media screen and (max-width: $desktop) {
+    padding: 130px 0;
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -211,9 +214,11 @@ export default {
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
+      flex-wrap: wrap;
       padding-top: 24px;
       gap: 5px;
       width: 100%;
+      height: auto;
       &-link {
         display: flex;
         align-items: center;
@@ -237,6 +242,9 @@ export default {
       p {
         font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         width: 60%;
+        @media screen and (max-width: $desktop) {
+          width: 100%;
+        }
       }
     }
     &_map {
@@ -245,6 +253,9 @@ export default {
       justify-content: center;
       height: auto;
       padding-top: 64px;
+      @media screen and (max-width: $desktop) {
+        padding-top: 32px;
+      }
       &-view {
         display: flex;
         flex-direction: column;

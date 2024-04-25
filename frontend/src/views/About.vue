@@ -206,6 +206,9 @@ export default {
   @media screen and (max-width: $pc) {
     padding: 125px 0;
   }
+  @media screen and (max-width: $desktop) {
+    padding: 95px 0;
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -219,8 +222,11 @@ export default {
       background: $primary;
       padding: 60px 0;
       width: 100%;
-      gap: 56px;
+      gap: min(max(25px, calc(1.5625rem + ((1vw - 3.93px) * 1.4305))), 56px);
       position: relative;
+      @media screen and (max-width: $desktop) {
+        padding: 40px 0;
+      }
       &-tabs {
         display: flex;
         align-items: center;
@@ -233,13 +239,14 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 390px;
-          height: 90px;
+          width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 4.1532))), 390px);
+          height: min(max(70px, calc(4.375rem + ((1vw - 3.93px) * 0.9229))), 90px);
           margin: 5px 20px;
           cursor: pointer;
           color: $black;
           p {
             font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+            text-align: center;
           }
           &:hover {
             border-bottom: 6px solid $secondary;
@@ -252,9 +259,20 @@ export default {
         justify-content: space-between;
         width: 100%;
         color: $white;
+        @media screen and (max-width: $desktop) {
+          flex-direction: column;
+          align-items: center;
+          gap: 25px;
+        }
         &-desc {
-          max-width: 370px;
+          max-width: 25%;
           height: auto;
+          @media screen and (max-width: $laptopSm) {
+            max-width: 35%;
+          }
+          @media screen and (max-width: $desktop) {
+            max-width: 100%;
+          }
           p {
             font-size: min(max(18px, calc(1.125rem + ((1vw - 3.93px) * 0.5239))), 26px);
           }
@@ -264,13 +282,22 @@ export default {
           flex-direction: column;
           align-items: flex-start;
           justify-content: flex-start;
-          max-width: 735px;
+          max-width: 50%;
           height: auto;
-          gap: 48px;
+          gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 1.2921))), 48px);
+          @media screen and (max-width: $desktop) {
+            max-width: 100%;
+          }
           &-services {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.4615))), 30px);
+            &-block {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 15px;
+            }
           }
         }
       }
@@ -280,7 +307,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 100px;
+      gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       &-social {
         display: flex;
         flex-direction: column;
@@ -289,8 +316,14 @@ export default {
         width: 100%;
         &-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-columns: repeat(3, 1fr);
           gap: 30px 40px;
+          @media screen and (max-width: $desktop) {
+            gap: 20px 30px;
+          }
+          @media screen and (max-width: $mobile) {
+            grid-template-columns: repeat(2, 1fr);
+          }
           &-desc {
             display: flex;
             flex-direction: column;
@@ -300,6 +333,12 @@ export default {
               font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               height: 200px;
               overflow-y: auto;
+              @media screen and (max-width: $desktop) {
+                height: 180px;
+              }
+              @media screen and (max-width: $tablet) {
+                height: 130px;
+              }
             }
           }
         }
@@ -307,12 +346,18 @@ export default {
           display: flex;
           align-items: center;
           width: 100%;
-          height: 293px;
+          height: auto;
           img {
             max-width: 100%;
             height: 293px;
             border-radius: 25px;
             object-fit: cover;
+            @media screen and (max-width: $desktop) {
+              height: 200px;
+            }
+            @media screen and (max-width: $tablet) {
+              height: 150px;
+            }
           }
         }
       }
@@ -323,26 +368,52 @@ export default {
         width: 100%;
         height: 390px;
         background: #FAFBFF;
+        @media screen and (max-width: $desktop) {
+          height: auto;
+          padding: 40px 0;
+        }
         &-block {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          gap: 50px;
           width: 100%;
+          @media screen and (max-width: $laptopSm) {
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+          }
           &-working {
             display: flex;
             align-items: flex-start;
             justify-content: flex-end;
             width: 100%;
             gap: 80px;
+            @media screen and (max-width: $desktop) {
+              justify-content: space-between;
+              gap: 30px;
+            }
+            @media screen and (max-width: $mobile) {
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+            }
             &-details {
               display: flex;
               flex-direction: column;
               align-items: flex-start;
               max-width: 440px;
               height: auto;
-              gap: 30px;
+              gap: min(max(15px, calc(0.9375rem + ((1vw - 3.93px) * 0.6922))), 30px);
+              @media screen and (max-width: $mobile) {
+                align-items: center;
+                justify-content: center;
+              }
               p {
                 font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+                @media screen and (max-width: $mobile) {
+                  text-align: center;
+                }
               }
             }
           }
@@ -355,11 +426,11 @@ export default {
         align-items: center;
         width: 100%;
         &-btn {
-          width: 510px;
-          height: 190px;
+          width: min(max(200px, calc(12.5rem + ((1vw - 3.93px) * 11.5367))), 450px);
+          height: min(max(90px, calc(5.625rem + ((1vw - 3.93px) * 4.6147))), 190px);
           color: $white;
           p {
-            font-size: 40px;
+            font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.9229))), 40px);
           }
         }
       }
@@ -379,11 +450,11 @@ export default {
   justify-content: center;
   border-radius: 25px !important;
   width: 100% !important;
-  height: 560px !important;
+  height: min(max(250px, calc(15.625rem + ((1vw - 3.93px) * 14.3055))), 560px);
   margin-bottom: 80px;
   img {
     max-width: 100%;
-    height: 560px;
+    height: min(max(250px, calc(15.625rem + ((1vw - 3.93px) * 14.3055))), 560px);
     object-fit: cover;
     border-radius: 25px;
   }

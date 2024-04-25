@@ -23,7 +23,6 @@
     <div class="confirmation__main_btn">
       <button
           class="main-button"
-          style="width: 510px; height: 190px"
           @click="payment"
       >
         <span class="regular-txt">Go to the payment</span>
@@ -44,7 +43,7 @@ export default {
       selectedRoom:  parseInt(localStorage.getItem('selectedRoom')) || 0,
       selectedBed:  parseInt(localStorage.getItem('selectedBed')) || 0,
       timerStart: localStorage.getItem('timerStart') ? parseInt(localStorage.getItem('timerStart')) : null,
-      timerDuration: 60,
+      timerDuration: 600,
       timerInterval: null,
     };
   },
@@ -196,14 +195,22 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: 200px 0 80px 0;
-  gap: 100px;
+  gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 3.2303))), 100px);
   width: 100%;
   height: auto;
+  @media screen and (max-width: $desktop) {
+    padding: 150px 0 50px 0;
+  }
   &__main {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
+    @media screen and (max-width: $tablet) {
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
     &_info {
       display: flex;
       flex-direction: column;
@@ -211,6 +218,11 @@ export default {
       gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
+      @media screen and (max-width: $tablet) {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+      }
       &-choice {
         display: flex;
         padding: 55px 75px;
@@ -219,6 +231,9 @@ export default {
         border-radius: 25px;
         p {
           font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
+        }
+        @media screen and (max-width: $laptopSm) {
+          padding: 25px 30px;
         }
       }
     }
@@ -229,12 +244,23 @@ export default {
       gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
+      @media screen and (max-width: $tablet) {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+      }
       &-reservation {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         width: 100%;
         gap: 5px;
+        @media screen and (max-width: $tablet) {
+          width: 100%;
+          align-items: flex-start;
+          justify-content: flex-start;
+        }
         h1 {
           font-size: min(max(40px, calc(2.5rem + ((1vw - 3.93px) * 5.7629))), 128px);
         }
@@ -245,11 +271,29 @@ export default {
         align-items: flex-end;
         width: 100%;
         gap: 35px;
+        @media screen and (max-width: $tablet) {
+          align-items: flex-end;
+          justify-content: flex-end;
+        }
         p {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           max-width: 60%;
           text-align: right;
+          @media screen and (max-width: $tablet) {
+            max-width: 100%;
+          }
         }
+      }
+    }
+    &_btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      button {
+        width: min(max(200px, calc(12.5rem + ((1vw - 3.93px) * 13.844))), 500px);
+        height: min(max(70px, calc(4.375rem + ((1vw - 3.93px) * 5.5376))), 190px);
+
       }
     }
   }

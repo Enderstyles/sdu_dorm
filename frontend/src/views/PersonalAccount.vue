@@ -107,7 +107,7 @@
                     <p class="medium-txt">Status of booking:</p>
                     <p class="status light-txt"><span></span> {{ getUser.status }}</p>
                   </div>
-                  <button class="unfilled-button" style="width: 361px; height: 69px">Check your booking</button>
+                  <button class="unfilled-button">Check your booking</button>
                 </div>
               </div>
             </template>
@@ -121,7 +121,7 @@
                   <span class="regular-txt">Add a reminder about some news and it will appear here</span>
                 </div>
                 <div class="account__content-info-profile-infoboard-nodata-btns">
-                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/news')">Go back to news</button>
+                  <button class="main-button" @click="$router.push('/news')">Go back to news</button>
                 </div>
               </div>
             </template>
@@ -132,7 +132,7 @@
                   <span class="regular-txt">After booking all needed information can be found here</span>
                 </div>
                 <div class="account__content-info-profile-infoboard-nodata-btns">
-                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/booking')">Go back to booking</button>
+                  <button class="main-button" @click="$router.push('/booking')">Go back to booking</button>
                 </div>
               </div>
               <div class="account__content-info-profile-infoboard-haveBooking" v-else>
@@ -149,7 +149,7 @@
                   <span class="regular-txt">You can ask the administration for all the information</span>
                 </div>
                 <div class="account__content-info-profile-infoboard-nodata-btns">
-                  <button class="main-button" style="width: 361px; height: 69px" @click="$router.push('/')">Go to main page</button>
+                  <button class="main-button" @click="$router.push('/')">Go to main page</button>
                 </div>
               </div>
             </template>
@@ -157,8 +157,8 @@
               <div class="account__content-info-profile-infoboard-logout">
                 <p class="regular-txt">Are you sure to log out from this account?</p>
                 <div class="account__content-info-profile-infoboard-logout-btns">
-                  <button class="main-button" style="width: 361px; height: 69px" @click="logoutAcc">Yes, log out</button>
-                  <button class="unfilled-button" style="width: 361px; height: 69px" @click="$router.push('/')">No, go to the main page</button>
+                  <button class="main-button" @click="logoutAcc">Yes, log out</button>
+                  <button class="unfilled-button" @click="$router.push('/')">No, go to the main page</button>
                 </div>
               </div>
             </template>
@@ -350,6 +350,9 @@ export default {
   @media screen and (max-width: $pc) {
     padding: 170px 0 100px 0;
   }
+  @media screen and (max-width: $desktop) {
+    padding: 130px 0 90px 0;
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -364,7 +367,11 @@ export default {
         display: flex;
         align-items: flex-start;
         width: 100%;
-        gap: 64px;
+        gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.8459))), 64px);
+        @media screen and (max-width: $desktop) {
+          flex-direction: column;
+          align-items: center;
+        }
         &-nav {
           display: flex;
           flex-direction: column;
@@ -376,6 +383,12 @@ export default {
           border: 1px solid #000000;
           border-radius: 25px;
           gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.5538))), 32px);
+          @media screen and (max-width: $desktop) {
+            height: auto;
+            width: 100%;
+            padding: 40px 20px;
+            flex-direction: row;
+          }
           &-pic {
             display: flex;
             flex-direction: column;
@@ -383,6 +396,9 @@ export default {
             justify-content: center;
             width: 100%;
             gap: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.5538))), 24px);
+            @media screen and (max-width: $desktop) {
+              width: 40%;
+            }
             &-avatar {
               display: flex;
               align-items: center;
@@ -411,6 +427,9 @@ export default {
             flex-direction: column;
             align-items: flex-start;
             gap: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.3692))), 24px);
+            @media screen and (max-width: $desktop) {
+              width: 50%;
+            }
             &-link {
               display: flex;
               align-items: center;
@@ -429,12 +448,16 @@ export default {
               svg {
                 width: 30px;
                 height: 30px;
+                @media screen and (max-width: $desktop) {
+                  width: 20px;
+                  height: 20px;
+                }
               }
               span {
                 content: "";
                 background: #F9E423;
-                width: 20px;
-                height: 20px;
+                width: min(max(10px, calc(0.625rem + ((1vw - 3.93px) * 0.4615))), 20px);
+                height: min(max(10px, calc(0.625rem + ((1vw - 3.93px) * 0.4615))), 20px);
                 aspect-ratio: 2;
                 border-radius: 50%;
               }
@@ -461,17 +484,30 @@ export default {
           @media screen and (max-width: $pc) {
             padding: 28px 80px;
           }
+          @media screen and (max-width: $desktop) {
+            width: 100%;
+            padding: 24px 30px;
+          }
           &-general {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: min(max(28px, calc(1.75rem + ((1vw - 3.93px) * 2.3576))), 64px);
+            @media screen and (max-width: $desktop) {
+              justify-content: center;
+              align-items: center;
+              width: 100%;
+            }
             &-blank {
               display: flex;
               align-items: flex-start;
-              gap: 50px;
+              gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 1.3844))), 50px);
               p {
                 font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
               }
               &-form {
                 display: flex;
@@ -493,6 +529,15 @@ export default {
               flex-direction: column;
               align-items: flex-start;
               gap: 32px;
+              button {
+                width: 361px;
+                height: 69px;
+                @media screen and (max-width: $desktop) {
+                  width: 200px;
+                  height: 40px;
+                  padding: 10px;
+                }
+              }
               &-booking {
                 display: flex;
                 align-items: center;
@@ -503,16 +548,22 @@ export default {
                 .status {
                   position: relative;
                   padding-left: 32px;
+                  @media screen and (max-width: $desktop) {
+                    padding-left: 16px;
+                  }
                   span {
                     content: "";
                     background: #6ED23F;
                     position: absolute;
-                    width: 24px;
-                    height: 24px;
+                    width: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.5538))), 24px);
+                    height: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.5538))), 24px);
                     top: 2px;
                     left: 0;
                     aspect-ratio: 2;
                     border-radius: 50%;
+                    @media screen and (max-width: $desktop) {
+                      top: 4px;
+                    }
                   }
                 }
               }
@@ -526,7 +577,7 @@ export default {
             justify-content: center;
             width: 100%;
             height: 100%;
-            gap: 52px;
+            gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.2921))), 52px);
             p {
               font-size: min(max(22px, calc(1.375rem + ((1vw - 3.93px) * 1.3098))), 42px);
               text-align: center;
@@ -536,6 +587,15 @@ export default {
               flex-direction: column;
               align-items: center;
               gap: 10px;
+              button {
+                width: 361px;
+                height: 69px;
+                @media screen and (max-width: $desktop) {
+                  width: 200px;
+                  height: auto;
+                  padding: 10px;
+                }
+              }
             }
           }
 
@@ -546,7 +606,7 @@ export default {
             justify-content: center;
             width: 100%;
             height: 100%;
-            gap: 60px;
+            gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.2921))), 52px);
             &-message {
               display: flex;
               flex-direction: column;
@@ -565,6 +625,15 @@ export default {
               flex-direction: column;
               align-items: center;
               gap: 10px;
+              button {
+                width: 361px;
+                height: 69px;
+                @media screen and (max-width: $desktop) {
+                  width: 200px;
+                  height: auto;
+                  padding: 10px;
+                }
+              }
             }
           }
           &-haveNotif {
