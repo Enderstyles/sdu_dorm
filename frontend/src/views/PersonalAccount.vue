@@ -636,6 +636,15 @@ export default {
               }
             }
           }
+
+          &-docs {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            height: auto;
+          }
+
           &-haveNotif {
             display: flex;
             flex-direction: column;

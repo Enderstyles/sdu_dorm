@@ -375,6 +375,9 @@ export default {
       padding: 90px 0;
       position: relative;
       z-index: 1;
+      @media screen and (max-width: $mobile) {
+        height: 95lvh;
+      }
       &-back {
         position: absolute;
         top: 0;

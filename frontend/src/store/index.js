@@ -1,9 +1,7 @@
 import { createStore } from 'vuex'
 import axios from "axios";
 import router from "@/router";
-import {createToaster} from "@meforma/vue-toaster";
-// import i18n from "@/i18n";
-const toaster = createToaster({ position: "top-right", duration: 1900 });
+
 export default createStore({
     state: {
         auth: localStorage.getItem("access_token") ? true : false,

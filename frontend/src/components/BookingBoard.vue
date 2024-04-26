@@ -5,7 +5,7 @@
       <div class="bookboard__block_info">
         <div
             class="bookboard__block_info-place"
-            v-for="(place, idx) in myPlace"
+            v-for="place in myPlace"
             :key="place"
         >
           <div class="bookboard__block_info-place-content">

@@ -95,7 +95,6 @@
     <div class="bed-map_btn">
       <button
           class="grey-unfilled-button"
-          style="width: 400px; height: 100px"
           @click="goToConfirmation"
       >
         <span class="regular-txt">CHOOSE</span>
@@ -190,7 +189,7 @@ export default {
   justify-content: center;
   width: 100%;
   height: auto;
-  gap: 100px;
+  gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 3.2303))), 100px);
   &_space {
     display: flex;
     align-items: center;
@@ -256,6 +255,16 @@ export default {
       }
     }
   }
+  &_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    button {
+      width: min(max(200px, calc(12.5rem + ((1vw - 3.93px) * 9.2293))), 400px);
+      height: min(max(50px, calc(3.125rem + ((1vw - 3.93px) * 2.3073))), 100px);
+    }
+  }
 }
 
 svg {
@@ -269,10 +278,6 @@ svg {
     fill: #4ED72C;
   }
 }
-
-//.bed-map_space-content-bedding .bed:hover path {
-//  fill: #4ED72C;
-//}
 
 .bed-map_space-content-bedding .bed path {
   transition: fill 0.3s ease;

@@ -3,7 +3,7 @@
     <h3 class="semi-bold-txt">Upload the required Documents</h3>
     <div class="documents__form">
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           Student ID
         </p>
         <input
@@ -18,7 +18,7 @@
         </template>
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           3x4 Photo
         </p>
         <input
@@ -32,7 +32,7 @@
         />
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           Identity Card
         </p>
         <input
@@ -46,7 +46,7 @@
         />
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           075 Form
         </p>
         <input
@@ -60,7 +60,7 @@
         />
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           Payment Check
         </p>
         <input
@@ -74,7 +74,7 @@
         />
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           Power of attorney
         </p>
         <input
@@ -88,7 +88,7 @@
         />
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           Address certificate
         </p>
         <input
@@ -102,7 +102,7 @@
         />
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           University admissions form
         </p>
         <input
@@ -116,7 +116,7 @@
         />
       </div>
       <div class="documents__form-app">
-        <p class="medium-txt">
+        <p class="semi-bold-txt">
           Application
         </p>
         <input
@@ -231,11 +231,14 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
   gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.5538))), 32px);
   &__form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
     gap: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.5538))), 24px);
     &-app {
       display: flex;
@@ -247,8 +250,8 @@ export default {
         font-size: min(max(14px, calc(0.875rem + ((1vw - 3.93px) * 0.2769))), 20px);
       }
       &-txtinput {
-        width: 100%;
-        height: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 0.5538))), 36px);
+        width: auto;
+        height: 36px;
         border: 1px solid $black;
         background: #F0F0F0;
         padding: 10px 15px;
@@ -257,6 +260,9 @@ export default {
         outline: none;
       }
       &-fileinput {
+        @media screen and (max-width: $mobile) {
+          width: 70%;
+        }
         &::-webkit-file-upload-button {
           padding: 10px 35px;
           margin-right: 20px;
@@ -265,6 +271,14 @@ export default {
           border: 1px solid $black;
           color: $black;
           cursor: pointer;
+          @media screen and (max-width: $mobile) {
+            padding: 10px 15px;
+            margin-right: 0;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+          }
           &:hover {
             background: $secondary;
             color: $white;

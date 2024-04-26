@@ -98,7 +98,10 @@
         </div>
 
         <div class="about__content-info-apply">
-          <button class="about__content-info-apply-btn main-button" @click="$router.push('/booking')">
+          <button
+              class="about__content-info-apply-btn main-button"
+              @click="goToBooking"
+          >
             <p class="regular-txt">Go to Book</p>
           </button>
         </div>
@@ -114,6 +117,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
+import {mapGetters} from "vuex";
 SwiperCore.use([Pagination, Navigation, Autoplay]);
 export default {
   components: {Swiper, SwiperSlide},
@@ -140,6 +144,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["getAuth"]),
+    isAuthenticated() {
+      return this.$store.getters.getAuth;
+    },
   },
   methods: {
     fetchAboutData() {
@@ -189,6 +197,13 @@ export default {
         }
       }
     },
+    goToBooking() {
+      if (this.isAuthenticated) {
+        this.$router.push('/booking');
+      } else {
+        this.$router.push('/login');
+      }
+    }
   },
   created() {
     this.fetchAboutData();
