@@ -1,5 +1,8 @@
 <template>
-  <header class="header" :class="{'login': $route.path === '/login'}">
+  <header
+      class="header"
+      :class="{'login': $route.path === '/login'}"
+  >
     <div class="header__content container">
       <div class="header__content-logo">
         <img src="@/assets/images/webp/sdu-logo.webp" alt="sdu-logo" @click="$router.push('/')">
@@ -56,7 +59,10 @@
     </div>
   </header>
 
-  <header class="header-mobile">
+  <header
+      class="header-mobile"
+      :class="{'login': $route.path === '/login'}"
+  >
     <div class="header-mobile__nav container">
       <div class="header-mobile__nav_top">
         <div class="header-mobile__nav_top_logo" @click="$router.push('/')">
@@ -92,7 +98,15 @@
           </router-link>
           <router-link
               :class="{'active': $route.path === '/booking'}"
+              v-if="isAuthenticated"
               to="/booking"
+              class="header__nav_links-block-item medium-txt"
+          >
+            Booking
+          </router-link>
+          <router-link
+              v-if="!isAuthenticated"
+              to="/login"
               class="header__nav_links-block-item medium-txt"
           >
             Booking

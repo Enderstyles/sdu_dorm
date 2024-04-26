@@ -235,6 +235,10 @@ export default {
         border-radius: 25px;
         width: 100%;
         gap: 32px;
+        @media screen and (max-width: $tablet) {
+          justify-content: space-between;
+          gap: 20px;
+        }
         &-button {
           display: flex;
           align-items: center;
@@ -245,7 +249,7 @@ export default {
           cursor: pointer;
           color: $black;
           p {
-            font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+            font-size: min(max(14px, calc(0.875rem + ((1vw - 3.93px) * 0.4615))), 24px);
             text-align: center;
           }
           &:hover {
@@ -292,6 +296,9 @@ export default {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.4615))), 30px);
+            @media screen and (max-width: $tablet) {
+              grid-template-columns: 1fr;
+            }
             &-block {
               display: flex;
               flex-direction: column;
