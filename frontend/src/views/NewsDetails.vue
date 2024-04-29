@@ -216,10 +216,14 @@ export default {
 .news-details {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  align-items: flex-start;
+  gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.4615))), 30px);
   width: 100%;
   height: 100%;
   padding: 200px 0;
+  @media screen and (max-width: $desktop) {
+    padding: 130px 0;
+  }
   &__back {
     display: flex;
     align-items: flex-start;
@@ -238,6 +242,10 @@ export default {
     align-items: flex-start;
     width: 100%;
     gap: 56px;
+    @media screen and (max-width: $desktop) {
+      flex-direction: column;
+      gap: 24px;
+    }
     &-box {
       display: flex;
       flex-direction: column;
@@ -245,6 +253,9 @@ export default {
       justify-content: flex-start;
       width: 40%;
       gap: 30px;
+      @media screen and (max-width: $desktop) {
+        width: 100%;
+      }
       &-info {
         display: flex;
         flex-direction: column;
@@ -295,22 +306,35 @@ export default {
       align-items: flex-start;
       width: 50%;
       gap: 44px;
+      @media screen and (max-width: $desktop) {
+        width: 100%;
+        gap: 24px;
+      }
       &-title {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+        @media screen and (max-width: $desktop) {
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+        }
         span {
           color: $grey;
           font-size: 12px;
           font-style: italic;
+          @media screen and (max-width: $desktop) {
+            font-size: 16px;
+            font-weight: 600;
+          }
         }
       }
       &-desc {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 28px;
+        gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.3692))), 28px);
         p {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         }

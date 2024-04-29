@@ -3,7 +3,7 @@
     <div class="footer__content container">
       <div class="footer__content_maininfo">
         <div class="footer__content_maininfo-logo">
-          <img src="@/assets/images/png/sdu-white-logo.png" alt="sdu-white-logo" @click="$router.push('/')">
+          <img src="@/assets/images/webp/sdu-white-logo.webp" alt="sdu-white-logo" @click="$router.push('/')">
         </div>
         <div class="footer__content_maininfo-location">
           <p class="regular-txt">© 2023 All rights reserved</p>
@@ -91,21 +91,39 @@ export default {
   color: $white;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
+  @media screen and (max-width: $laptopSm) {
+    padding: 32px 0;
+  }
   &__content {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     width: 100%;
+    @media screen and (max-width: $laptopSm) {
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
     &_maininfo {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 66px;
+      gap: min(max(25px, calc(1.5625rem + ((1vw - 3.93px) * 1.4305))), 56px);
+      @media screen and (max-width: $laptopSm) {
+        width: 100%;
+        padding-bottom: 25px;
+        border-bottom: 1px solid $white;
+      }
       &-logo {
         display: flex;
         width: 100%;
+        @media screen and (max-width: $laptopSm) {
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
         img {
-          width: 140px;
+          width: min(max(100px, calc(6.25rem + ((1vw - 3.93px) * 1.8459))), 140px);
           height: 100%;
           cursor: pointer;
         }
@@ -114,7 +132,13 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 6px;
+        gap: 10px;
+        @media screen and (max-width: $laptopSm) {
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          width: 100%;
+        }
         p {
           font-size: 15px;
         }
@@ -126,6 +150,15 @@ export default {
       align-items: flex-start;
       height: 220px;
       justify-content: space-between;
+      @media screen and (max-width: $laptopSm) {
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+        gap: 25px;
+        width: 100%;
+        padding-bottom: 25px;
+        border-bottom: 1px solid $white;
+      }
       h2 {
         font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
       }
@@ -136,12 +169,25 @@ export default {
     &_nav {
       display: flex;
       flex-direction: column;
+      @media screen and (max-width: $laptopSm) {
+        width: 100%;
+        padding-bottom: 25px;
+        border-bottom: 1px solid $white;
+      }
       &-links {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         height: 220px;
         justify-content: space-between;
+        @media screen and (max-width: $laptopSm) {
+          width: 100%;
+          height: 100%;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: 30px;
+        }
         li {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           cursor: pointer;
@@ -159,6 +205,14 @@ export default {
       align-items: flex-start;
       height: 220px;
       justify-content: space-between;
+      @media screen and (max-width: $laptopSm) {
+        flex-direction: row;
+        height: 100%;
+        gap: 30px;
+        width: 100%;
+        padding-bottom: 25px;
+        border-bottom: 1px solid $white;
+      }
       &-follow {
         display: flex;
         flex-direction: column;

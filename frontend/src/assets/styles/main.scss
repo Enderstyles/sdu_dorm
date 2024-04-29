@@ -20,7 +20,7 @@ $grey: #9C9C9C;
 }
 
 h1 {
-  font-size: min(max(48px, calc(3rem + ((1vw - 3.93px) * 3.1434))), 96px);
+  font-size: min(max(36px, calc(2.25rem + ((1vw - 3.93px) * 2.7688))), 96px);
 }
 h2 {
   font-size: min(max(28px, calc(1.75rem + ((1vw - 3.93px) * 2.3576))), 64px);
@@ -110,4 +110,22 @@ h4 {
 }
 .swiper-pagination-bullet-active {
   background-color: #f8a46f !important;
+}
+
+.burger-active {
+  width: 30px;
+  height: 30px;
+  span {
+    background-color: $secondary;
+    border: 2px solid $secondary;
+    transform: scale(0);
+    &:first-child {
+      transform: rotate(-45deg);
+      top: calc(50% - 4px) !important;
+    }
+    &:last-child {
+      transform: rotate(45deg);
+      bottom: 50% !important;
+    }
+  }
 }

@@ -95,7 +95,6 @@
     <div class="bed-map_btn">
       <button
           class="grey-unfilled-button"
-          style="width: 400px; height: 100px"
           @click="goToConfirmation"
       >
         <span class="regular-txt">CHOOSE</span>
@@ -111,6 +110,8 @@ export default {
     return {
       selectedBed: parseInt(localStorage.getItem('selectedBed')) || 0,
       selectedRoom :  parseInt(localStorage.getItem('selectedRoom')) || 0,
+      docsData: [],
+      docsUploaded: false,
     };
   },
   methods: {
@@ -125,9 +126,14 @@ export default {
     goToConfirmation() {
       const bed = localStorage.getItem('selectedBed');
       if (bed) {
-        this.$router.push('/confirmation');
+        if (this.docsUploaded === false) {
+          localStorage.setItem('selectedBoardTab', 'documents');
+          this.$router.push('/personal-account');
+        } else {
+          this.$router.push('/confirmation');
+        }
       } else {
-        this.$toaster.error("Select a bed and proceed to confirmation!");
+        this.$toaster.error("Select a bed and upload documents proceed to confirmation!");
       }
     },
     isBedTaken(bedID) {
@@ -148,8 +154,29 @@ export default {
     getBedStrokeFill(bedID) {
       return this.isBedTaken(bedID) ? '#D72C2C' : '#4ED72C';
     },
+    async fetchDocumentsData() {
+      await this.$axios
+          .get(`get_documents/`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((response) => {
+            if (response.data) {
+              this.docsData = response.data;
+              this.docsUploaded = true;
+            }
+          })
+          .catch((error) => {
+            if (error.response.data.message) {
+              this.$toaster.error(error.response.data.message);
+              this.docsUploaded = false;
+            }
+          });
+    },
   },
-  mounted() {
+  created() {
+    this.fetchDocumentsData();
   }
 }
 </script>
@@ -162,7 +189,7 @@ export default {
   justify-content: center;
   width: 100%;
   height: auto;
-  gap: 100px;
+  gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 3.2303))), 100px);
   &_space {
     display: flex;
     align-items: center;
@@ -203,6 +230,9 @@ export default {
         justify-content: center;
         gap: min(max(24px, calc(1.5rem + ((1vw - 3.93px) * 1.7027))), 50px);
         width: 100%;
+        @media screen and (max-width: $tablet) {
+          justify-content: space-between;
+        }
         &-wardrobe {
           display: flex;
           align-items: center;
@@ -211,12 +241,28 @@ export default {
             max-width: min(max(40px, calc(2.5rem + ((1vw - 3.93px) * 5.239))), 120px);
             height: auto;
           }
+          @media screen and (max-width: $tablet) {
+            display: none;
+          }
         }
         &-table {
           max-width: min(max(50px, calc(3.125rem + ((1vw - 3.93px) * 5.5665))), 135px);
           height: auto;
+          @media screen and (max-width: $tablet) {
+            display: none;
+          }
         }
       }
+    }
+  }
+  &_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    button {
+      width: min(max(200px, calc(12.5rem + ((1vw - 3.93px) * 9.2293))), 400px);
+      height: min(max(50px, calc(3.125rem + ((1vw - 3.93px) * 2.3073))), 100px);
     }
   }
 }
@@ -232,10 +278,6 @@ svg {
     fill: #4ED72C;
   }
 }
-
-//.bed-map_space-content-bedding .bed:hover path {
-//  fill: #4ED72C;
-//}
 
 .bed-map_space-content-bedding .bed path {
   transition: fill 0.3s ease;

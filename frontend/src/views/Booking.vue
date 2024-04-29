@@ -17,40 +17,54 @@
         </p>
       </div>
       <div class="booking__content_roadmap">
-        <span
-            class="medium-txt"
-            @click="changeStage(1)"
-        >
-          Building
-        </span>
-        <span
-            class="medium-txt"
-            @click="changeStage(2)"
-            v-if="selectedBlock"
-        >
-          // Block {{ selectedBlockLetter }}
-        </span>
-        <span
-            class="medium-txt"
-            @click="changeStage(3)"
-            v-if="selectedTaraf"
-        >
-          // Taraf {{ selectedTaraf }}
-        </span>
-        <span
-            class="medium-txt"
-            @click="$router.push('/confirmation')"
-            v-if="timer"
-        >
-          // Confitmation
-        </span>
-        <span
-            class="medium-txt"
-            @click="changeStage(4)"
-            v-if="selectedRoom"
-        >
-          // Room {{ selectedRoom }}
-        </span>
+        <div class="booking__content_roadmap-link">
+          <span
+              class="stage semi-bold-txt"
+              @click="changeStage(1)"
+              :class="{'activeStage': bookingStages === 1}"
+          >
+            Building
+          </span>
+        </div>
+        <div class="booking__content_roadmap-link" v-if="selectedBlock">
+          <span class="semi-bold-txt">>></span>
+          <span
+              class="stage semi-bold-txt"
+              @click="changeStage(2)"
+              :class="{'activeStage': bookingStages === 2}"
+          >
+            Block {{ selectedBlockLetter }}
+          </span>
+        </div>
+        <div class="booking__content_roadmap-link" v-if="selectedTaraf">
+          <span class="semi-bold-txt">>></span>
+          <span
+              class="stage semi-bold-txt"
+              @click="changeStage(3)"
+              :class="{'activeStage': bookingStages === 3}"
+          >
+            Taraf {{ selectedTaraf }}
+          </span>
+        </div>
+        <div class="booking__content_roadmap-link" v-if="selectedRoom">
+          <span class="semi-bold-txt">>></span>
+          <span
+              class="stage semi-bold-txt"
+              @click="changeStage(4)"
+              :class="{'activeStage': bookingStages === 4}"
+          >
+            Room {{ selectedRoom }}
+          </span>
+        </div>
+        <div class="booking__content_roadmap-link" v-if="timer">
+          <span class="semi-bold-txt">>></span>
+          <span
+              class="stage semi-bold-txt"
+              @click="$router.push('/confirmation')"
+          >
+            Confirmation
+          </span>
+        </div>
       </div>
       <div class="booking__content_map">
         <div class="booking__content_map-view">
@@ -118,7 +132,7 @@ export default {
   }),
   beforeRouteLeave(to, from, next) {
     if (this.bookingStages) {
-      localStorage.removeItem('bookingStage');
+
       next();
     }
   },
@@ -171,10 +185,10 @@ export default {
   },
   watch: {
     $route() {
-     this.selectedBlock = parseInt(localStorage.getItem('selectedBlock'))
-     this.selectedFloor = parseInt(localStorage.getItem('selectedFloor'))
-     this.selectedTaraf = parseInt(localStorage.getItem('selectedTaraf'))
-     this.selectedRoom  = parseInt(localStorage.getItem('selectedRoom'))
+      this.selectedBlock = parseInt(localStorage.getItem('selectedBlock'))
+      this.selectedFloor = parseInt(localStorage.getItem('selectedFloor'))
+      this.selectedTaraf = parseInt(localStorage.getItem('selectedTaraf'))
+      this.selectedRoom  = parseInt(localStorage.getItem('selectedRoom'))
     }
   }
 }
@@ -187,6 +201,9 @@ export default {
   width: 100%;
   height: 100%;
   padding: 200px 0;
+  @media screen and (max-width: $desktop) {
+    padding: 130px 0;
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -197,15 +214,22 @@ export default {
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
+      flex-wrap: wrap;
       padding-top: 24px;
       gap: 5px;
       width: 100%;
-      span {
-        cursor: pointer;
+      height: auto;
+      &-link {
+        display: flex;
+        align-items: center;
         font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         color: $black;
-        &:hover {
-          color: $secondary;
+        gap: 5px;
+        .stage {
+          cursor: pointer;
+          &:hover {
+            color: $secondary;
+          }
         }
       }
     }
@@ -218,6 +242,9 @@ export default {
       p {
         font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
         width: 60%;
+        @media screen and (max-width: $desktop) {
+          width: 100%;
+        }
       }
     }
     &_map {
@@ -226,6 +253,9 @@ export default {
       justify-content: center;
       height: auto;
       padding-top: 64px;
+      @media screen and (max-width: $desktop) {
+        padding-top: 32px;
+      }
       &-view {
         display: flex;
         flex-direction: column;
@@ -235,5 +265,8 @@ export default {
       }
     }
   }
+}
+.activeStage {
+  color: $secondary;
 }
 </style>

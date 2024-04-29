@@ -1,7 +1,7 @@
 <template>
   <div class="taraf-map">
     <div class="taraf-map_rect">
-      <svg width="950" height="950" viewBox="0 0 950 950" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 950 950" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect id="taraf" @click="chooseTaraf(2)" :class="{ 'activeTaraf': taraf === 2 }" x="519.5" y="0.5" width="205" height="299" fill="#F6F6F6"/>
         <rect x="519.5" y="0.5" width="205" height="299" stroke="black"/>
         <path d="M610.102 152.5V147.932L622.222 136.051C623.381 134.881 624.347 133.841 625.119 132.932C625.892 132.023 626.472 131.142 626.858 130.29C627.244 129.437 627.438 128.528 627.438 127.562C627.438 126.46 627.188 125.517 626.688 124.733C626.188 123.938 625.5 123.324 624.625 122.892C623.75 122.46 622.756 122.244 621.642 122.244C620.494 122.244 619.489 122.483 618.625 122.96C617.761 123.426 617.091 124.091 616.614 124.955C616.148 125.818 615.915 126.847 615.915 128.04H609.898C609.898 125.824 610.403 123.898 611.415 122.261C612.426 120.625 613.818 119.358 615.591 118.46C617.375 117.562 619.42 117.114 621.727 117.114C624.068 117.114 626.125 117.551 627.898 118.426C629.67 119.301 631.045 120.5 632.023 122.023C633.011 123.545 633.506 125.284 633.506 127.239C633.506 128.545 633.256 129.83 632.756 131.091C632.256 132.352 631.375 133.75 630.114 135.284C628.864 136.818 627.108 138.676 624.847 140.858L618.83 146.977V147.216H634.034V152.5H610.102Z" fill="black"/>
@@ -44,11 +44,15 @@ export default {
   props: ["tarafs"],
   data: () => ({
     taraf: parseInt(localStorage.getItem('selectedTaraf')) || 0,
+    selectedRoom :  parseInt(localStorage.getItem('selectedRoom')) || 0,
     activeFloor: 2,
   }),
   methods: {
     chooseTaraf(tarafId) {
       if (this.activeFloor !== null) {
+        if (this.selectedRoom) {
+          localStorage.removeItem('selectedRoom');
+        }
         this.taraf = tarafId;
         this.$router.push({query: {block: this.$route.query.block, taraf: tarafId }})
         localStorage.setItem("selectedFloor", this.activeFloor);
@@ -67,39 +71,61 @@ export default {
 .taraf-map {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 60px;
   width: 100%;
   height: auto;
+  @media screen and (max-width: $tablet) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
   &_rect {
     width: 100%;
     height: auto;
+    @media screen and (max-width: $tablet) {
+      order: 2;
+    }
   }
   &_floor {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 30px;
     width: auto;
     height: 100%;
+    @media screen and (max-width: $tablet) {
+      justify-content: center;
+      flex-direction: row;
+      width: 100%;
+      order: 1;
+      gap: 20px;
+    }
     &-choose {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 25px;
+      gap: 20px;
       &-number {
-        width: 110px;
-        height: 40px;
-        font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+        padding: 15px 20px;
+        width: 130px;
         cursor: pointer;
+        color: $black;
+        span {
+          font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
+          width: max-content;
+        }
+        @media screen and (max-width: $tablet) {
+          width: auto;
+        }
       }
     }
   }
 }
 
 svg {
-  max-width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 42.5671))), 950px);
-  height: 100%;
+  max-width: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 26.1952))), 700px);
+  height: min(max(300px, calc(18.75rem + ((1vw - 3.93px) * 42.5671))), 950px);
 }
 
 #taraf {
@@ -110,7 +136,7 @@ svg {
 }
 .activeFloor {
   background: $secondary !important;
-  color: $white;
+  color: $white !important;
 }
 .activeTaraf {
   fill: $secondary !important;

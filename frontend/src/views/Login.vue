@@ -1,9 +1,10 @@
 <template>
-  <div class="login">
+  <Loader v-if="isLoading" />
+  <div class="login" v-else>
     <div class="login__content container">
       <div class="login__content-form">
         <div class="login__content-form-logo">
-          <img src="@/assets/images/png/sdu-login-logo.png" alt="sdu-login-logo" @click="$router.push('/')">
+          <img src="@/assets/images/webp/sdu-login-logo.webp" alt="sdu-login-logo" @click="$router.push('/')">
         </div>
         <div class="login__content-form-title">
           <h3 class="semi-bold-txt">Log In to student house portal</h3>
@@ -41,12 +42,25 @@
           </div>
         </div>
         <div class="login__content-form-forgot">
-          <p class="regular-txt" @click="isOpen = true">Forgot a password?</p>
+          <p
+              class="regular-txt"
+              @click="isOpen = true"
+          >
+            Forgot a password?
+          </p>
         </div>
         <div class="login__content-form-login">
-          <button class="login__content-form-login-btn main-button" @click="loginForm">Log in</button>
+          <button
+              class="login__content-form-login-btn main-button"
+              @click="loginForm"
+          >
+            Log in
+          </button>
         </div>
-        <div class="login__content-form-return" @click="$router.push('/')">
+        <div
+            class="login__content-form-return"
+            @click="$router.push('/')"
+        >
           <img src="@/assets/images/svg/arrow-return.svg" alt="arrow-return">
           <p class="regular-txt">Return to main page</p>
         </div>
@@ -130,9 +144,11 @@ import {
   sameAs
 } from "@vuelidate/validators";
 import {mapActions} from "vuex";
+import Loader from "@/components/Loader.vue";
 
 export default {
   components: {
+    Loader,
     ModalWindow
   },
   data: () => ({
@@ -146,6 +162,7 @@ export default {
     step: 1,
     isOpen: false,
     codeTab: false,
+    isLoading: false,
   }),
   validations() {
     return {
@@ -204,6 +221,7 @@ export default {
           student_id: this.id,
           password: this.password,
         };
+        this.isLoading = true;
         this.$axios.post("login/", data)
             .then(res => {
               localStorage.setItem("access_token", res.data.access);
@@ -216,6 +234,7 @@ export default {
               }, 200);
             })
             .catch(err => {
+              this.isLoading = false;
               if (err.response.data.detail) {
                 this.$toaster.error(err.response.data.detail);
               } else {
@@ -267,12 +286,6 @@ export default {
       this.password = this.password.replace(/[^a-zA-Z0-9\s.!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, '');
       this.for_pass = this.for_pass.replace(/[^a-zA-Z0-9\s.!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, '');
     },
-    onlyText() {
-      this.password = this.password.replace(/[^а-яА-ЯёЁәӘіІңҢғҒүҮұҰқҚөӨһҺa-zA-Z\-\s.]/gi, "");
-      this.password = this.password.replace(/\.{2,}|\s{2,}|\-{2,}/g, function (match) {
-        return match.substr(0, 1);
-      });
-    },
   },
 };
 </script>
@@ -284,6 +297,9 @@ export default {
   justify-content: center;
   width: 100%;
   height: 100%;
+  @media screen and (max-width: $tablet) {
+    height: 100lvh;
+  }
   &__content {
     display: flex;
     flex-direction: column;
@@ -292,6 +308,9 @@ export default {
     width: 100%;
     height: 100%;
     margin: 40px 0;
+    @media screen and (max-width: $tablet) {
+      margin: 0;
+    }
     &-form {
       display: flex;
       flex-direction: column;
@@ -299,6 +318,9 @@ export default {
       width: 100%;
       height: 100%;
       color: $black;
+      @media screen and (max-width: $tablet) {
+        justify-content: center;
+      }
       &-logo {
         display: flex;
         align-items: center;
@@ -316,6 +338,9 @@ export default {
         align-items: center;
         text-align: center;
         padding: 48px 0 32px 0;
+        @media screen and (max-width: $tablet) {
+          padding: 25px 0;
+        }
       }
       &-enter {
         display: flex;
@@ -333,7 +358,7 @@ export default {
           }
           input {
             width: 100%;
-            height: min(max(25px, calc(1.5625rem + ((1vw - 3.93px) * 1.6372))), 50px);
+            height: min(max(35px, calc(2.1875rem + ((1vw - 3.93px) * 0.6922))), 50px);
             border: 1px solid $black;
             background: #F0F0F0;
             padding: 10px 15px;
@@ -362,15 +387,12 @@ export default {
         align-items: center;
         justify-content: center;
         max-width: 365px;
-        padding-top: 40px;
-        &-btn {
-          color: $primary;
-        }
+        padding-top: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.9229))), 40px);
       }
       &-return {
         display: flex;
         align-items: center;
-        padding-top: 64px;
+        padding-top: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 1.569))), 64px);
         gap: 10px;
         cursor: pointer;
         p {
@@ -386,13 +408,19 @@ export default {
   width: 850px;
   max-height: 90lvh;
   padding: 90px 150px 130px 150px;
-  gap: 70px;
+  gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 1.8459))), 70px);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   color: $black;
+  @media screen and (max-width: $tablet) {
+    padding: 50px;
+  }
+  @media screen and (max-width: $mobile) {
+    padding: 30px;
+  }
   &-title {
     text-align: left;
   }
@@ -401,7 +429,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 35px;
+    gap: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.6922))), 35px);
   }
   &-id {
     display: flex;
@@ -426,10 +454,13 @@ export default {
         border: 1px solid $black;
         padding: 20px 40px;
         outline: none;
+        @media screen and (max-width: $mobile) {
+          height: 40px;
+        }
       }
     }
     button {
-      font-size: 20px;
+      font-size: min(max(14px, calc(0.875rem + ((1vw - 3.93px) * 0.2769))), 20px);
       width: 200px;
       height: 64px;
       color: $white;
@@ -438,44 +469,11 @@ export default {
         color: $secondary;
         border: 1px solid $secondary;
       }
+      @media screen and (max-width: $mobile) {
+        height: 40px;
+      }
     }
   }
-  //&-code {
-  //  display: flex;
-  //  flex-direction: column;
-  //  align-items: flex-start;
-  //  width: 100%;
-  //  gap: 30px;
-  //  &-input {
-  //    display: flex;
-  //    flex-direction: column;
-  //    align-items: stretch;
-  //    width: 100%;
-  //    gap: 15px;
-  //    p {
-  //      color: $grey;
-  //      font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
-  //    }
-  //    input {
-  //      width: 100%;
-  //      height: 64px;
-  //      background: $white;
-  //      border-radius: 25px;
-  //      border: 1px solid $grey;
-  //      padding: 20px 40px;
-  //      outline: none;
-  //    }
-  //  }
-  //  button {
-  //    font-size: 20px;
-  //    width: 155px;
-  //    height: 64px;
-  //    color: $white;
-  //    &:hover {
-  //      background: $secondary;
-  //    }
-  //  }
-  //}
   &-success {
     display: flex;
     flex-direction: column;
@@ -511,10 +509,13 @@ export default {
         border: 1px solid $black;
         padding: 20px 40px;
         outline: none;
+        @media screen and (max-width: $mobile) {
+          height: 40px;
+        }
       }
     }
     button {
-      font-size: 20px;
+      font-size: min(max(14px, calc(0.875rem + ((1vw - 3.93px) * 0.2769))), 20px);
       width: 100%;
       height: 64px;
       color: $white;
@@ -522,6 +523,9 @@ export default {
         background: $white;
         color: $secondary;
         border: 1px solid $secondary;
+      }
+      @media screen and (max-width: $mobile) {
+        height: 40px;
       }
     }
   }

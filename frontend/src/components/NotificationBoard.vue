@@ -216,10 +216,18 @@ export default {
     height: 50px;
     gap: 25px;
     color: $black;
+    @media screen and (max-width: $tablet) {
+      height: auto;
+      flex-direction: column;
+    }
     &-form {
       display: flex;
       align-items: center;
       gap: 10px;
+      //@media screen and (max-width: $tablet) {
+      //  flex-direction: column;
+      //  align-items: flex-start;
+      //}
       &-btn {
         display: flex;
         align-items: center;
@@ -232,10 +240,10 @@ export default {
           cursor: pointer;
         }
         select {
-          width: 132px;
-          height: 100%;
+          max-width: 132px;
+          height: 45px;
           padding: 10px 15px;
-          font-size: 16px;
+          font-size: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.1846))), 16px);
           color: $black;
           border: 1px solid $black;
           border-radius: 5px;
@@ -248,18 +256,15 @@ export default {
         button {
           box-sizing: border-box;
           display: flex;
-          flex-direction: row;
           align-items: center;
-          padding: 11px 24px;
+          justify-content: center;
+          padding: 10px 20px;
           gap: 10px;
-          width: 131px;
-          height: 100%;
+          max-width: 132px;
+          height: 45px;
           border: 1px solid $secondary;
           border-radius: 5px;
-          flex: none;
-          flex-grow: 0;
           color: $secondary;
-          margin-left: 20px;
         }
       }
     }
@@ -268,12 +273,21 @@ export default {
       flex-direction: column;
       align-items: flex-end;
       justify-content: flex-end;
-      gap: 8px;
+      gap: 10px;
+      @media screen and (max-width: $tablet) {
+        flex-direction: row;
+        gap: 15px;
+      }
       &-number {
         display: flex;
         align-items: flex-end;
         color: $black;
-        font-size: 16px;
+        p {
+          font-size: 16px;
+          @media screen and (max-width: $tablet) {
+            font-weight: 700;
+          }
+        }
       }
       &-navigation {
         display: flex;
@@ -310,6 +324,11 @@ export default {
         outline: none;
         background: $white;
       }
+      @media screen and (max-width: $tablet) {
+        height: auto;
+        padding: 20px 10px;
+        gap: 20px;
+      }
       &-message {
         display: flex;
         flex-direction: column;
@@ -321,10 +340,21 @@ export default {
           align-items: center;
           justify-content: space-between;
           width: 100%;
+          @media screen and (max-width: $tablet) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+          }
           &-txt {
             display: flex;
             align-items: center;
             gap: 25px;
+            @media screen and (max-width: $tablet) {
+              flex-direction: column;
+              align-items: flex-start;
+              width: 100%;
+              gap: 10px;
+            }
             p {
               font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
               display: -webkit-box;
@@ -332,9 +362,12 @@ export default {
               -webkit-box-orient: vertical;
               overflow: hidden;
               max-width: 70%;
+              @media screen and (max-width: $tablet) {
+                -webkit-line-clamp: 2;
+              }
             }
             span {
-              font-size: 16px;
+              font-size: min(max(12px, calc(0.75rem + ((1vw - 3.93px) * 0.1846))), 16px);
             }
           }
           &-type {
@@ -351,6 +384,9 @@ export default {
             flex: none;
             flex-grow: 0;
             color: $white;
+            @media screen and (max-width: $tablet) {
+              margin-left: 0;
+            }
           }
         }
         &-desc {
@@ -358,11 +394,14 @@ export default {
           align-items: flex-start;
           width: 100%;
           p {
-            font-size: 20px;
+            font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.1846))), 20px);
             display: -webkit-box;
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            @media screen and (max-width: $tablet) {
+              -webkit-line-clamp: 3;
+            }
           }
         }
       }

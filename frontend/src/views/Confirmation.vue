@@ -23,7 +23,6 @@
     <div class="confirmation__main_btn">
       <button
           class="main-button"
-          style="width: 510px; height: 190px"
           @click="payment"
       >
         <span class="regular-txt">Go to the payment</span>
@@ -44,9 +43,8 @@ export default {
       selectedRoom:  parseInt(localStorage.getItem('selectedRoom')) || 0,
       selectedBed:  parseInt(localStorage.getItem('selectedBed')) || 0,
       timerStart: localStorage.getItem('timerStart') ? parseInt(localStorage.getItem('timerStart')) : null,
-      timerDuration: 60,
+      timerDuration: 600,
       timerInterval: null,
-      confirmPay: false,
     };
   },
   computed: {
@@ -80,6 +78,7 @@ export default {
     } else {
       this.restoreTimer();
     }
+    this.createPaymentObject();
   },
   beforeDestroy() {
     clearInterval(this.timerInterval);
@@ -106,7 +105,8 @@ export default {
       } else {
         clearInterval(this.timerInterval);
         this.handleTimeout();
-        this.$router.push("/booking");
+        this.$toaster.error('Your time for confirmation and payment has expired!');
+        this.$router.push("/");
       }
     },
     handleTimeout() {
@@ -115,9 +115,9 @@ export default {
       localStorage.removeItem('selectedFloor');
       localStorage.removeItem('selectedRoom');
       localStorage.removeItem('selectedBed');
+      localStorage.removeItem('bookingStage');
       localStorage.removeItem('timer');
       localStorage.removeItem('timerStart');
-      this.$toaster.error('Your time for confirmation and payment has expired!');
     },
     payment() {
         this.$axios
@@ -136,26 +136,26 @@ export default {
               }
           )
           .then((response) => {
-            this.confirmPay = true;
-            if (response.status === 201) {
+            clearInterval(this.timerInterval);
+            localStorage.setItem('timer', this.timerDuration);
+
               const auth = response.data.response_data;
-              const invoiceId = response.data.invoiceID;
+              const invoiceID = response.data.invoiceID;
               const amount = response.data.amount;
-              console.log(auth);
               halyk.showPaymentWidget(
-                  this.createPaymentObject(auth, invoiceId, amount),
+                  this.createPaymentObject(auth, invoiceID, amount),
                   (response) => {
                     if (response.success) {
                       this.$toaster.success('You have successfully purchased a place in the dormitory!');
+                      this.handleTimeout();
                       this.$router.push("/");
-                      this.confirmPay = true;
                     } else {
                       this.$toaster.error('An error occurred with the payment');
-                      this.confirmPay = true;
+                      this.handleTimeout();
+                      this.$router.push("/booking");
                     }
                   }
               );
-            }
           })
           .catch((err) => {
             if (err.response.data.message) {
@@ -165,26 +165,27 @@ export default {
             }
           });
     },
-    createPaymentObject(auth, invoiceId, amount) {
+    createPaymentObject(auth, invoiceID, amount) {
       let paymentObject = {
-        invoiceId: invoiceId,
+        invoiceId: invoiceID,
         backLink: "",
         failureBackLink: "",
-        postLink: "localhost:8000/api/postlink/",
-        failurePostLink: "localhost:8000/api/failurelink/",
+        postLink: "https://example.kz",
+        failurePostLink: "https://example.kz",
         language: "rus",
-        description: "Buying a place in an SDU dormitory",
-        accountId: "sdu-dormitory",
+        description: "SDU Dormitory booking system",
+        accountId: "test",
         terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
         amount: amount,
         currency: "KZT",
+        phone: "+7 (777) 777 77 77",
+        email: "example@mail.ru",
         cardSave: true, //Параметр должен передаваться как Boolean
       };
       paymentObject.auth = auth;
       return paymentObject;
     },
   },
-
 }
 </script>
 
@@ -194,14 +195,22 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: 200px 0 80px 0;
-  gap: 100px;
+  gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 3.2303))), 100px);
   width: 100%;
   height: auto;
+  @media screen and (max-width: $desktop) {
+    padding: 150px 0 50px 0;
+  }
   &__main {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     width: 100%;
+    @media screen and (max-width: $tablet) {
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
     &_info {
       display: flex;
       flex-direction: column;
@@ -209,6 +218,11 @@ export default {
       gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
+      @media screen and (max-width: $tablet) {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+      }
       &-choice {
         display: flex;
         padding: 55px 75px;
@@ -217,6 +231,9 @@ export default {
         border-radius: 25px;
         p {
           font-size: min(max(20px, calc(1.25rem + ((1vw - 3.93px) * 0.7859))), 32px);
+        }
+        @media screen and (max-width: $laptopSm) {
+          padding: 25px 30px;
         }
       }
     }
@@ -227,12 +244,23 @@ export default {
       gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
       width: 50%;
       height: 100%;
+      @media screen and (max-width: $tablet) {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+      }
       &-reservation {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         width: 100%;
         gap: 5px;
+        @media screen and (max-width: $tablet) {
+          width: 100%;
+          align-items: flex-start;
+          justify-content: flex-start;
+        }
         h1 {
           font-size: min(max(40px, calc(2.5rem + ((1vw - 3.93px) * 5.7629))), 128px);
         }
@@ -243,11 +271,29 @@ export default {
         align-items: flex-end;
         width: 100%;
         gap: 35px;
+        @media screen and (max-width: $tablet) {
+          align-items: flex-end;
+          justify-content: flex-end;
+        }
         p {
           font-size: min(max(16px, calc(1rem + ((1vw - 3.93px) * 0.5239))), 24px);
           max-width: 60%;
           text-align: right;
+          @media screen and (max-width: $tablet) {
+            max-width: 100%;
+          }
         }
+      }
+    }
+    &_btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      button {
+        width: min(max(200px, calc(12.5rem + ((1vw - 3.93px) * 13.844))), 500px);
+        height: min(max(70px, calc(4.375rem + ((1vw - 3.93px) * 5.5376))), 190px);
+
       }
     }
   }

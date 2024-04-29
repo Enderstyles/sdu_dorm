@@ -5,38 +5,38 @@
       <div class="bookboard__block_info">
         <div
             class="bookboard__block_info-place"
-            v-for="(place, idx) in myPlace"
+            v-for="place in myPlace"
             :key="place"
         >
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
-              <p class="regular-txt">Block</p>
+              <p class="medium-txt">Block</p>
             </div>
-            <p class="regular-txt">{{ blockLetters(place.block) }}</p>
+            <p class="semi-bold-txt">{{ blockLetters(place.block) }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
-              <p class="regular-txt">Floor</p>
+              <p class="medium-txt">Floor</p>
             </div>
-            <p class="regular-txt">{{ place.floor }}</p>
+            <p class="semi-bold-txt">{{ place.floor }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
-              <p class="regular-txt">Taraf</p>
+              <p class="medium-txt">Taraf</p>
             </div>
-            <p class="regular-txt">{{ place.taraf }}</p>
+            <p class="semi-bold-txt">{{ place.taraf }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
-              <p class="regular-txt">Room</p>
+              <p class="medium-txt">Room</p>
             </div>
-            <p class="regular-txt">{{ place.room }}</p>
+            <p class="semi-bold-txt">{{ place.room }}</p>
           </div>
           <div class="bookboard__block_info-place-content">
             <div class="bookboard__block_info-place-content-border">
-              <p class="regular-txt">Bed</p>
+              <p class="medium-txt">Bed</p>
             </div>
-            <p class="regular-txt">{{ place.place }}</p>
+            <p class="semi-bold-txt">{{ place.place }}</p>
           </div>
         </div>
 
@@ -50,7 +50,7 @@
               Congratulations! Your application has been approved, and your booking for the dormitory room has been confirmed.
             </p>
           </div>
-          <button class="unfilled-button" style="width: 303px; height: 69px">Cancel reservation</button>
+          <button class="unfilled-button">Cancel reservation</button>
         </div>
       </div>
     </div>
@@ -108,7 +108,16 @@ export default {
     &_info {
       display: flex;
       align-items: flex-start;
-      gap: 100px;
+      gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 4.5842))), 100px);
+      @media screen and (max-width: $laptopSm) {
+        flex-direction: column;
+      }
+      @media screen and (max-width: $desktop) {
+        flex-direction: row;
+      }
+      @media screen and (max-width: $mobile) {
+        flex-direction: column;
+      }
       &-place {
         display: flex;
         flex-direction: column;
@@ -134,7 +143,16 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 70px;
+        gap: min(max(30px, calc(1.875rem + ((1vw - 3.93px) * 1.8459))), 70px);
+        button {
+          width: 303px;
+          height: 69px;
+          @media screen and (max-width: $desktop) {
+            width: 200px;
+            height: 40px;
+            padding: 10px;
+          }
+        }
         &-booking {
           display: flex;
           flex-direction: column;

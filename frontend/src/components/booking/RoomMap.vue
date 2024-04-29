@@ -95,19 +95,33 @@ export default {
     @media screen and (max-width: $pc) {
       width: 400px;
     }
+    @media screen and (max-width: $tablet) {
+      width: 350px;
+    }
+    @media screen and (max-width: $mobile) {
+      width: 300px;
+    }
     &-static {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       &-icon {
         padding: 30px;
-        width: auto;
+        width: 100%;
+        @media screen and (max-width: $pc) {
+          padding: 20px;
+          width: 70%;
+        }
+        @media screen and (max-width: $tablet) {
+          padding: 20px;
+          width: 60%;
+        }
+        @media screen and (max-width: $mobile) {
+          padding: 20px;
+        }
         img {
-          max-width: 70%;
+          max-width: 80%;
           height: auto;
-          @media screen and (max-width: $pc) {
-            max-width: 60%;
-          }
         }
       }
       .center {
@@ -133,12 +147,16 @@ export default {
           justify-content: center;
           background: $available;
           border: 1px solid black;
-          width: 180px;
-          height: 120px;
+          width: 200px;
+          height: 140px;
           cursor: pointer;
           @media screen and (max-width: $pc) {
             width: 160px;
             height: 100px;
+          }
+          @media screen and (max-width: $tablet) {
+            width: 130px;
+            height: 80px;
           }
           &:hover {
             background: $secondary;
