@@ -223,7 +223,45 @@ class GetTakenPlacesApi(ListAPIView):
         return TakenPlaces.objects.all()
 
 
-class TakeAPlaceApi(APIView):
+class PaymentApi(ListAPIView):
+    def get(self, request, *args, **kwargs):
+        grant_type = "client_credentials"
+        scope = "payment"
+        client_id = "test"
+        client_secret = "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG"
+        invoice_id = generate_invoice_id()
+        while PaymentModel.objects.filter(invoiceID=invoice_id).exists():
+            invoice_id = generate_invoice_id()
+        amount = 470000
+        currency = "KZT"
+        terminal = "67e34d63-102f-4bd1-898e-370781d0074d"
+
+        url = 'https://testoauth.homebank.kz/epay2/oauth2/token'
+        body = {
+            "grant_type": grant_type,
+            "scope": scope,
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "invoiceID": invoice_id,
+            "amount": amount,
+            "currency": currency,
+            "terminal": terminal
+        }
+        r = requests.request(method='POST', url=url, data=body)
+        content = r.json()
+        auth = content['access_token']
+
+        student = CustomUser.objects.get(student_id=request.user.student_id)
+        PaymentModel.objects.create(invoiceID=invoice_id, token=auth, amount=amount, student=student)
+        return Response({
+            "message": "Successfully created",
+            "response_data": content,
+            "invoiceID": invoice_id,
+            "amount": amount,
+        }, status=status.HTTP_201_CREATED)
+
+
+class MakeReservation(APIView):
     serializer_class = TakeASeatSerializer
 
     @staticmethod
@@ -247,45 +285,22 @@ class TakeAPlaceApi(APIView):
                                           place=place).exists():
                 return Response({"message": "Place is already taken"}, status=status.HTTP_409_CONFLICT)
 
-            grant_type = "client_credentials"
-            scope = "payment"
-            client_id = "test"
-            client_secret = "yF587AV9Ms94qN2QShFzVR3vFnWkhjbAK3sG"
-            invoice_id = generate_invoice_id()
-            while PaymentModel.objects.filter(invoiceID=invoice_id).exists():
-                invoice_id = generate_invoice_id()
-            amount = 470000
-            currency = "KZT"
-            terminal = "67e34d63-102f-4bd1-898e-370781d0074d"
-
-            url = 'https://testoauth.homebank.kz/epay2/oauth2/token'
-            body = {
-                "grant_type": grant_type,
-                "scope": scope,
-                "client_id": client_id,
-                "client_secret": client_secret,
-                "invoiceID": invoice_id,
-                "amount": amount,
-                "currency": currency,
-                "terminal": terminal
-            }
-            r = requests.request(method='POST', url=url, data=body)
-            content = r.json()
-            auth = content['access_token']
-
-            PaymentModel.objects.create(invoiceID=invoice_id, token=auth, amount=amount)
+            payment = PaymentModel.objects.get(student=taken_by)
             TakenPlaces.objects.create(block=block, floor=floor, taraf=taraf, room=room_id, place=place,
-                                       taken_by_id=taken_by)
-
-            return Response({
-                "message": "Successfully created",
-                "response_data": content,
-                "invoiceID": invoice_id,
-                "amount": amount,
-            }, status=status.HTTP_201_CREATED)
+                                       taken_by_id=taken_by, payment=payment)
+            return Response({"message": "Success"}, status=status.HTTP_201_CREATED)
         except Exception as e:
-
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CancelReservationApi(APIView):
+    @staticmethod
+    def post(request, *args, **kwargs):
+        student = CustomUser.objects.get(student_id=request.user.student_id)
+        if TakenPlaces.objects.filter(taken_by=student).exists():
+            TakenPlaces.objects.get(taken_by=student).delete()
+            return Response({"message": "success"}, status=status.HTTP_200_OK)
+        return Response({"message": "Student didn't take place"}, status=status.HTTP_404_NOT_FOUND)
 
 
 def generate_invoice_id():

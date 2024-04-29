@@ -180,6 +180,22 @@ class MainPageModel(models.Model):
         return "Main page"
 
 
+class PaymentModel(models.Model):
+    invoiceID = models.CharField(unique=True, max_length=15, blank=False, null=False)
+    token = models.TextField(unique=True, blank=False, null=False)
+    amount = models.TextField(blank=False, null=False)
+    student = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        default=None
+    )
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.invoiceID
+
+
 class TakenPlaces(models.Model):
     block = models.IntegerField(blank=False, null=False)
     floor = models.IntegerField(blank=False, null=False)
@@ -193,14 +209,14 @@ class TakenPlaces(models.Model):
         primary_key=True,
     )
 
+    payment = models.OneToOneField(
+        PaymentModel,
+        on_delete=models.CASCADE,
+        default=None
+    )
+
     def __str__(self):
         return f"By {self.taken_by}"
-
-
-class PaymentModel(models.Model):
-    invoiceID = models.CharField(unique=True, max_length=15, blank=False, null=False)
-    token = models.TextField(unique=True, blank=False, null=False)
-    amount = models.TextField(blank=False, null=False)
 
 
 def get_upload_path(instance, filename):
