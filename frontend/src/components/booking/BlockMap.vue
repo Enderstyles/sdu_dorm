@@ -115,7 +115,7 @@ export default {
         if (this.filteredPurchasedPlace.length > 0) {
           this.$toaster.error("You already have a place");
         } else {
-          this.block = 3;
+          this.block = 4;
           this.updateSelectedBlock();
           this.saveSelectedBlock(this.block);
         }
@@ -124,6 +124,9 @@ export default {
       }
     },
     saveSelectedBlock(block) {
+      if (this.block) {
+        localStorage.removeItem('selectedBlock');
+      }
       localStorage.setItem('selectedBlock', block);
     },
     updateSelectedBlock() {

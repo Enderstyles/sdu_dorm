@@ -44,7 +44,7 @@ export default {
   props: ["tarafs"],
   data: () => ({
     taraf: parseInt(localStorage.getItem('selectedTaraf')) || 0,
-    selectedRoom :  parseInt(localStorage.getItem('selectedRoom')) || 0,
+    selectedRoom: parseInt(localStorage.getItem('selectedRoom')) || 0,
     activeFloor: 2,
   }),
   methods: {

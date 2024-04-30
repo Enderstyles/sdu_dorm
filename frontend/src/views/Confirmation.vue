@@ -121,14 +121,7 @@ export default {
     },
     payment() {
         this.$axios
-          .post(`take_place/`, {
-                taken_by_id: this.getUser.id,
-                block: this.selectedBlock,
-                floor: this.selectedFloor,
-                taraf: this.selectedTaraf,
-                room: this.selectedRoom,
-                place: this.selectedBed,
-              },
+          .get(`payment/`,
               {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -138,7 +131,6 @@ export default {
           .then((response) => {
             clearInterval(this.timerInterval);
             localStorage.setItem('timer', this.timerDuration);
-
               const auth = response.data.response_data;
               const invoiceID = response.data.invoiceID;
               const amount = response.data.amount;
@@ -146,9 +138,34 @@ export default {
                   this.createPaymentObject(auth, invoiceID, amount),
                   (response) => {
                     if (response.success) {
-                      this.$toaster.success('You have successfully purchased a place in the dormitory!');
-                      this.handleTimeout();
-                      this.$router.push("/");
+                      this.$axios
+                          .post(`take_place/`, {
+                                taken_by_id: this.getUser.id,
+                                block: this.selectedBlock,
+                                floor: this.selectedFloor,
+                                taraf: this.selectedTaraf,
+                                room: this.selectedRoom,
+                                place: this.selectedBed,
+                              },
+                              {
+                                headers: {
+                                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                                },
+                              }
+                          )
+                          .then((response) => {
+                            clearInterval(this.timerInterval);
+                            this.$toaster.success('You have successfully purchased a place in the dormitory!');
+                            this.handleTimeout();
+                            this.$router.push("/");
+                          })
+                          .catch((err) => {
+                            if (err.response.data.message) {
+                              this.$toaster.error(err.response.data.message);
+                            } else if (err.response.data.detail) {
+                              this.$toaster.error(err.response.data.detail);
+                            }
+                          });
                     } else {
                       this.$toaster.error('An error occurred with the payment');
                       this.handleTimeout();

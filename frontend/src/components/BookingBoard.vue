@@ -50,7 +50,12 @@
               Congratulations! Your application has been approved, and your booking for the dormitory room has been confirmed.
             </p>
           </div>
-          <button class="unfilled-button">Cancel reservation</button>
+          <button
+              class="unfilled-button"
+              @click="cancelReservation"
+          >
+            Cancel reservation
+          </button>
         </div>
       </div>
     </div>
@@ -84,6 +89,23 @@ export default {
         4: 'D'
       };
       return blockMapping[block] || '';
+    },
+    async cancelReservation() {
+      await this.$axios
+          .post(`cancel_reservation/`, {},
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+              }
+          )
+          .then((response) => {
+            this.$toaster.success('Your reservation has been cancelled successfully!');
+            this.$router.push("/booking");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     }
   },
   created() {

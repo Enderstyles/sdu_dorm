@@ -239,6 +239,14 @@ export default {
       this.notif = false;
       this.saveSelectedBoardTab('logout');
     },
+    async fetchData() {
+      await Promise.all([
+        this.fetchNotificationData(),
+        this.fetchDocumentsData(),
+        this.fetchNewsCategoryData(),
+        this.fetchTakenPlaceData(),
+      ]);
+    },
     async logoutAcc() {
       await this.logoutUser();
       this.$toaster.error("You have successfully logged out of your account");
@@ -329,12 +337,8 @@ export default {
       return this.myPlace.filter(place => place.taken_by === this.getUser.id);
     }
   },
-  created() {
-    // this.requestUser();
-    this.fetchNotificationData();
-    this.fetchDocumentsData();
-    this.fetchNewsCategoryData();
-    this.fetchTakenPlaceData();
+  async created() {
+    await this.fetchData();
     this.setSelectedBoardTabFromStorage();
   },
 }
