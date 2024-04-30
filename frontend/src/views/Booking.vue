@@ -132,7 +132,6 @@ export default {
   }),
   beforeRouteLeave(to, from, next) {
     if (this.bookingStages) {
-
       next();
     }
   },

@@ -6,10 +6,12 @@ import axios from "axios";
 import { createToaster } from "@meforma/vue-toaster";
 
 const axiosInstance = axios.create({
-    baseURL: 'https://admin.sdudorm.kz/api/',
+    // baseURL: 'https://admin.sdudorm.kz/api/',
+    baseURL: 'http://localhost:8000/api/',
 })
 
-axios.defaults.baseURL = 'https://admin.sdudorm.kz/api/';
+// axios.defaults.baseURL = 'https://admin.sdudorm.kz/api/';
+axios.defaults.baseURL = 'http://localhost:8000/api/';
 
 axios.interceptors.request.use(
     (config) => {

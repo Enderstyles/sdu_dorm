@@ -152,7 +152,7 @@ export default {
                     } else {
                       this.$toaster.error('An error occurred with the payment');
                       this.handleTimeout();
-                      this.$router.push("/booking");
+                      this.$router.push("/");
                     }
                   }
               );
