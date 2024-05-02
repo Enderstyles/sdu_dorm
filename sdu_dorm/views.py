@@ -5,6 +5,7 @@ import requests
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from django.utils.crypto import get_random_string
+import uuid
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework import status
@@ -285,9 +286,9 @@ class MakeReservation(APIView):
                                           place=place).exists():
                 return Response({"message": "Place is already taken"}, status=status.HTTP_409_CONFLICT)
 
-            payment = PaymentModel.objects.get(student=taken_by)
+            payment = PaymentModel.objects.filter(student=taken_by).last()
             TakenPlaces.objects.create(block=block, floor=floor, taraf=taraf, room=room_id, place=place,
-                                       taken_by_id=taken_by, payment=payment)
+                                       taken_by_id=taken_by, payment=payment.invoiceID)
             return Response({"message": "Success"}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
@@ -304,7 +305,7 @@ class CancelReservationApi(APIView):
 
 
 def generate_invoice_id():
-    return get_random_string(15, "0123456789")
+    return uuid.uuid4().hex[:16].upper()
 
 
 class CreateStudentApi(CreateAPIView):
