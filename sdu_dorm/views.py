@@ -305,7 +305,7 @@ class CancelReservationApi(APIView):
 
 
 def generate_invoice_id():
-    return uuid.uuid4().hex[:16].upper()
+    return uuid.uuid4().int
 
 
 class CreateStudentApi(CreateAPIView):
