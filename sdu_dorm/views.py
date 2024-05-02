@@ -5,7 +5,7 @@ import requests
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from django.utils.crypto import get_random_string
-import uuid
+
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework import status
@@ -305,7 +305,7 @@ class CancelReservationApi(APIView):
 
 
 def generate_invoice_id():
-    return uuid.uuid4().int
+    return get_random_string(15, "0123456789")
 
 
 class CreateStudentApi(CreateAPIView):
