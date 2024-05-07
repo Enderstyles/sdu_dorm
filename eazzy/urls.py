@@ -12,7 +12,7 @@ from sdu_dorm import views
 from sdu_dorm.views import ProfileApi, AboutPiecesViewApi, ForgotPasswordApi, LogoutView, NewsFeedApi, \
     NewsObjectApi, GetNewsCategoriesApi, FollowPostApi, GetAllFollowingPostsApi, MakeReservation, GetTakenPlacesApi, \
     CreateStudentApi, UnfollowPostApi, PostLink, FailureLink, UploadDocumentsApi, BackLink, FailureBackLink, \
-    GetDocumentsApi, PaymentApi, CancelReservationApi
+    GetDocumentsApi, PaymentApi, CancelReservationApi, MainPageNumbersApi
 from sdu_dorm.views import MainPageApi
 
 router = routers.DefaultRouter()
@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/logout/', LogoutView.as_view(), name='auth_logout'),
 
     path('api/main_page/', MainPageApi.as_view(), name='main_page'),
+    path('api/main_page_numbers/', MainPageNumbersApi.as_view(), name='main_page_numbers'),
 
     path('api/news/', NewsFeedApi.as_view(), name='news'),
     path('api/news/<int:pk>/', NewsObjectApi.as_view(), name='news_object_api'),

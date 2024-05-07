@@ -396,3 +396,10 @@ class GetDocumentsApi(ListAPIView):
             return Response({"message": "not uploaded"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MainPageNumbersApi(APIView):
+    @staticmethod
+    def get(request, *args, **kwargs):
+        places_left = 1120 - TakenPlaces.objects.count()
+        return Response({"data": places_left}, status.HTTP_200_OK)
