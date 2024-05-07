@@ -399,7 +399,11 @@ class GetDocumentsApi(ListAPIView):
 
 
 class MainPageNumbersApi(APIView):
+    permission_classes = (AllowAny,)
+    authentication_classes = []
+
     @staticmethod
     def get(request, *args, **kwargs):
         places_left = 1120 - TakenPlaces.objects.count()
-        return Response({"data": places_left}, status.HTTP_200_OK)
+        places_reserved = TakenPlaces.objects.count()
+        return Response({"places_left": places_left, "places_reserved": places_reserved}, status.HTTP_200_OK)
