@@ -80,6 +80,13 @@ class AuthUserManager(BaseUserManager):
         return self._create_user(student_id, password, **extra_fields)
 
 
+class BookingStatus(models.Model):
+    status = models.TextField()
+
+    def __str__(self):
+        return f"{self.status}"
+
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     student_id = models.CharField(_('student_id'), unique=True, max_length=10, primary_key=True)
     email = models.EmailField(_('Email address'), blank=True)
@@ -92,7 +99,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE, default=Gender.objects.get(name="male").value)
     grade = models.FloatField(default=1, blank=True)
     major = models.CharField(max_length=25, default='is', blank=True)
-    status = models.BooleanField(default=True)
+    booking_status = models.ForeignKey(BookingStatus, on_delete=models.CASCADE, default=BookingStatus.objects.get(id=2).status)
     reservation = models.CharField(max_length=4, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', default='profile_pics/default.jpg')
     isStudent = models.BooleanField(default=True)
@@ -101,7 +108,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                     on_delete=models.CASCADE,
                                     default=CitizenshipModel.objects.get(status="Is citizen").value)
     objects = AuthUserManager()
-
     USERNAME_FIELD = 'student_id'
 
     class Meta:

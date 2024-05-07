@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import AboutPost, CustomUser, MainPageModel, NewsPost, NewsCategories, Enrollment, TakenPlaces, Gender, \
-    PaymentModel, UploadDocumentsModel, CitizenshipModel
+    PaymentModel, UploadDocumentsModel, CitizenshipModel, BookingStatus
 
 # Register your models here.
 admin.site.register(CustomUser)
@@ -14,3 +14,4 @@ admin.site.register(Gender)
 admin.site.register(PaymentModel)
 admin.site.register(UploadDocumentsModel)
 admin.site.register(CitizenshipModel)
+admin.site.register(BookingStatus)
