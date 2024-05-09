@@ -84,7 +84,7 @@ class BookingStatus(models.Model):
     status = models.TextField()
 
     def __str__(self):
-        return f"{self.status}"
+        return self.status
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -99,7 +99,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE, default=Gender.objects.get(name="male").value)
     grade = models.FloatField(default=1, blank=True)
     major = models.CharField(max_length=25, default='is', blank=True)
-    booking_status = models.ForeignKey(BookingStatus, on_delete=models.CASCADE, default=BookingStatus.objects.get(id=2).status)
+    booking_status = models.ForeignKey(BookingStatus,
+                                       on_delete=models.CASCADE,
+                                       default=BookingStatus.objects.get(id=2))
     reservation = models.CharField(max_length=4, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', default='profile_pics/default.jpg')
     isStudent = models.BooleanField(default=True)

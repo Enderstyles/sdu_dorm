@@ -67,9 +67,6 @@ class ForgotPasswordApi(APIView):
 
 
 class LogoutView(APIView):
-    permission_classes = (AllowAny,)
-    authentication_classes = []
-
     @staticmethod
     def post(request, *args, **kwargs):
         try:
@@ -312,17 +309,20 @@ class CreateStudentApi(CreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             serializer = UserInfoSerializer(data=request.data)
-            if serializer.is_valid() and CustomUser.objects.filter(student_id=serializer.validated_data["student_id"]):
-                password = make_password(serializer.validated_data.get("password"))
-                serializer.validated_data["last_login"] = time.strftime('%Y-%m-%d %H:%M:%S')
-                serializer.validated_data["date_joined"] = time.strftime('%Y-%m-%d %H:%M:%S')
-                serializer.validated_data["email"] = str(serializer.validated_data["student_id"]) + "@stu.sdu.edu.kz"
-                serializer.validated_data["is_active"] = True
-                serializer.validated_data["password"] = password
+            if serializer.is_valid():
+                print(serializer.validated_data["student_id"])
+                if not CustomUser.objects.filter(student_id=serializer.validated_data["student_id"]).exists():
+                    password = make_password(serializer.validated_data.get("password"))
+                    serializer.validated_data["last_login"] = time.strftime('%Y-%m-%d %H:%M:%S')
+                    serializer.validated_data["date_joined"] = time.strftime('%Y-%m-%d %H:%M:%S')
+                    serializer.validated_data["email"] = str(serializer.validated_data["student_id"]) + "@stu.sdu.edu.kz"
+                    serializer.validated_data["is_active"] = True
+                    serializer.validated_data["password"] = password
 
-                serializer.save()
-                return Response({"message": "Successfully created!"}, status=status.HTTP_201_CREATED)
-            return Response({"message": "User already exists"}, status.HTTP_409_CONFLICT)
+                    serializer.save()
+                    return Response({"message": "Successfully created!"}, status=status.HTTP_201_CREATED)
+                return Response({"message": "User already exists"}, status.HTTP_409_CONFLICT)
+            return Response({"message": "Invalid data"}, status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
 
