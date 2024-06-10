@@ -362,24 +362,35 @@ class UploadDocumentsApi(APIView):
             student = CustomUser.objects.get(student_id=request.data["student_id"])
             if UploadDocumentsModel.objects.filter(student=student).exists():
                 return Response({"message": "already uploaded"}, status=status.HTTP_409_CONFLICT)
-            application = request.FILES["application"]
-            photo = request.FILES["photo"]
-            identity_card = request.FILES["identity_card"]
-            form_075 = request.FILES["form_075"]
-            payment_check = request.FILES["payment_check"]
-            power_of_attorney = request.FILES["power_of_attorney"]
-            address_certificate = request.FILES["address_certificate"]
-            university_admission_form = request.FILES["university_admission_form"]
+            if student.citizenship.value == 0:
+                application = request.FILES["application"]
+                photo = request.FILES["photo"]
+                identity_card = request.FILES["identity_card"]
+                form_075 = request.FILES["form_075"]
+                payment_check = request.FILES["payment_check"]
+                power_of_attorney = request.FILES["power_of_attorney"]
+                address_certificate = request.FILES["address_certificate"]
+                university_admission_form = request.FILES["university_admission_form"]
 
-            UploadDocumentsModel.objects.create(student=student,
-                                                application=application,
-                                                photo=photo,
-                                                identity_card=identity_card,
-                                                form_075=form_075,
-                                                payment_check=payment_check,
-                                                power_of_attorney=power_of_attorney,
-                                                address_certificate=address_certificate,
-                                                university_admission_form=university_admission_form)
+                UploadDocumentsModel.objects.create(student=student,
+                                                    application=application,
+                                                    photo=photo,
+                                                    identity_card=identity_card,
+                                                    form_075=form_075,
+                                                    payment_check=payment_check,
+                                                    power_of_attorney=power_of_attorney,
+                                                    address_certificate=address_certificate,
+                                                    university_admission_form=university_admission_form)
+            elif student.citizenship.value == 1:
+                photo = request.FILES["photo"]
+                form_075 = request.FILES["form_075"]
+                identity_card = request.FILES["identity_card"]
+                payment_check = request.FILES["payment_check"]
+                UploadDocumentsModel.objects.create(student=student,
+                                                    photo=photo,
+                                                    identity_card=identity_card,
+                                                    form_075=form_075,
+                                                    payment_check=payment_check)
             return Response({"message": "Success"}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"message": f"{e}"}, status=status.HTTP_400_BAD_REQUEST)
